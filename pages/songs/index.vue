@@ -16,6 +16,7 @@ const TakeThis: SongDTO = {
   },
   duration: '4:20',
   tags: ['Anime', 'Symphogear', '???'],
+  previewUrl: 'https://static.wikia.nocookie.net/senkizesshousymphogear/images/9/91/Take_this%21_All_loaded.ogg',
 }
 
 const Shinjidai: SongDTO = {
@@ -32,6 +33,7 @@ const Shinjidai: SongDTO = {
   },
   duration: '3:58',
   tags: ['Movie', 'One Piece', '???'],
+  previewUrl: 'https://youtu.be/1FliVTcX8bQ',
 }
 
 const RainbowFlower: SongDTO = {
@@ -48,17 +50,19 @@ const RainbowFlower: SongDTO = {
   },
   duration: '3:58',
   tags: ['Anime', 'Symphogear', '???'],
+  previewUrl: 'https://static.wikia.nocookie.net/senkizesshousymphogear/images/f/f5/Rainbow_Flower.ogg',
 }
 
 const songs: SongDTO[] = [TakeThis, Shinjidai, RainbowFlower]
 </script>
 
 <template>
-  <div class="grid grid-cols-1 mx-auto items-center justify-start gap-2 p-12 container lg:grid-cols-3 md:grid-cols-2">
+  <div class="columns mx-auto w-full columns-1 items-center justify-start gap-2 p-12 container 2xl:columns-3 3xl:columns-4 lg:columns-2">
     <SongCard
       v-for="(song, idx) in songs"
       :key="idx"
       :song="song"
+      class="mb-2"
     />
   </div>
 </template>

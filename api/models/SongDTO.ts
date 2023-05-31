@@ -7,4 +7,5 @@ export interface SongDTO {
   album: AlbumDTO
   duration: string
   tags: string[]
+  previewUrl?: string | ''
 }
