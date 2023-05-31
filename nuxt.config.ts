@@ -26,6 +26,9 @@ export default defineNuxtConfig({
   },
 
   nitro: {
+    experimental: {
+      wasm: true,
+    },
     esbuild: {
       options: {
         target: 'esnext',
@@ -34,7 +37,6 @@ export default defineNuxtConfig({
     prerender: {
       crawlLinks: false,
       routes: ['/'],
-      ignore: ['/hi'],
     },
   },
 
