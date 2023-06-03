@@ -16,10 +16,21 @@ html, body , #__nuxt{
   height: 100vh;
   margin: 0;
   padding: 0;
+  font-family: "Quicksand", ui-sans-serif, system-ui, -apple-system,
+    BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans",
+    sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+    "Noto Color Emoji";
 }
 
 html.dark {
   background: rgb(17 17 17);
   color: white;
+}
+
+input {
+  outline: none;
+  text-decoration: none;
+  background-color: none;
+  border: none;
 }
 </style>

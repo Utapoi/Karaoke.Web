@@ -1,12 +1,67 @@
+<script setup lang="ts">
+const Route = useRoute()
+const UserStore = useUserStore()
+</script>
+
 <template>
   <header>
-    <section class="h-16 w-full flex items-center px-6">
-      <h1 class="text-2xl font-semibold">
+    <section class="h-16 w-full flex items-center justify-between px-6">
+      <h1 class="text-2xl font-semibold text-[#f90b31]">
         Utapoi
       </h1>
+      <div class="h-full w-full flex items-center justify-center">
+        <div class="border border-gray-700 rounded-full">
+          <div class="w-80 inline-flex items-center justify-between gap-6 px-4 py-1.5 dark:text-gray-400">
+            <span>Search a song or artist...</span>
+            <span class="i-fluent:search-20-filled text-lg" />
+          </div>
+        </div>
+      </div>
+
+      <div v-if="UserStore.IsConnected()">
+        <AvatarCard />
+      </div>
+      <div v-else class="flex items-center gap-2">
+        <NuxtLink to="/auth/login">
+          <div class="border border-[#f90b31] rounded-full px-3 py-1 text-sm text-[#f90b31] transition-all duration-200 hover:cursor-pointer hover:bg-[#f90b31] hover:text-white">
+            Login
+          </div>
+        </NuxtLink>
+      </div>
     </section>
   </header>
   <main class="w-full">
-    <slot />
+    <div class="h-full w-full flex">
+      <div class="min-h-[calc(100vh-4rem)] pt-4 xl:min-w-44">
+        <div class="w-full flex flex-col flex-wrap gap-0.5 pl-3 hover:cursor-pointer">
+          <NuxtLink to="/">
+            <div class="w-full inline-flex items-center gap-4 rounded-lg p-2 hover:bg-gray-800" :class="{ 'bg-gray-800': Route.path === '/' }">
+              <span class="i-fluent:home-16-filled text-lg" />
+              <span class="hidden xl:block">Home</span>
+            </div>
+          </NuxtLink>
+          <NuxtLink to="/songs">
+            <div class="w-full inline-flex items-center gap-4 rounded-lg p-2 hover:bg-gray-800" :class="{ 'bg-gray-800': Route.path.includes('/songs') }">
+              <span class="i-game-icons:musical-notes text-lg" />
+              <span class="hidden xl:block">Songs</span>
+            </div>
+          </NuxtLink>
+          <NuxtLink to="/artists">
+            <div class="w-full inline-flex items-center gap-4 rounded-lg p-2 hover:bg-gray-800" :class="{ 'bg-gray-800': Route.path.includes('/artists') }">
+              <span class="i-game-icons:microphone text-lg" />
+              <span class="hidden xl:block">Artists</span>
+            </div>
+          </NuxtLink>
+          <span v-if="UserStore.IsInRole('Admin')" class="my-4 w-full border-t border-gray-700" />
+          <NuxtLink v-if="UserStore.IsInRole('Admin')" to="/admin">
+            <div class="w-full inline-flex items-center gap-4 rounded-lg p-2 hover:bg-gray-800" :class="{ 'bg-gray-800': Route.path.includes('/artists') }">
+              <span class="i-fluent:important-12-filled text-lg" />
+              <span class="hidden xl:block">Admin</span>
+            </div>
+          </NuxtLink>
+        </div>
+      </div>
+      <slot />
+    </div>
   </main>
 </template>

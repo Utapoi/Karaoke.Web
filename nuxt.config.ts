@@ -1,6 +1,7 @@
 import { pwa } from './config/pwa'
 
 export default defineNuxtConfig({
+  ssr: false,
   modules: [
     '@vueuse/nuxt',
     '@unocss/nuxt',
@@ -38,6 +39,12 @@ export default defineNuxtConfig({
       crawlLinks: false,
       routes: ['/'],
     },
+    storage: {
+      fs: {
+        driver: 'fs',
+        base: './data',
+      },
+    },
   },
 
   app: {
@@ -60,5 +67,10 @@ export default defineNuxtConfig({
 
   devtools: {
     enabled: true,
+  },
+  runtimeConfig: {
+    public: {
+      API_URL: 'https://localhost:7215', // 'http://localhost:5215',
+    },
   },
 })

@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import KaraokePlayer from '~/components/player/KaraokePlayer.vue'
+
+definePageMeta({
+  layout: 'game',
+})
 </script>
 
 <template>

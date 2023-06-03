@@ -53,16 +53,37 @@ const RainbowFlower: SongDTO = {
   previewUrl: 'https://static.wikia.nocookie.net/senkizesshousymphogear/images/f/f5/Rainbow_Flower.ogg',
 }
 
-const songs: SongDTO[] = [TakeThis, Shinjidai, RainbowFlower]
+// TODO: Remove this.
+function shuffle<T>(array: T[]): T[] {
+  let currentIndex = array.length
+  let randomIndex
+
+  // While there remain elements to shuffle.
+  while (currentIndex !== 0) {
+    // Pick a remaining element.
+    randomIndex = Math.floor(Math.random() * currentIndex)
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex], array[currentIndex]]
+  }
+
+  return array
+}
+
+const songs: SongDTO[] = shuffle([TakeThis, Shinjidai, RainbowFlower, TakeThis, Shinjidai, RainbowFlower])
 </script>
 
 <template>
-  <div class="columns mx-auto w-full columns-1 items-center justify-start gap-2 p-12 container 2xl:columns-3 3xl:columns-4 lg:columns-2">
-    <SongCard
+  <div class="4xl:grid-cols-5 grid grid-cols-1 mx-auto w-full content-start gap-2 px-12 pt-8 3xl:grid-cols-3 lg:grid-cols-2">
+    <div
       v-for="(song, idx) in songs"
       :key="idx"
-      :song="song"
-      class="mb-2"
-    />
+    >
+      <SongCard
+        :song="song"
+      />
+    </div>
   </div>
 </template>
