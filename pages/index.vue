@@ -64,7 +64,7 @@ const Shinjidai: SongDTO = {
               Latest releases
             </h2>
           </div>
-          <div class="4xl:grid-cols-5 grid grid-cols-1 mt-4 w-full justify-start gap-2 3xl:grid-cols-3 lg:grid-cols-2">
+          <div class="grid grid-cols-1 mt-4 w-full justify-start gap-2 3xl:grid-cols-3 4xl:grid-cols-5 lg:grid-cols-2">
             <SongCard
               :song="RainbowFlower"
             />
@@ -86,7 +86,7 @@ const Shinjidai: SongDTO = {
               Popular
             </h2>
           </div>
-          <div class="4xl:grid-cols-5 grid grid-cols-1 mt-4 w-full content-start gap-2 3xl:grid-cols-3 lg:grid-cols-2">
+          <div class="grid grid-cols-1 mt-4 w-full content-start gap-2 3xl:grid-cols-3 4xl:grid-cols-5 lg:grid-cols-2">
             <SongCard
               :song="Shinjidai"
               :small="true"
