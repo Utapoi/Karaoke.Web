@@ -1,7 +1,7 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
-import { StorageSerializers, useLocalStorage, useStorage } from '@vueuse/core'
+import { StorageSerializers, useStorage } from '@vueuse/core'
 import type { User } from '~/api/models/User'
-import type { GetCurrentUserResponse } from '~/api/responses/GetCurrentUserResponse'
+import type { GetCurrentUserResponse } from '~/api/responses/singers/GetCurrentUserResponse'
 
 export enum TokenSource {
   None = 0,
@@ -32,11 +32,11 @@ export const useUserStore = defineStore('user-store', () => {
   const CurrentUser = useStorage<User | null>('current-user', null, localStorage, {
     serializer: StorageSerializers.object,
   })
-  const Token = useLocalStorage<string | undefined>('token', undefined)
-  const RefreshToken = useLocalStorage<string | undefined>('refresh-token', undefined)
-  const TokenExpiryTime = useLocalStorage<Date | undefined>('token-expiry-time', undefined)
-  const RefreshTokenExpiryTime = useLocalStorage<Date | undefined>('refresh-token-expiry-time', undefined)
-  const TokenProviderSource = useLocalStorage<TokenSource>('token-source', TokenSource.None)
+  const Token = ref<string | undefined>(undefined)
+  const RefreshToken = ref<string | undefined>(undefined)
+  const TokenExpiryTime = ref<Date | undefined>(undefined)
+  const RefreshTokenExpiryTime = ref<Date | undefined>(undefined)
+  const TokenProviderSource = ref<TokenSource>(TokenSource.None)
 
   /**
    * Starts the Google OAuth2 login process.
@@ -151,16 +151,6 @@ export const useUserStore = defineStore('user-store', () => {
     CurrentUser.value = null
   }
 
-  watch(CurrentUser, async (v) => {
-    if (v !== null)
-      return
-
-    if (!IsConnected())
-      return
-
-    await GetUser()
-  })
-
   return {
     CurrentUser,
     Token,
@@ -176,6 +166,8 @@ export const useUserStore = defineStore('user-store', () => {
     IsInRole,
     GetUser,
   }
+}, {
+  persist: true,
 })
 
 if (import.meta.hot)

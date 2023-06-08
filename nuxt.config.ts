@@ -4,10 +4,13 @@ export default defineNuxtConfig({
   ssr: false,
   modules: [
     '@vueuse/nuxt',
+    '@vueuse/motion/nuxt',
     '@unocss/nuxt',
     '@pinia/nuxt',
+    '@pinia-plugin-persistedstate/nuxt',
     '@nuxtjs/color-mode',
     '@vite-pwa/nuxt',
+    '@formkit/nuxt',
   ],
 
   experimental: {

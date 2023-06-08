@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { GetTokenResponse } from '~/composables/user-store'
+import type { GetTokenResponse } from '~/composables/UserStore'
 
 definePageMeta({
   layout: 'none',

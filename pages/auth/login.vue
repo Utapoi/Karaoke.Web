@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useUserStore } from '~/composables/user-store'
+import { useUserStore } from '~/composables/UserStore'
 
 definePageMeta({
   layout: 'none',

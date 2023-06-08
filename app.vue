@@ -22,8 +22,8 @@ html, body , #__nuxt{
     "Noto Color Emoji";
 }
 
-html.dark {
-  background: rgb(17 17 17);
+html {
+  background: #141414;
   color: white;
 }
 

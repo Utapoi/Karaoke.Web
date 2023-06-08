@@ -21,7 +21,7 @@ const PlayerStore = usePlayerStore()
 
 const InstrumentalTrack = new Howl({
   src: [props.instrumentalUrl],
-  volume: 0.2,
+  volume: 0.25,
   preload: true,
   autoplay: false,
   onplay: OnPlay,
@@ -31,7 +31,7 @@ const InstrumentalTrack = new Howl({
 
 const VoiceTrack = new Howl({
   src: [props.voiceUrl],
-  volume: 0.2,
+  volume: 0,
   preload: true,
   autoplay: false,
   onplay: OnPlay,
@@ -48,8 +48,8 @@ const Timer = useIntervalFn(() => {
 }, 33.333 /* 30 fps */, { immediate: false })
 
 useTimeoutFn(() => {
-  // InstrumentalTrack.play()
-  // VoiceTrack.play()
+  InstrumentalTrack.play()
+  VoiceTrack.play()
 }, 3000)
 
 // Events

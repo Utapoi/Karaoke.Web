@@ -13,7 +13,7 @@ export enum PlayerState {
  */
 export const usePlayerStore = defineStore('player-store', () => {
   // State
-  const State = ref<PlayerState>(PlayerState.NOT_STARTED)
+  const State = ref<PlayerState>(PlayerState.PLAYING)
 
   return {
     State,

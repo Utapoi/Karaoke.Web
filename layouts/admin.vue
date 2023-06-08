@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const Route = useRoute()
+const UserStore = useUserStore()
 </script>
 
 <template>
@@ -11,7 +12,16 @@ const Route = useRoute()
         </h1>
         <span class="text-xs font-semibold text-gray-500">Admin</span>
       </div>
-      <AvatarCard />
+      <div v-if="UserStore.IsConnected()">
+        <AvatarCard />
+      </div>
+      <div v-else class="flex items-center gap-2">
+        <NuxtLink to="/auth/login">
+          <div class="border border-[#f90b31] rounded-full px-3 py-1 text-sm text-[#f90b31] transition-all duration-200 hover:cursor-pointer hover:bg-[#f90b31] hover:text-white">
+            Login
+          </div>
+        </NuxtLink>
+      </div>
     </section>
   </header>
   <main class="w-full">
@@ -30,10 +40,10 @@ const Route = useRoute()
               <span>Songs</span>
             </div>
           </NuxtLink>
-          <NuxtLink to="/admin/artists">
+          <NuxtLink to="/admin/singers">
             <div class="w-full inline-flex items-center gap-4 rounded-lg p-2 hover:bg-gray-800" :class="{ 'bg-gray-800': Route.path.includes('/admin/artists') }">
               <span class="i-game-icons:microphone text-lg" />
-              <span>Artists</span>
+              <span>Singers</span>
             </div>
           </NuxtLink>
           <span class="my-4 w-full border-t border-gray-700" />

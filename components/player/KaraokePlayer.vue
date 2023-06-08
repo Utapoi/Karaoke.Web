@@ -48,9 +48,9 @@ watch(
       <canvas v-if="width !== Infinity" ref="CanvasRef" :width="width" :height="height" class="absolute inset-0 z-50 max-h-full" />
       <div class="absolute bottom-0 h-25 w-full px-8">
         <AudioPlayer
-          instrumental-url="/test/railgun_op2_inst.mp3"
-          voice-url="/test/railgun_op2.mp3"
-          :duration="94"
+          instrumental-url="/test/Shinjidai/no_vocals.mp3"
+          voice-url="/test/Shinjidai/vocals.mp3"
+          :duration="188"
           @play="() => {
             console.log('play')
           }"

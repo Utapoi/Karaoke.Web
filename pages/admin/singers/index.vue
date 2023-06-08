@@ -1,7 +1,32 @@
 <script setup lang="ts">
+import type { Singer } from '~/api/models/Singer'
+import type { GetSingersResponse } from '~/api/responses/GetSingersResponse'
+
 definePageMeta({
   layout: 'admin',
 })
+
+const HttpClient = useHttpClient()
+
+// Refs
+const Singers = ref<Singer[]>([])
+
+const response = await HttpClient.Get<GetSingersResponse>('/Singers?skip=0&take=15')
+
+// const { data: response } = await useAsyncData<GetSingersResponse>(() => $fetch(`${RuntimeConfig.public.API_URL}/Singers?skip=0&take=10`, {
+//   method: 'GET',
+//   headers: {
+//     'Authorization': `Bearer ${UserStore.Token}`,
+//     'Content-Type': 'application/json',
+//   },
+// }), {
+//   immediate: true,
+// })
+
+if (response === undefined || response == null)
+  Singers.value = []
+else
+  Singers.value = response?.items ?? []
 </script>
 
 <template>
@@ -9,7 +34,7 @@ definePageMeta({
     <div class="w-full px-12 pt-8">
       <div class="w-full rounded-xl bg-[#222] p-3 shadow">
         <div class="flex items-center gap-2">
-          <span class="text-sm">0 artists</span>
+          <span class="text-sm">{{ Singers.length }} artists</span>
           <div class="mx-2 h-9 w-0.25 bg-gray-500" />
 
           <div class="border border-gray-700 rounded-full">
@@ -22,7 +47,7 @@ definePageMeta({
             <span class="i-fluent:filter-12-filled" />
             <span>Filter</span>
           </div>
-          <NuxtLink to="/admin/artists/add" class="ml-4">
+          <NuxtLink to="/admin/singers/add" class="ml-4">
             <div class="inline-flex items-center justify-start gap-1 border border-[#f90b31] rounded-full px-4 py-0.95 text-lg text-[#f90b31] transition-all duration-200 hover:cursor-pointer hover:bg-[#f90b31] hover:text-white">
               <span class="i-fluent:add-circle-12-filled" />
               <span>Add</span>
@@ -46,26 +71,20 @@ definePageMeta({
                 Songs
               </th>
               <th scope="col" class="px-6 py-3">
-                Type
-              </th>
-              <th scope="col" class="px-6 py-3">
                 <span class="sr-only">Edit</span>
               </th>
             </tr>
           </thead>
-          <tbody>
-            <tr class="bg-white transition-all duration-100 dark:bg-[#333] hover:bg-gray-50 dark:hover:bg-[#474747]">
+          <tbody v-if="Singers.length > 0">
+            <tr v-for="singer in Singers" :key="singer.id" class="bg-white transition-all duration-100 dark:bg-[#333] hover:bg-gray-50 dark:hover:bg-[#474747]">
               <th scope="row" class="whitespace-nowrap px-6 py-4 font-medium text-gray-800 dark:text-white">
-                Nana Mizuki
+                {{ singer.names[0].text }}
               </th>
               <td class="px-6 py-4 text-gray-800 dark:text-white">
-                20
+                {{ singer.albums?.length ?? 0 }}
               </td>
               <td class="px-6 py-4 text-gray-800 dark:text-white">
-                118
-              </td>
-              <td class="px-6 py-4 text-gray-800 dark:text-white">
-                Singer
+                {{ singer.songs?.length ?? 0 }}
               </td>
               <td class="px-6 py-4 text-right">
                 <a href="#" class="font-medium text-purple-400 hover:underline">Edit</a>
