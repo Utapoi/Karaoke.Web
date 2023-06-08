@@ -1,6 +1,13 @@
 <script setup lang="ts">
 import ArtistCard from '~/components/artists/ArtistCard.vue'
+import { SingersService } from '~/composables/services/SingersService'
 import { Singer, type SingerInterface } from '~/core/models/Singer'
+
+// Note(Mikyan): We don't have a choice since we can't name a variable with the name of a class.
+const _SingersService = SingersService()
+const Singers = ref<Singer[]>([])
+
+Singers.value = await _SingersService.GetSingers()
 
 const AoiYuukiInterface: SingerInterface = {
   Id: '1',
@@ -45,6 +52,8 @@ const NanaMizuki = new Singer(NanaMizukiInterface)
     <div class="grid grid-cols-3 mx-auto mx-auto max-w-10xl w-full gap-4 2xl:grid-cols-7 3xl:grid-cols-8 lg:grid-cols-4 lg:grid-cols-5 md:grid-cols-4 xl:grid-cols-6">
       <ArtistCard :singer="AoiYuuki" />
       <ArtistCard :singer="NanaMizuki" />
+
+      <ArtistCard v-for="singer in Singers" :key="singer.Id" :singer="singer" />
     </div>
   </div>
 </template>

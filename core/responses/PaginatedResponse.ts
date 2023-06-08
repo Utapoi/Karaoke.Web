@@ -1,5 +1,5 @@
 export interface PaginatedResponse<T> {
-  items: T[]
-  count: number
-  totalCount: number
+  Items: T[]
+  Count: number
+  TotalCount: number
 }

@@ -24,7 +24,7 @@ export class Singer {
     this.Id = singer.Id
     this.Names = singer.Names.map((name: LocalizedStringInterface) => LocalizedString.FromResponse(name))
     this.ProfilePicture = singer.ProfilePicture
-    this.Albums = singer.Albums.map((album: AlbumInterface) => Album.FromResponse(album))
+    this.Albums = singer.Albums?.map((album: AlbumInterface) => Album.FromResponse(album))
     this.Songs = singer.Songs.map((song: SongInterface) => Song.FromResponse(song))
   }
 
