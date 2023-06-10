@@ -43,12 +43,12 @@ watch(
 </script>
 
 <template>
-  <div class="relative h-[100vh] w-[100wh] bg-[url(./test/toaru-wallpaper.jpg)] bg-cover">
+  <div class="relative h-100vh w-100vw bg-[url(./test/toaru-wallpaper.jpg)] bg-cover">
     <div class="relative h-full w-full backdrop-blur-xl">
       <canvas v-if="width !== Infinity" ref="CanvasRef" :width="width" :height="height" class="absolute inset-0 z-50 max-h-full" />
       <div class="absolute bottom-0 h-25 w-full px-8">
         <AudioPlayer
-          instrumental-url="/test/Shinjidai/no_vocals.mp3"
+          instrumental-url="/test/Shinjidai/shinjidai_no_vocals.mp3"
           voice-url="/test/Shinjidai/vocals.mp3"
           :duration="188"
           @play="() => {

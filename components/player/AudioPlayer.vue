@@ -31,7 +31,7 @@ const InstrumentalTrack = new Howl({
 
 const VoiceTrack = new Howl({
   src: [props.voiceUrl],
-  volume: 0,
+  volume: 0.25,
   preload: true,
   autoplay: false,
   onplay: OnPlay,

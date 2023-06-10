@@ -5,7 +5,7 @@ const UserStore = useUserStore()
 
 <template>
   <header>
-    <section class="bg-secondary w-full px-6">
+    <section class="w-full px-6">
       <div class="mx-auto h-16 max-w-7xl w-full flex items-center justify-between">
         <div class="flex items-start gap-1.5">
           <h1 class="text-2xl font-semibold text-[#f90b31]">
