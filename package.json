@@ -25,7 +25,6 @@
     "@nuxtjs/color-mode": "^3.2.0",
     "@pinia-plugin-persistedstate/nuxt": "^1.1.1",
     "@pinia/nuxt": "^0.4.11",
-    "@sidebase/nuxt-auth": "0.6.0-beta.2",
     "@unocss/eslint-config": "^0.51.13",
     "@unocss/nuxt": "^0.51.13",
     "@vite-pwa/nuxt": "^0.0.9",
@@ -41,10 +40,9 @@
     "@formkit/themes": "^0.17.2",
     "@types/howler": "^2.2.7",
     "@vueform/multiselect": "^2.6.2",
-    "@vueuse/integrations": "^10.1.2",
     "@vueuse/motion": "^2.0.0",
     "howler": "^2.2.3",
     "libass-wasm": "^4.1.0",
-    "universal-cookie": "^4.0.4"
+    "nanoid": "^4.0.2"
   }
 }

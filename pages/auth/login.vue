@@ -1,29 +1,25 @@
 <script setup lang="ts">
-import { useUserStore } from '~/composables/UserStore'
+import { useAuthStore } from '~/composables/stores/AuthStore'
 
 definePageMeta({
   layout: 'none',
+  middleware: ['authorize'],
+  AuthMiddlewareOptions: {
+    GuestOnly: true,
+    AuthenticatedRedirectionUrl: '/',
+  },
 })
 
 const Router = useRouter()
-const UserStore = useUserStore()
-const { GoogleLogin, DiscordLogin, GetUser } = UserStore
+const Auth = useAuthStore()
 
 async function OnGoogleClicked() {
-  await GoogleLogin()
+  await Auth.GoogleLogin()
 }
 
 async function OnDiscordClicked() {
-  await DiscordLogin()
+  // await DiscordLogin()
 }
-
-watch(() => UserStore.Token, async (v) => {
-  if (v === undefined || v === null || v === '')
-    return
-
-  await GetUser()
-  await Router.push('/')
-})
 </script>
 
 <template>

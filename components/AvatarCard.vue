@@ -1,14 +1,14 @@
 <script setup lang="ts">
+import { useAuthStore } from '~/composables/stores/AuthStore'
+
 // HTML Refs
 const MenuRef = ref<HTMLElement | undefined>(undefined)
 
 // Stores
-const UserStore = useUserStore()
+const AuthStore = useAuthStore()
 
 // Variables
 const ShowMenu = ref(false)
-
-await UserStore.GetUser()
 
 /**
  * @description Click outside event handler
@@ -41,7 +41,7 @@ function OnClick() {
 
     <!-- Menu Panel -->
     <Transition>
-      <div v-if="ShowMenu" class="bg-secondary absolute top-12 z-1 w-64 select-none rounded-lg p-1 shadow-lg -right-2">
+      <div v-if="ShowMenu" class="absolute top-12 z-1 w-64 select-none rounded-lg bg-secondary p-1 shadow-lg -right-2">
         <div class="w-full flex flex-col items-center space-y-1">
           <NuxtLink to="/account" class="w-full">
             <div class="w-full inline-flex items-center rounded-md px-2 py-1 transition-all duration-200 hover:bg-black/20">
@@ -55,13 +55,13 @@ function OnClick() {
               <span class="ml-1">Settings</span>
             </div>
           </NuxtLink>
-          <NuxtLink v-if="UserStore.IsInRole('Admin')" to="/admin" class="w-full">
+          <NuxtLink v-if="AuthStore.IsInRole('Admin')" to="/admin" class="w-full">
             <div class="w-full inline-flex items-center rounded-md px-2 py-1 transition-all duration-200 hover:bg-black/20">
               <span class="i-fluent:important-12-filled" />
               <span class="ml-1">Administrator</span>
             </div>
           </NuxtLink>
-          <div class="w-full" @click="UserStore.LogOut()">
+          <div class="w-full" @click="AuthStore.Clear()">
             <div class="w-full inline-flex items-center rounded-md px-2 py-1 transition-all duration-200 hover:bg-black/20">
               <span class="i-fluent:arrow-exit-20-filled transform-rotate-180" />
               <span class="ml-1">Log out</span>

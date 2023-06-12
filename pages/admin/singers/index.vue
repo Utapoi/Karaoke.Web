@@ -1,32 +1,21 @@
 <script setup lang="ts">
-import type { Singer } from '~/api/models/Singer'
-import type { GetSingersResponse } from '~/api/responses/GetSingersResponse'
+import { SingersService } from '~/composables/services/SingersService'
+import type { Singer } from '~/core/models/Singer'
 
 definePageMeta({
   layout: 'admin',
+  middleware: ['authorize'],
+  AuthMiddlewareOptions: {
+    Role: 'Admin',
+  },
 })
 
-const HttpClient = useHttpClient()
+const _SingersService = SingersService()
 
 // Refs
 const Singers = ref<Singer[]>([])
 
-const response = await HttpClient.Get<GetSingersResponse>('/Singers?skip=0&take=15')
-
-// const { data: response } = await useAsyncData<GetSingersResponse>(() => $fetch(`${RuntimeConfig.public.API_URL}/Singers?skip=0&take=10`, {
-//   method: 'GET',
-//   headers: {
-//     'Authorization': `Bearer ${UserStore.Token}`,
-//     'Content-Type': 'application/json',
-//   },
-// }), {
-//   immediate: true,
-// })
-
-if (response === undefined || response == null)
-  Singers.value = []
-else
-  Singers.value = response?.items ?? []
+Singers.value = await _SingersService.GetSingers(0, 15)
 </script>
 
 <template>
@@ -58,7 +47,7 @@ else
     </div>
     <div class="w-full px-12 pt-4">
       <div class="relative overflow-x-auto shadow-md sm:rounded-xl">
-        <table class="w-full text-left text-sm text-gray-500 dark:text-gray-400">
+        <table class="w-full text-left text-sm text-gray-500 dark:text-gray-400" aria-describedby="Singers">
           <thead class="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-[#222] dark:text-gray-400">
             <tr>
               <th scope="col" class="px-6 py-3">
@@ -76,15 +65,15 @@ else
             </tr>
           </thead>
           <tbody v-if="Singers.length > 0">
-            <tr v-for="singer in Singers" :key="singer.id" class="bg-white transition-all duration-100 dark:bg-[#333] hover:bg-gray-50 dark:hover:bg-[#474747]">
+            <tr v-for="singer in Singers" :key="singer.Id" class="bg-white transition-all duration-100 dark:bg-[#333] hover:bg-gray-50 dark:hover:bg-[#474747]">
               <th scope="row" class="whitespace-nowrap px-6 py-4 font-medium text-gray-800 dark:text-white">
-                {{ singer.names[0].text }}
+                {{ singer.GetName('English') }}
               </th>
               <td class="px-6 py-4 text-gray-800 dark:text-white">
-                {{ singer.albums?.length ?? 0 }}
+                {{ singer.Albums?.length ?? 0 }}
               </td>
               <td class="px-6 py-4 text-gray-800 dark:text-white">
-                {{ singer.songs?.length ?? 0 }}
+                {{ singer.Songs?.length ?? 0 }}
               </td>
               <td class="px-6 py-4 text-right">
                 <a href="#" class="font-medium text-purple-400 hover:underline">Edit</a>

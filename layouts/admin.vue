@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import { useAuthStore } from '~/composables/stores/AuthStore'
+
 const Route = useRoute()
-const UserStore = useUserStore()
+const AuthStore = useAuthStore()
 </script>
 
 <template>
@@ -12,7 +14,7 @@ const UserStore = useUserStore()
         </h1>
         <span class="text-xs font-semibold text-gray-500">Admin</span>
       </div>
-      <div v-if="UserStore.IsConnected()">
+      <div v-if="AuthStore.IsConnected">
         <AvatarCard />
       </div>
       <div v-else class="flex items-center gap-2">

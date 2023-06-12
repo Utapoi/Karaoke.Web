@@ -1,6 +1,14 @@
 <script setup lang="ts">
 import Multiselect from '@vueform/multiselect'
-import type { Singer } from '~/api/models/Singer'
+import type { Singer } from '~/core/models/Singer'
+
+definePageMeta({
+  layout: 'admin',
+  middleware: ['authorize'],
+  AuthMiddlewareOptions: {
+    Role: 'Admin',
+  },
+})
 
 interface LocalizedString {
   text: string
@@ -16,11 +24,6 @@ interface TagOption {
   label: string
   value: string
 }
-
-definePageMeta({
-  layout: 'admin',
-  middleware: ['admin-only'],
-})
 
 const HttpClient = useHttpClient()
 
@@ -45,19 +48,15 @@ async function SearchSinger(query: string) {
     return []
 
   return response.map(singer => ({
-    label: `${singer.names[0].text} (${singer.names[1].text})`,
-    value: singer.id,
+    label: `${singer.Names[0].Text} (${singer.Names[1].Text})`,
+    value: singer.Id,
   }))
 }
 
 async function OnSubmit(content: any) {
-  console.log(content)
-
-  await HttpClient.Post<string>('/Songs', {
-    headers: {
-      Accept: '*/*',
-    },
-    body: {
+  await HttpClient.Post<string>('/Songs',
+    undefined,
+    {
       Titles: content.titles,
       Singers: Singers.value, // [string]
       Tags: Tags.value, // [string]
@@ -91,7 +90,7 @@ async function OnSubmit(content: any) {
         }
       }))).map((e: any) => e.value),
     },
-  })
+  )
 }
 </script>
 

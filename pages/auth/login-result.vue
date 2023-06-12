@@ -1,31 +1,34 @@
 <script setup lang="ts">
-import type { GetTokenResponse } from '~/composables/UserStore'
+import { useUsersService } from '~/composables/services/UsersService'
+import { useAuthStore } from '~/composables/stores/AuthStore'
 
 definePageMeta({
   layout: 'none',
-  middleware: ['anonymous-only'],
+  middleware: ['authorize'],
+  AuthMiddlewareOptions: {
+    GuestOnly: true,
+    AuthenticatedRedirectionUrl: '/',
+  },
 })
 
-const UserStore = useUserStore()
+const AuthStore = useAuthStore()
+const UsersService = useUsersService()
+const Router = useRouter()
 
-const IsLoading = ref<boolean>(true)
-const IsSuccess = ref<boolean>(false)
+const IsLoading = ref<boolean>(false)
+const IsSuccess = ref<boolean>(true)
 
 onMounted(async () => {
-  IsLoading.value = true
+  const u = await UsersService.GetCurrentUser()
 
-  const AuthToken = useCookie<GetTokenResponse | null>('AuthToken')
-
-  if (AuthToken.value === null || AuthToken.value?.token === null) {
+  if (u === undefined) {
     IsSuccess.value = false
-    IsLoading.value = false
-    return
+    await Router.push('/auth/login')
   }
-
-  IsSuccess.value = true
-  IsLoading.value = false
-  UserStore.OnLoginSuccess(AuthToken.value)
-  AuthToken.value = null
+  else {
+    AuthStore.OnLoginSuccess(u)
+    await Router.push('/')
+  }
 })
 </script>
 

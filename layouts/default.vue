@@ -1,6 +1,19 @@
 <script setup lang="ts">
+import { useUsersService } from '~/composables/services/UsersService'
+import { useAuthStore } from '~/composables/stores/AuthStore'
+
 const Route = useRoute()
-const UserStore = useUserStore()
+const AuthStore = useAuthStore()
+const UsersService = useUsersService()
+
+onMounted(async () => {
+  if (!AuthStore.IsConnected) {
+    const u = await UsersService.GetCurrentUser()
+
+    if (u !== undefined)
+      AuthStore.OnLoginSuccess(u)
+  }
+})
 </script>
 
 <template>
@@ -32,15 +45,9 @@ const UserStore = useUserStore()
               <span class="hidden xl:block">Artists</span>
             </div>
           </NuxtLink>
-          <!-- <div class="border border-gray-700 rounded-full">
-            <div class="w-80 inline-flex items-center justify-between gap-6 px-4 py-1.5 dark:text-gray-400">
-              <span>Search a song or artist...</span>
-              <span class="i-fluent:search-20-filled text-lg" />
-            </div>
-          </div> -->
         </div>
 
-        <div v-if="UserStore.IsConnected()">
+        <div v-if="AuthStore.IsConnected">
           <AvatarCard />
         </div>
         <div v-else class="flex items-center gap-2">

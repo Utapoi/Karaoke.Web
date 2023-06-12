@@ -1,7 +1,7 @@
 export interface User {
-  id: string
-  username: string
-  email: string
-  profilePictureUrl: string
-  roles: string[]
+  Id: string
+  Username: string
+  Email: string
+  ProfilePictureUrl: string
+  Roles: string[]
 }

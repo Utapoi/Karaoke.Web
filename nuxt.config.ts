@@ -73,6 +73,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
+      DOMAIN: process.env.DOMAIN ?? 'localhost',
       API_URL: 'https://localhost:7215', // 'http://localhost:5215',
     },
   },

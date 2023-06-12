@@ -1,13 +1,16 @@
 <script setup lang="ts">
+definePageMeta({
+  layout: 'admin',
+  middleware: ['authorize'],
+  AuthMiddlewareOptions: {
+    Role: 'Admin',
+  },
+})
+
 interface LocalizedString {
   text: string
   language: string
 }
-
-definePageMeta({
-  layout: 'admin',
-  middleware: ['admin-only'],
-})
 
 const HttpClient = useHttpClient()
 
@@ -26,11 +29,9 @@ const Nicknames = ref<LocalizedString[]>([
 ])
 
 async function OnSubmit(content: any) {
-  await HttpClient.Post<string>('/Singers', {
-    headers: {
-      Accept: '*/*',
-    },
-    body: {
+  await HttpClient.Post<string>('/Singers',
+    undefined,
+    {
       Names: content.names,
       Nicknames: content.nicknames,
       Birthday: content.birthday,
@@ -40,7 +41,7 @@ async function OnSubmit(content: any) {
         FileName: (content.images[0].file as File).name,
       },
     },
-  })
+  )
 }
 </script>
 

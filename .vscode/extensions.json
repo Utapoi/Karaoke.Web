@@ -5,6 +5,8 @@
     "antfu.goto-alias",
     "csstools.postcss",
     "dbaeumer.vscode-eslint",
-    "vue.volar"
+    "vue.volar",
+    "Catppuccin.catppuccin-vsc",
+    "Catppuccin.catppuccin-vsc-icons"
   ]
 }
