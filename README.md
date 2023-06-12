@@ -40,7 +40,7 @@ pnpm run dev
 
 ## License
 
-Distributed under the GNU GENERAL PUBLIC LICENSE v3. See `LICENCE` for more information.
+Distributed under the GNU GENERAL PUBLIC LICENSE v3. See `LICENSE` for more information.
 
 
 <!-- Variables -->
