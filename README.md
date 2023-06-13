@@ -1,8 +1,7 @@
 # Karaoke.Web
 Utapoi Karaoke Website
 
-## Built With
-<br>
+## 📦Built With
 
 Utapoi's karaoke website is built with the following frameworks and tools<br><br>
 
@@ -10,15 +9,15 @@ Utapoi's karaoke website is built with the following frameworks and tools<br><br
 [![Vue_JS][Vue_JS]][Vue_URL]
 [![Uno_CSS][Uno_CSS]][Uno_URL]
 
-<br><br>
+<br>
 
-## Getting Started
-
-We use pnpm for package management.
+## 🔧Getting Started
 
 <br>
 
 ### Prerequisites
+
+We use pnpm for package management.
 
 ```sh
 npm i pnpm@lastest -g
@@ -27,6 +26,9 @@ npm i pnpm@lastest -g
 <br>
 
 ### Installation
+
+Clone the repository and install the required packages.
+
 ```sh
 pnpm i
 ```
@@ -34,11 +36,16 @@ pnpm i
 <br>
 
 ### Usage
+
+To run the project in local, you just need to use the following command.
+
 ```sh
 pnpm run dev
 ```
 
-## License
+<br>
+
+## 📄License
 
 Distributed under the GNU GENERAL PUBLIC LICENSE v3. See `LICENSE` for more information.
 
@@ -48,5 +55,5 @@ Distributed under the GNU GENERAL PUBLIC LICENSE v3. See `LICENSE` for more info
 [Nuxt_URL]: https://nuxt.com/
 [Vue_JS]: https://img.shields.io/badge/Vue-3-000000?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D
 [Vue_URL]: https://vuejs.org/
-[Uno_CSS]: https://img.shields.io/badge/unocss-000000?style=for-the-badge&logo=unocss&logoColor=white
+[Uno_CSS]: https://img.shields.io/badge/uno-css-000000?style=for-the-badge&logo=unocss&logoColor=white
 [Uno_URL]: https://unocss.dev/
