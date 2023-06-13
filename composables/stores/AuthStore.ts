@@ -22,10 +22,14 @@ export const useAuthStore = defineStore('auth-store', () => {
   // Computed
   const IsProduction = computed(() => process.env.NODE_ENV === 'production')
 
-  // State
-  // This is only used during local development.
-  // We cannot send http-only cookies on localhost.
-  const State = useCookie<AuthState | null>('AuthToken', {
+  // Cookies
+  const Token = useCookie<string | null>('Karaoke-Token', {
+    httpOnly: IsProduction.value,
+    sameSite: IsProduction.value ? 'strict' : 'lax',
+    secure: IsProduction.value,
+  })
+
+  const RefreshToken = useCookie<string | null>('Karaoke-RefreshToken', {
     httpOnly: IsProduction.value,
     sameSite: IsProduction.value ? 'strict' : 'lax',
     secure: IsProduction.value,
@@ -41,10 +45,15 @@ export const useAuthStore = defineStore('auth-store', () => {
   /**
    * Starts the Google OAuth2 login process.
    */
-  function GoogleLogin() {
+  function GoogleLogin(): void {
     window.open(`${RuntimeConfig.public.API_URL}/Auth/Google/Authorize`, '_self')
   }
 
+  /**
+   * Checks if the current user is in the specified role.
+   * @param role The role to check.
+   * @returns True if the user is in the specified role, false otherwise.
+   */
   function IsInRole(role: string): boolean {
     if (CurrentUser.value === null)
       return false
@@ -53,28 +62,39 @@ export const useAuthStore = defineStore('auth-store', () => {
   }
 
   /**
-   * Called when the user has successfully logged in.
+   * Sets the current user.
    * @param user The user that has logged in.
    */
-  function OnLoginSuccess(user: User) {
+  function SetCurrentUser(user: User): void {
     CurrentUser.value = user
+  }
+
+  /**
+   * Gets the current user.
+   * @returns The current user.
+   */
+  function GetCurrentUser(): User | null {
+    return CurrentUser.value
   }
 
   /**
    * Clears the cookies.
    */
-  function Clear() {
-    State.value = null // Should do nothing in prod.
+  function Clear(): void {
+    Token.value = null
+    RefreshToken.value = null
     CurrentUser.value = null
   }
 
   return {
-    State,
+    Token,
+    RefreshToken,
     CurrentUser,
     IsConnected,
     GoogleLogin,
     IsInRole,
-    OnLoginSuccess,
+    SetCurrentUser,
+    GetCurrentUser,
     Clear,
   }
 })

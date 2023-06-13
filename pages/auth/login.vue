@@ -10,11 +10,10 @@ definePageMeta({
   },
 })
 
-const Router = useRouter()
 const Auth = useAuthStore()
 
-async function OnGoogleClicked() {
-  await Auth.GoogleLogin()
+function OnGoogleClicked() {
+  Auth.GoogleLogin()
 }
 
 async function OnDiscordClicked() {
@@ -29,7 +28,7 @@ async function OnDiscordClicked() {
         <div class="h-full w-full flex flex-col items-center justify-start pt-24">
           <div class="mb-6 flex items-center gap-2 text-2xl font-semibold text-gray-900 dark:text-white">
             <div class="i-game-icons:microphone text-3xl text-[#f90b31]" />
-            <!-- <img class="mr-2 h-12 w-12" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg" alt="logo"> -->
+            <!-- <img class="mr-2 h-12 w-12" src="UTAPOI_IMAGE_URL" alt="logo"> -->
             <h1 class="inline-flex items-start gap-2 text-3xl">
               Utapoi <span class="text-xs text-gray-400">Karaoke</span>
             </h1>

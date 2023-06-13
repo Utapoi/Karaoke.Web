@@ -39,7 +39,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
     const { error } = await useFetch(`${RuntimeConfig.public.API_URL}/Auth/Verify/${info.Role}`, {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${Auth.State!.Token}`,
+        Authorization: `Bearer ${Auth.Token}`,
       },
       key: nanoid(), // No cache for this request.
     })

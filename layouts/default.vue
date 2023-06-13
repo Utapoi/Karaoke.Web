@@ -11,7 +11,7 @@ onMounted(async () => {
     const u = await UsersService.GetCurrentUser()
 
     if (u !== undefined)
-      AuthStore.OnLoginSuccess(u)
+      AuthStore.SetCurrentUser(u)
   }
 })
 </script>

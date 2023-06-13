@@ -15,18 +15,25 @@ const AuthStore = useAuthStore()
 const UsersService = useUsersService()
 const Router = useRouter()
 
-const IsLoading = ref<boolean>(false)
-const IsSuccess = ref<boolean>(true)
+const IsLoading = ref<boolean>(true)
+const IsSuccess = ref<boolean>(false)
 
 onMounted(async () => {
+  IsLoading.value = true
+
   const u = await UsersService.GetCurrentUser()
 
   if (u === undefined) {
     IsSuccess.value = false
+    IsLoading.value = false
+
     await Router.push('/auth/login')
   }
   else {
-    AuthStore.OnLoginSuccess(u)
+    IsSuccess.value = true
+    IsLoading.value = false
+    AuthStore.SetCurrentUser(u)
+
     await Router.push('/')
   }
 })
