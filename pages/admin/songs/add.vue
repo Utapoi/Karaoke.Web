@@ -40,8 +40,9 @@ const KaraokeFiles = ref<LocalizedFile[]>([{
 const Tags = ref<[]>([])
 const TagsOptions = ref<TagOption[]>([])
 const Singers = ref<[]>([])
+const Albums = ref<[]>([])
 
-async function SearchSinger(query: string) {
+async function SearchSingers(query: string) {
   const response = await HttpClient.Post<Singer[]>(`/Singers/Search?input=${query}`)
 
   if (response === undefined)
@@ -51,6 +52,10 @@ async function SearchSinger(query: string) {
     label: `${singer.Names[0].Text} (${singer.Names[1].Text})`,
     value: singer.Id,
   }))
+}
+
+async function SearchAlbums(query: string) {
+  // TODO: AlbumsService.Search
 }
 
 async function OnSubmit(content: any) {
@@ -95,13 +100,13 @@ async function OnSubmit(content: any) {
 </script>
 
 <template>
-  <div class="mx-auto h-full max-w-7xl w-full px-12 py-8 container">
+  <div class="mx-auto h-full max-w-6xl px-12 py-8 container">
     <div class="mb-8">
       <div class="inline-flex items-center gap-4">
         <div class="h-0.75 w-14 rounded-full dark:bg-white" />
 
         <h2 class="text-2xl font-semibold">
-          Create · Song
+          Create Song
         </h2>
       </div>
       <div class="mb-4 mt-2 text-sm text-gray-400">
@@ -110,262 +115,417 @@ async function OnSubmit(content: any) {
       </div>
     </div>
     <div>
-      <div class="w-full rounded-xl bg-[#222] p-5 shadow">
+      <div>
         <FormKit
+          v-slot="{ state: { valid } }"
           type="form"
+          :actions="false"
           @submit="OnSubmit"
         >
-          <!-- Titles -->
-          <FormKit v-slot="{ items, node, value }" :value="Titles" type="list" dynamic name="titles">
-            <div v-for="(item, index) in items" :key="item" class="double w-full flex gap-4">
-              <FormKit
-                type="group"
-                :index="index"
-              >
-                <FormKit
-                  :classes="{
-                    input: 'text-white',
-                  }"
-                  type="text"
-                  label="Title"
-                  name="text"
-                  placeholder="Song title"
-                  validation="required"
-                  :validation-messages="{
-                    required: 'This field is required.',
-                  }"
-                />
-                <FormKit
-                  :classes="{
-                    input: 'text-white',
-                  }"
-                  type="select"
-                  label="Language"
-                  name="language"
-                  placeholder="Select language"
-                  :options="['English', 'French', 'Japanese', 'Chinese']"
-                  validation="required"
-                  :validation-messages="{
-                    required: 'This field is required.',
-                  }"
-                />
+          <div class="flex items-start justify-end gap-6 rounded-xl bg-secondary p-5">
+            <!-- Titles -->
+            <div w-full>
+              <FormKit v-slot="{ items, node, value }" :value="Titles" type="list" dynamic name="titles">
+                <div v-for="(item, index) in items" :key="item as any" class="flex gap-4">
+                  <FormKit
+                    :index="index"
+                    type="group"
+                  >
+                    <FormKit
+                      v-motion-pop
+                      :classes="{
+                        input: 'text-white',
+                        inner: 'rounded-full px-2 bg-tertiary',
+                        label: 'mb-1',
+                        wrapper: 'w-xs',
+                      }"
+                      :label="index === 0 ? 'Title' : ''"
+                      :validation-messages="{
+                        required: 'This field is required.',
+                      }"
+                      name="text"
+                      placeholder="Song title"
+                      type="text"
+                      validation="required"
+                    />
+                    <FormKit
+                      v-motion-pop
+                      :classes="{
+                        input: 'text-white',
+                        inner: 'rounded-full bg-tertiary',
+                        label: 'mb-1',
+                        option: 'bg-tertiary text-white',
+                      }"
+                      :label="index === 0 ? 'Language' : ''"
+                      :options="['English', 'French', 'Japanese', 'Chinese']"
+                      :validation-messages="{
+                        required: 'This field is required.',
+                      }"
+                      name="language"
+                      placeholder="Select language"
+                      type="select"
+                      validation="required"
+                    />
 
-                <FormKit
-                  v-if="index > 0"
-                  :classes="{
-                    outer: 'pt-7.5',
-                    input: 'text-white !text-sm !p-0.5 !bg-transparent',
-                  }"
-                  type="button"
-                  @click="() => node.input(value.filter((_: any, i: number) => i !== index))"
-                >
-                  <span class="i-fluent:delete-16-filled" />
-                </FormKit>
+                    <div class="h-full w-16 flex items-center justify-start" :class="{ 'pt-8.5': index === 0, 'pt-2.25': index !== 0 }">
+                      <FormKit
+                        v-if="index > 0"
+                        v-motion-pop
+                        :classes="{
+                          input: '!text-red-400 !text-lg !p-0.5 !bg-transparent',
+                        }"
+                        type="button"
+                        @click="() => node.input(value.filter((_: any, i: number) => i !== index))"
+                      >
+                        <span class="i-fluent:delete-16-filled" />
+                      </FormKit>
+                      <FormKit
+                        v-motion-pop
+                        :classes="{
+                          input: '!text-green-400 !text-lg !p-0.5 !bg-transparent',
+                        }"
+                        type="button"
+                        @click="() => node.input(value.concat({ text: '', language: 'Japanese' }))"
+                      >
+                        <span class="i-fluent:add-16-filled" />
+                      </FormKit>
+                    </div>
+                  </FormKit>
+                </div>
               </FormKit>
             </div>
 
-            <FormKit
-              :classes="{
-                input: 'text-white uppercase !text-xs !px-2 !py-1 !bg-red-500',
-              }"
-              type="button"
-              @click="() => node.input(value.concat({ text: '', language: 'Japanese' }))"
-            >
-              Add Title
-            </FormKit>
-            <pre wrap>{{ value }}</pre>
-          </FormKit>
-
-          <div class="my-5 h-0.5 w-full rounded-full px-8 dark:bg-gray-500" />
-
-          <!-- Singers -->
-          <div
-            class="mb-1 mt-6 text-sm font-semibold text-white"
-          >
-            Singers
+            <!-- Release Date -->
+            <div>
+              <FormKit type="group" name="releaseDate">
+                <div class="w-full flex items-start justify-end gap-4">
+                  <FormKit
+                    :classes="{
+                      inner: 'rounded-full px-2 bg-tertiary',
+                      input: 'text-white',
+                      label: 'mb-1',
+                      wrapper: 'max-w-36',
+                    }"
+                    :validation-messages="{
+                      between: '1900~2050 only.',
+                      required: 'Required.',
+                    }"
+                    name="year"
+                    label="Year"
+                    placeholder="2000"
+                    type="text"
+                    validation="between:1900,2050|required"
+                  />
+                  <FormKit
+                    :classes="{
+                      inner: 'rounded-full px-2 bg-tertiary',
+                      input: 'text-white',
+                      label: 'mb-1',
+                      wrapper: 'max-w-36',
+                    }"
+                    :validation-messages="{
+                      between: '1~12 only.',
+                      required: 'Required.',
+                    }"
+                    name="month"
+                    label="Month"
+                    placeholder="06"
+                    type="text"
+                    validation="between:1,12|required"
+                  />
+                  <FormKit
+                    :classes="{
+                      inner: 'rounded-full px-2 bg-tertiary',
+                      input: 'text-white',
+                      label: 'mb-1',
+                      wrapper: 'max-w-36',
+                    }"
+                    :validation-messages="{
+                      between: '1~31 only.',
+                      required: 'Required.',
+                    }"
+                    name="day"
+                    label="Day"
+                    placeholder="14"
+                    type="text"
+                    validation="between:1,31|required"
+                  />
+                </div>
+                <div class="text-sm text-gray-400 -mt-3">
+                  The release date of the song.
+                </div>
+                <!-- <FormKit
+                  :classes="{
+                    inner: 'rounded-full px-2 bg-tertiary',
+                    input: 'text-white',
+                    label: 'mb-1',
+                    suffixIcon: 'text-white',
+                  }"
+                  type="date"
+                  name="releaseDate"
+                  label="Release date"
+                /> -->
+              </FormKit>
+            </div>
           </div>
-          <div class="mb-4 max-w-md">
-            <Multiselect
-              v-model="Singers"
-              class="multiselect-dark"
-              mode="multiple"
-              :close-on-select="false"
-              :filter-results="false"
-              :min-chars="3"
-              :resolve-on-load="false"
-              :delay="0"
-              :searchable="true"
-              :options="async (query: string) => {
-                return await SearchSinger(query)
-              }"
-            />
-            <pre wrap>{{ Singers }}</pre>
+
+          <div class="mt-2 flex items-center justify-between gap-4 rounded-xl bg-secondary p-5">
+            <!-- Singers -->
+            <div w-full>
+              <div
+                class="mb-2 text-sm font-semibold text-white"
+              >
+                Singers
+              </div>
+              <Multiselect
+                v-model="Singers"
+                :close-on-select="false"
+                :delay="150"
+                :filter-results="false"
+                :min-chars="3"
+                :options="async (query: string) => {
+                  return await SearchSingers(query)
+                }"
+                :resolve-on-load="false"
+                :searchable="true"
+                class="multiselect-dark !border-gray-400 !rounded-full"
+                mode="tags"
+                placeholder="Select singers"
+              />
+            </div>
+
+            <!-- Albums -->
+            <div w-full>
+              <div
+                class="mb-2 text-sm font-semibold text-white"
+              >
+                Albums
+              </div>
+              <Multiselect
+                v-model="Albums"
+                :close-on-select="false"
+                :delay="150"
+                :filter-results="false"
+                :min-chars="3"
+                :options="async (query: string) => {
+                  return await SearchAlbums(query)
+                }"
+                :resolve-on-load="false"
+                :searchable="true"
+                class="multiselect-dark !border-gray-400 !rounded-full"
+                mode="tags"
+                placeholder="Select albums"
+              />
+            </div>
           </div>
 
           <!-- Tags -->
-          <div
-            class="mb-1 mt-6 text-sm font-semibold text-white"
-          >
-            Tags
-          </div>
-          <div class="mb-4 max-w-md">
+          <div class="mt-2 rounded-xl bg-secondary p-5">
+            <div
+              class="mb-2 text-sm font-semibold text-white"
+            >
+              Tags
+            </div>
             <Multiselect
               v-model="Tags"
-              :options="TagsOptions"
-              mode="tags"
               :close-on-select="false"
-              :searchable="true"
               :create-option="true"
-              class="multiselect-dark"
+              :options="TagsOptions"
+              :searchable="true"
+              class="multiselect-dark !border-gray-400 !rounded-full"
+              mode="tags"
+              placeholder="Select tags"
             />
-            <pre wrap>{{ Tags }}</pre>
           </div>
 
-          <!-- Release Date -->
-          <FormKit
-            :classes="{
-              input: 'text-white',
-            }"
-            type="date"
-            name="releaseDate"
-            label="Release date"
-          />
-
-          <!-- Thumbnail -->
-          <FormKit
-            :classes="{
-              input: 'text-white',
-              fileItem: 'text-white',
-            }"
-            type="file"
-            label="Thumbnail"
-            name="thumbnails"
-            accept=".jpg,.jpeg,.png,.webp"
-            validation="required"
-            :validation-messages="{
-              required: 'This field is required.',
-            }"
-            multiple="false"
-          />
-
-          <!-- Voice File -->
-          <FormKit
-            :classes="{
-              input: 'text-white',
-              fileItem: 'text-white',
-            }"
-            type="file"
-            label="Voice file"
-            name="voiceFiles"
-            accept=".opus,.ogg"
-            validation="required"
-            :validation-messages="{
-              required: 'This field is required.',
-            }"
-            multiple="false"
-          />
-
-          <!-- Instrumental File -->
-          <FormKit
-            :classes="{
-              input: 'text-white',
-              fileItem: 'text-white',
-            }"
-            type="file"
-            label="Instrumental file"
-            name="intrumentalFiles"
-            accept=".opus,.ogg"
-            validation="required"
-            :validation-messages="{
-              required: 'This field is required.',
-            }"
-            multiple="false"
-          />
-
-          <!-- Preview File -->
-          <FormKit
-            :classes="{
-              input: 'text-white',
-              fileItem: 'text-white',
-              help: 'text-gray-400 font-semibold italic',
-            }"
-            type="file"
-            label="Preview file"
-            name="intrumentalFiles"
-            accept=".opus,.ogg"
-            validation="required"
-            :validation-messages="{
-              required: 'This field is required.',
-            }"
-            help="The duration must be 15 seconds."
-            multiple="false"
-          />
-
-          <!-- Karaoke Files -->
-          <FormKit v-slot="{ items, node, value }" :value="KaraokeFiles" type="list" dynamic name="karaokeFiles">
-            <div v-for="(item, index) in items" :key="item" class="double w-full flex gap-4 pt-6">
+          <div class="mt-2 flex items-start justify-between gap-4 rounded-xl bg-secondary p-5">
+            <!-- Thumbnail -->
+            <div w-full>
               <FormKit
-                type="group"
-                :index="index"
-              >
-                <FormKit
-                  :classes="{
-                    input: 'text-white',
-                    fileItem: 'text-white',
-                  }"
-                  type="file"
-                  :index="index"
-                  label="Karaoke file"
-                  name="files"
-                  accept=".ass"
-                  validation="required"
-                  :validation-messages="{
-                    required: 'This field is required.',
-                  }"
-                  multiple="false"
-                />
-                <FormKit
-                  :classes="{
-                    input: 'text-white',
-                  }"
-                  type="select"
-                  label="Language"
-                  name="language"
-                  placeholder="Select language"
-                  :options="['English', 'French', 'Japanese', 'Chinese']"
-                  validation="required"
-                  :validation-messages="{
-                    required: 'This field is required.',
-                  }"
-                />
+                :classes="{
+                  fileItem: 'text-white',
+                  fileRemoveIcon: 'text-white',
+                  help: 'text-gray-400 pt-1',
+                  inner: 'rounded-full px-2 bg-tertiary',
+                  input: 'text-white',
+                  label: 'mb-1',
+                  wrapper: '!max-w-full',
+                }"
+                :validation-messages="{
+                  required: 'This field is required.',
+                }"
+                accept=".jpg,.jpeg,.png,.webp"
+                name="thumbnails"
+                help="Accepted formats: jpg, jpeg, png, webp. Max size: 100 KB."
+                label="Thumbnail File"
+                multiple="false"
+                type="file"
+                validation="required"
+              />
+            </div>
+            <div w-full>
+              <!-- Preview File -->
+              <FormKit
+                :classes="{
+                  fileItem: 'text-white',
+                  fileRemoveIcon: 'text-white',
+                  help: 'text-gray-400 pt-1',
+                  inner: 'rounded-full px-2 bg-tertiary',
+                  input: 'text-white',
+                  label: 'mb-1',
+                  wrapper: '!max-w-full',
+                }"
+                :validation-messages="{
+                  required: 'This field is required.',
+                }"
+                accept=".opus,.ogg"
+                name="intrumentalFiles"
+                multiple="false"
+                help="The duration must be 15 seconds."
+                label="Preview File"
+                type="file"
+                validation="required"
+              />
+            </div>
+          </div>
 
-                <FormKit
-                  v-if="index > 0"
-                  :classes="{
-                    outer: 'pt-7.5',
-                    input: 'text-white !text-sm !p-0.5 !bg-transparent',
-                  }"
-                  type="button"
-                  @click="() => node.input(value.filter((_: any, i: number) => i !== index))"
-                >
-                  <span class="i-fluent:delete-16-filled" />
-                </FormKit>
-              </FormKit>
+          <div class="mt-2 flex items-start justify-between gap-4 rounded-xl bg-secondary p-5">
+            <!-- Voice File -->
+            <div w-full>
+              <FormKit
+                :classes="{
+                  fileItem: 'text-white',
+                  fileRemoveIcon: 'text-white',
+                  help: 'text-gray-400 pt-1',
+                  inner: 'rounded-full px-2 bg-tertiary',
+                  input: 'text-white',
+                  label: 'mb-1',
+                  wrapper: '!max-w-full',
+                }"
+                :validation-messages="{
+                  required: 'This field is required.',
+                }"
+                accept=".opus,.ogg"
+                name="voiceFiles"
+                help="Accepted formats: opus, ogg. Max size: 1 MB."
+                label="Voice File"
+                multiple="false"
+                type="file"
+                validation="required"
+              />
             </div>
 
-            <FormKit
-              :classes="{
-                input: 'text-white uppercase !text-xs !px-2 !py-1 !bg-red-500',
-              }"
-              type="button"
-              @click="() => node.input(value.concat({ files: [], language: 'Japanese' }))"
-            >
-              Add Karaoke
-            </FormKit>
-            <pre wrap>{{ value }}</pre>
-          </FormKit>
+            <!-- Instrumental File -->
+            <div w-full>
+              <FormKit
+                :classes="{
+                  fileItem: 'text-white',
+                  fileRemoveIcon: 'text-white',
+                  help: 'text-gray-400 pt-1',
+                  inner: 'rounded-full px-2 bg-tertiary',
+                  input: 'text-white',
+                  label: 'mb-1',
+                  wrapper: '!max-w-full',
+                }"
+                :validation-messages="{
+                  required: 'This field is required.',
+                }"
+                accept=".opus,.ogg"
+                name="intrumentalFiles"
+                help="Accepted formats: opus, ogg. Max size: 1 MB."
+                label="Instrumental File"
+                multiple="false"
+                type="file"
+                validation="required"
+              />
+            </div>
+          </div>
 
-          <div class="my-5 h-0.5 w-full rounded-full px-8 dark:bg-gray-500" />
+          <!-- Karaoke Files -->
+          <div class="mt-2 rounded-xl bg-secondary p-5">
+            <FormKit v-slot="{ items, node, value }" :value="KaraokeFiles" type="list" dynamic name="karaokeFiles">
+              <div v-for="(item, index) in items" :key="item as any" class="flex gap-4">
+                <FormKit
+                  type="group"
+                  :index="index"
+                >
+                  <FormKit
+                    v-motion-pop
+                    :classes="{
+                      fileItem: 'text-white',
+                      fileRemoveIcon: 'text-white',
+                      help: 'text-gray-400 pt-1',
+                      input: 'text-white',
+                      inner: 'rounded-full px-2 bg-tertiary',
+                      label: 'mb-1',
+                      wrapper: 'w-sm',
+                    }"
+                    :index="index"
+                    type="file"
+                    :label="index === 0 ? 'Karaoke File' : ''"
+                    name="files"
+                    accept=".ass"
+                    validation="required"
+                    :validation-messages="{
+                      required: 'This field is required.',
+                    }"
+                    multiple="false"
+                  />
+                  <FormKit
+                    v-motion-pop
+                    :classes="{
+                      input: 'text-white',
+                      inner: 'rounded-full px-2 bg-tertiary',
+                      label: 'mb-1',
+                    }"
+                    type="select"
+                    :label="index === 0 ? 'Language' : ''"
+                    name="language"
+                    placeholder="Select language"
+                    :options="['English', 'French', 'Japanese', 'Chinese']"
+                    validation="required"
+                    :validation-messages="{
+                      required: 'This field is required.',
+                    }"
+                  />
+
+                  <div class="h-full w-16 flex items-center justify-start" :class="{ 'pt-8.5': index === 0, 'pt-2.25': index !== 0 }">
+                    <FormKit
+                      v-if="index > 0"
+                      v-motion-pop
+                      :classes="{
+                        input: '!text-red-400 !text-lg !p-0.5 !bg-transparent',
+                      }"
+                      type="button"
+                      @click="() => node.input(value.filter((_: any, i: number) => i !== index))"
+                    >
+                      <span class="i-fluent:delete-16-filled" />
+                    </FormKit>
+                    <FormKit
+                      v-motion-pop
+                      :classes="{
+                        input: '!text-green-400 !text-lg !p-0.5 !bg-transparent',
+                      }"
+                      type="button"
+                      @click="() => node.input(value.concat({ files: [], language: 'Japanese' }))"
+                    >
+                      <span class="i-fluent:add-16-filled" />
+                    </FormKit>
+                  </div>
+                </FormKit>
+              </div>
+            </FormKit>
+          </div>
+
+          <div class="mt-4 w-full inline-flex justify-end">
+            <FormKit
+              type="submit"
+              :disabled="!valid"
+              :classes="{
+                input: '!rounded-full px-2 !bg-green-700 uppercase font-semibold',
+              }"
+            />
+          </div>
         </FormKit>
       </div>
     </div>
@@ -377,8 +537,8 @@ async function OnSubmit(content: any) {
 
 <style>
 .multiselect-dark {
-  --ms-bg: #222;
-  --ms-dropdown-bg: #222;
+  --ms-bg: #2b2b2b;
+  --ms-dropdown-bg: #2b2b2b;
   --ms-border-color: #444;
   --ms-tag-bg: #555;
   --ms-tag-color: #fff;
@@ -388,7 +548,15 @@ async function OnSubmit(content: any) {
   --ms-option-bg-selected-pointed: #555;
 }
 
+.multiselect-search {
+  border-radius: 9999px;
+}
+
 .multiselect-tags-search {
-  background-color: #222!important;
+  background-color: #2b2b2b!important;
+}
+
+.multiselect-tag  {
+  border-radius: 9999px;
 }
 </style>

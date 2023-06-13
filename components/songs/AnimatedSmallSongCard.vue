@@ -29,7 +29,3 @@ const BackgroundImage = computed(() => {
     </div>
   </div>
 </template>
-
-<style scoped>
-
-</style>

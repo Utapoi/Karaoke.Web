@@ -15,7 +15,7 @@ definePageMeta({
             <div class="w-full flex justify-between gap-4">
               <div class="flex gap-4">
                 <div v-motion-slide-left class="aspect-ratio-1 h-62 w-62">
-                  <img src="https://static.wikia.nocookie.net/senkizesshousymphogear/images/a/a5/Symphogear_G_Character_Song_2.jpg" class="h-full w-full rounded-lg object-cover shadow-lg">
+                  <img src="https://static.wikia.nocookie.net/senkizesshousymphogear/images/a/a5/Symphogear_G_Character_Song_2.jpg" class="h-full w-full rounded-lg object-cover shadow-lg" alt="tmp">
                 </div>
                 <div class="flex flex-col gap-3">
                   <div v-motion-slide-top class="text-3xl font-semibold">
@@ -50,7 +50,7 @@ definePageMeta({
                 <div class="w-30 inline-flex items-center justify-center border border-gray-600 rounded-full px-2 py-2 hover:text-main text-secondary transition-all duration-125 hover:cursor-pointer hover:bg-gray-600 hover:bg-opacity-15">
                   <span class="text-xl">Back</span>
                 </div>
-                <div class="border-accent w-30 inline-flex items-center justify-center border rounded-full hover:bg-accent px-2 py-2 hover:text-main text-accent transition-all duration-125 hover:cursor-pointer hover:bg-opacity-15">
+                <div class="w-30 inline-flex items-center justify-center border border-accent rounded-full hover:bg-accent px-2 py-2 hover:text-main text-accent transition-all duration-125 hover:cursor-pointer hover:bg-opacity-15">
                   <span class="text-xl">Sing</span>
                 </div>
               </div>
