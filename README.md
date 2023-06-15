@@ -20,18 +20,25 @@ Utapoi's Karaoke brings the excitement of Japanese music karaoke straight to you
 
 <br><br>
 
-## Features
+🎵 Explore a vast collection of Japanese songs for karaoke.
 
-- 🎵 Explore a vast collection of Japanese songs for karaoke.
-- 🔍 Search for songs by title, artist, or anime.
-- 📜 View song lyrics synchronized with the music playback.
-- 🎤 Sing along with on-screen highlighting of lyrics.
-- ⚙️ Customize the karaoke experience with adjustable settings for music, vocals, and effects.
-- 🎶 Create and save personalized karaoke playlists.
-- 🌐 Multiplayer mode for singing and competing with others.
-- 🎁 Unlock special rewards and bonuses by achieving high scores.
-- 📊 Track your singing progress and performance statistics.
-- 🔥 Discover trending songs and popular playlists.
+🔍 Search for songs by title, artist, or anime.
+
+📜 View song lyrics synchronized with the music playback.
+
+🎤 Sing along with on-screen highlighting of lyrics.
+
+⚙️ Customize the karaoke experience with adjustable settings for music, vocals, and effects.
+
+🎶 Create and save personalized karaoke playlists.
+
+🌐 Multiplayer mode for singing and competing with others.
+
+🎁 Unlock special rewards and bonuses by achieving high scores.
+
+📊 Track your singing progress and performance statistics.
+
+🔥 Discover trending songs and popular playlists.
 
 
 <br><br>
