@@ -120,9 +120,3 @@ When contributing code, please ensure that your changes align with the project's
 ## License
 
 This project is licensed under the GNU General Public License v3.0 (GPL-3.0). For more information, please refer to the [LICENSE](LICENSE) file.
-
-<br>
-
-## Contact
-
-For any inquiries or support, please open a new issue.
