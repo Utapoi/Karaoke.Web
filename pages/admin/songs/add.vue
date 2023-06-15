@@ -60,12 +60,12 @@ async function SearchAlbums(query: string) {
 
 async function OnSubmit(content: any) {
   await HttpClient.Post<string>('/Songs',
-    undefined,
+    {},
     {
       Titles: content.titles,
       Singers: Singers.value, // [string]
       Tags: Tags.value, // [string]
-      Birthday: content.birthday,
+      ReleaseDate: new Date(content.releaseDate.year, content.releaseDate.month, content.releaseDate.day),
       Thumbnail: {
         File: await ToBase64(content.thumbnails[0].file as File),
         FileType: (content.thumbnails[0].file as File).type,

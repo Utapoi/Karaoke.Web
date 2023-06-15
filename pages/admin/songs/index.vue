@@ -37,7 +37,7 @@ definePageMeta({
     </div>
     <div class="w-full px-12 pt-4">
       <div class="relative overflow-x-auto shadow-md sm:rounded-xl">
-        <table class="w-full text-left text-sm text-gray-500 dark:text-gray-400">
+        <table class="w-full text-left text-sm text-gray-500 dark:text-gray-400" aria-describedby="Songs">
           <thead class="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-[#222] dark:text-gray-400">
             <tr>
               <th scope="col" class="px-6 py-3">

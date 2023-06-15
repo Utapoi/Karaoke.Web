@@ -13,6 +13,7 @@ export interface SongInterface {
   Singers: SingerInterface[]
   Albums: AlbumInterface[]
   Duration: string
+  ReleaseDate: Date
   Tags: TagInterface[]
   PreviewUrl: string
 }
@@ -23,6 +24,7 @@ export class Song {
   Singers: Singer[]
   Albums: Album[]
   Duration: string
+  ReleaseDate: Date
   Tags: Tag[]
   PreviewUrl: string
 
@@ -32,6 +34,7 @@ export class Song {
     this.Singers = song.Singers.map((singer: SingerInterface) => Singer.FromResponse(singer))
     this.Albums = song.Albums.map((album: AlbumInterface) => Album.FromResponse(album))
     this.Duration = song.Duration
+    this.ReleaseDate = song.ReleaseDate
     this.Tags = song.Tags.map((tag: TagInterface) => Tag.FromResponse(tag))
     this.PreviewUrl = song.PreviewUrl
   }

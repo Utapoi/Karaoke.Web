@@ -13,7 +13,7 @@ export function useHttpClient() {
     },
     options: {
       async onFetchError(ctx) {
-        if (ctx.response?.headers.get('Token-Expired') === 'true') {
+        if (ctx.response?.status === 401) {
           await Auth.TryRefreshToken()
           ctx.data = null
         }
