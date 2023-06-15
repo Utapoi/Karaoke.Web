@@ -1,3 +1,5 @@
+import fs from 'node:fs'
+import path from 'node:path'
 import { pwa } from './config/pwa'
 
 export default defineNuxtConfig({
@@ -68,12 +70,19 @@ export default defineNuxtConfig({
 
   pwa,
 
+  devServer: {
+    https: {
+      key: fs.readFileSync(path.resolve(__dirname, 'dev-certs', 'utapoi.com+4-key.pem'), { encoding: 'utf-8' }),
+      cert: fs.readFileSync(path.resolve(__dirname, 'dev-certs', 'utapoi.com+4.pem'), { encoding: 'utf-8' }),
+    },
+    url: 'https://localhost:3000',
+  },
   devtools: {
     enabled: true,
   },
   runtimeConfig: {
     public: {
-      DOMAIN: process.env.DOMAIN ?? 'localhost',
+      DOMAIN: 'localhost',
       API_URL: 'https://localhost:7215', // 'http://localhost:5215',
     },
   },

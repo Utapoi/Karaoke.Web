@@ -1,42 +1,15 @@
 import { defineStore } from 'pinia'
 import type { User } from '~/core/models/User'
 
-export enum TokenSource {
-  None = 0,
-  Google = 1,
-  Discord = 2,
-}
-
-export interface AuthState {
-  Token: string | null
-  RefreshToken: string | null
-  TokenExpiryTime: Date | null
-  RefreshTokenExpiryTime: Date | null
-  TokenSource: TokenSource
-}
-
 export const useAuthStore = defineStore('auth-store', () => {
   // Utils
   const RuntimeConfig = useRuntimeConfig()
-
-  // Computed
-  const IsProduction = computed(() => process.env.NODE_ENV === 'production')
+  const HttpClient = useHttpClient()
 
   // Cookies
-  const Token = useCookie<string | null>('Karaoke-Token', {
-    httpOnly: IsProduction.value,
-    sameSite: IsProduction.value ? 'strict' : 'lax',
-    secure: IsProduction.value,
-  })
-
-  const RefreshToken = useCookie<string | null>('Karaoke-RefreshToken', {
-    httpOnly: IsProduction.value,
-    sameSite: IsProduction.value ? 'strict' : 'lax',
-    secure: IsProduction.value,
-  })
-
+  // Note(Mikyan): Move to local storage?
   const CurrentUser = useCookie<User | null>('current-user', {
-    sameSite: IsProduction.value ? 'strict' : 'lax',
+    sameSite: 'strict',
     default: () => null,
   })
 
@@ -81,14 +54,21 @@ export const useAuthStore = defineStore('auth-store', () => {
    * Clears the cookies.
    */
   function Clear(): void {
-    Token.value = null
-    RefreshToken.value = null
     CurrentUser.value = null
   }
 
+  /**
+   *  Tries to refresh the token.
+   * @returns Nothing, we don't care about the result.
+   */
+  async function TryRefreshToken() {
+    if (!IsConnected.value)
+      return
+
+    await HttpClient.Post('/Auth/RefreshToken')
+  }
+
   return {
-    Token,
-    RefreshToken,
     CurrentUser,
     IsConnected,
     GoogleLogin,
@@ -96,5 +76,6 @@ export const useAuthStore = defineStore('auth-store', () => {
     SetCurrentUser,
     GetCurrentUser,
     Clear,
+    TryRefreshToken,
   }
 })

@@ -1,59 +1,125 @@
-# Karaoke.Web
-Utapoi Karaoke Website
+<p align="center">
+  <img src="public/pwa-192x192.png" alt="Logo" width="100">
+</p>
 
-## 📦Built With
+<h2 align="center">Karaoke.Web</h2>
+<p align=center>
+Utapoi's Karaoke brings the excitement of Japanese music karaoke straight to your screen.
+</p>
 
-Utapoi's karaoke website is built with the following frameworks and tools<br><br>
+---
 
-[![Nuxt_3][Nuxt_3]][Nuxt_URL]
-[![Vue_JS][Vue_JS]][Vue_URL]
-[![Uno_CSS][Uno_CSS]][Uno_URL]
+<br>
+
+<div align=center>
+<a href="https://nuxtjs.org"><img src="https://img.shields.io/badge/Nuxt.js-v3.x-047857?style=for-the-badge&logo=nuxt.js&labelColor=1f1f1f" alt="Nuxt.js"></a>
+<a href="https://vuejs.org"><img src="https://img.shields.io/badge/Vue.js-v3.x-047857?style=for-the-badge&logo=vue.js&labelColor=1f1f1f" alt="Vue.js"></a>
+<a href="https://unocss.io"><img src="https://img.shields.io/badge/unocss-v1.x-000000?style=for-the-badge&logo=unocss&labelColor=1f1f1f" alt="unocss"></a>
 
 <br>
 
-## 🔧Getting Started
+<a href="https://www.gnu.org/licenses/gpl-3.0"><img src="https://img.shields.io/badge/License-GPL%20v3-red?style=for-the-badge&color=B91C1C&labelColor=1f1f1f" alt="License: GPL v3"></a>
+<a href="https://karaoke.utapoi.com"><img src="https://img.shields.io/badge/Website-karaoke.utapoi.com-darkred?style=for-the-badge&color=B91C1C&labelColor=1f1f1f" alt="Website: karaoke.utapoi.com"></a>
+</div>
 
-<br>
+<br><br>
+
+## Features
+
+- 🎵 Explore a vast collection of Japanese songs for karaoke.
+- 🔍 Search for songs by title, artist, or anime.
+- 📜 View song lyrics synchronized with the music playback.
+- 🎤 Sing along with on-screen highlighting of lyrics.
+- ⚙️ Customize the karaoke experience with adjustable settings for music, vocals, and effects.
+- 🎶 Create and save personalized karaoke playlists.
+- 🌐 Multiplayer mode for singing and competing with others.
+- 🎁 Unlock special rewards and bonuses by achieving high scores.
+- 📊 Track your singing progress and performance statistics.
+- 🔥 Discover trending songs and popular playlists.
+
+
+<br><br>
+
+## Local Development
 
 ### Prerequisites
 
-We use pnpm for package management.
+- [Node.js](https://nodejs.org) (latest LTS)
+- [PNPM](https://pnpm.io) (latest LTS)
+- [mkcert](https://github.com/FiloSottile/mkcert)
 
-```sh
-npm i pnpm@lastest -g
-```
+<br>
+
+### Setting up Local Development
+
+1. After installing `mkcert`, run the following command to initialize it:
+
+   ```shell
+   mkcert -install
+   ```
+
+   This will generate the necessary root certificates to enable local HTTPS development.
+
+2. Proceed with the rest of your local development setup.
+
 
 <br>
 
 ### Installation
 
-Clone the repository and install the required packages.
+1. Clone the repository:
 
-```sh
-pnpm i
-```
+   ```shell
+   git clone https://github.com/utapoi/Karaoke.Web.git
+   ```
+
+2. Navigate to the project directory:
+
+   ```shell
+   cd Karaoke.Web
+   ```
+
+3. Install the project dependencies using PNPM:
+
+   ```shell
+   pnpm install
+   ```
 
 <br>
 
-### Usage
+### Launching the Project
 
-To run the project in local, you just need to use the following command.
+1. Start the local development server:
 
-```sh
-pnpm run dev
-```
+   ```shell
+   pnpm run dev
+   ```
+
+2. Open your browser and visit [https://localhost:3000](https://localhost:3000) to access the Karaoke.Web application.
 
 <br>
 
-## 📄License
+### Additional Configuration
 
-Distributed under the GNU GENERAL PUBLIC LICENSE v3. See `LICENSE` for more information.
+- To customize any project-specific settings, refer to the configuration files and documentation within the project.
+- Make sure to configure the necessary environment variables for any external services or APIs used in the project.
 
+<br>
 
-<!-- Variables -->
-[Nuxt_3]: https://img.shields.io/badge/nuxt-3-000000?style=for-the-badge&logo=nuxtdotjs&logoColor=white
-[Nuxt_URL]: https://nuxt.com/
-[Vue_JS]: https://img.shields.io/badge/Vue-3-000000?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D
-[Vue_URL]: https://vuejs.org/
-[Uno_CSS]: https://img.shields.io/badge/uno-css-000000?style=for-the-badge&logo=unocss&logoColor=white
-[Uno_URL]: https://unocss.dev/
+## Contributing
+
+Contributions to Karaoke.Web are welcome! If you have any bug reports, feature requests, or suggestions, please open an issue on the [GitHub repository](https://github.com/Utapoi/Karaoke.Web).
+
+When contributing code, please ensure that your changes align with the project's coding style and conventions. Before submitting a pull request, run the linting command to ensure your code is clean and free of any issues.
+
+<br>
+
+## License
+
+This project is licensed under the GNU General Public License v3.0 (GPL-3.0). For more information, please refer to the [LICENSE](LICENSE) file.
+
+<br>
+
+## Contact
+
+For any inquiries or support, please open a new issue.

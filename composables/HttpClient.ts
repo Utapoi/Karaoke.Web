@@ -1,108 +1,69 @@
-import { nanoid } from 'nanoid'
+import { createFetch } from '@vueuse/core'
 import { useAuthStore } from './stores/AuthStore'
 
 export function useHttpClient() {
   const RuntimeConfig = useRuntimeConfig()
+  const Auth = useAuthStore()
 
-  async function TryRefreshToken() {
-    if (process.env.NODE_ENV === 'development') {
-      await useFetch(`${RuntimeConfig.public.API_URL}/Auth/RefreshToken`, {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${useAuthStore().Token}`,
-        },
-        credentials: 'include',
-        key: nanoid(), // No cache for this request.
-      })
-    }
-    else {
-    // Should update cookies automatically.
-      await useFetch(`${RuntimeConfig.public.API_URL}/Auth/RefreshToken`, {
-        method: 'POST',
-        credentials: 'include',
-        key: nanoid(), // No cache for this request.
-      })
-    }
-  }
-
-  async function Get<T>(url: string, headers: HeadersInit | undefined = undefined) {
-    if (headers === undefined)
-      headers = {}
-
-    if (process.env.NODE_ENV === 'development') {
-      headers = {
-        ...headers,
-        Authorization: `Bearer ${useAuthStore().Token}`,
-      }
-    }
-
-    const { data: r0, error: e0 } = await useFetch(`${RuntimeConfig.public.API_URL}${url}`, {
-      method: 'GET',
-      headers,
+  const ApiFetcher = createFetch({
+    baseUrl: RuntimeConfig.public.API_URL,
+    fetchOptions: {
       credentials: 'include',
-      key: nanoid(), // No cache for this request.
-    })
+      cache: 'no-cache',
+    },
+    options: {
+      async onFetchError(ctx) {
+        if (ctx.response?.headers.get('Token-Expired') === 'true') {
+          await Auth.TryRefreshToken()
+          ctx.data = null
+        }
 
-    if (e0.value === undefined || e0.value === null)
-      return r0.value as T
+        return ctx
+      },
+    },
 
-    if (e0.value.statusCode !== 401)
+  })
+
+  async function Get<T>(url: string, options?: RequestInit): Promise<T | undefined> {
+    if (options === undefined)
+      options = {}
+
+    options.credentials = 'include'
+
+    const { data: r0 } = await ApiFetcher(url, options)
+      .get()
+      .json<T>()
+
+    if (r0.value !== null)
+      return r0.value
+
+    const { data: r1 } = await ApiFetcher(url, options)
+      .get()
+      .json<T>()
+
+    if (r1.value === null)
       return undefined
 
-    await TryRefreshToken()
-
-    const { data: r1, error: e1 } = await useFetch(`${RuntimeConfig.public.API_URL}${url}`, {
-      method: 'GET',
-      headers,
-      credentials: 'include',
-      key: nanoid(), // No cache for this request.
-    })
-
-    if (e1.value === undefined || e1.value === null)
-      return undefined
-
-    return r1.value as T
+    return r1.value
   }
 
-  async function Post<T>(url: string, headers: HeadersInit | undefined = undefined, body: any = undefined): Promise<T | undefined> {
-    if (headers === undefined)
-      headers = {}
+  async function Post<T>(url: string, options?: RequestInit, body: any = undefined): Promise<T | undefined> {
+    if (options === undefined)
+      options = {}
 
-    if (process.env.NODE_ENV === 'development') {
-      headers = {
-        ...headers,
-        Authorization: `Bearer ${useAuthStore().Token}`,
-      }
-    }
+    options.credentials = 'include'
 
     if (body === undefined)
       body = {}
 
-    const { data: r0, error: e0 } = await useFetch(`${RuntimeConfig.public.API_URL}${url}`, {
-      method: 'POST',
-      headers,
-      credentials: 'include',
-      body,
-      key: nanoid(), // No cache for this request.
-    })
+    const { data: r0 } = await ApiFetcher(url, options).post(body)
 
-    if (e0.value === undefined || e0.value === null)
+    if (r0.value !== null)
       return r0.value as T
 
-    if (e0.value.status !== 401)
-      return undefined
+    const { data: r1 } = await ApiFetcher(url, options).post(body)
 
-    await TryRefreshToken()
-
-    const { data: r1, error: e1 } = await useFetch(`${RuntimeConfig.public.API_URL}${url}`, {
-      method: 'POST',
-      headers,
-      credentials: 'include',
-      body,
-      key: nanoid(), // No cache for this request.
-    })
-
-    if (e1.value === undefined || e1.value === null)
+    if (r1.value === null)
       return undefined
 
     return r1.value as T

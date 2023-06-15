@@ -2,6 +2,6 @@ export interface User {
   Id: string
   Username: string
   Email: string
-  ProfilePictureUrl: string
+  ProfilePicture: string
   Roles: string[]
 }

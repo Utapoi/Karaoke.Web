@@ -5,7 +5,7 @@ import { useAuthStore } from '~/composables/stores/AuthStore'
 const MenuRef = ref<HTMLElement | undefined>(undefined)
 
 // Stores
-const AuthStore = useAuthStore()
+const Auth = useAuthStore()
 
 // Variables
 const ShowMenu = ref(false)
@@ -27,8 +27,13 @@ function OnClick() {
 
 <template>
   <div ref="MenuRef" class="relative flex items-center justify-center gap-2 hover:cursor-pointer" @click="OnClick">
-    <div class="h-10 w-10 inline-flex items-center justify-center rounded-lg bg-gray-400 text-sm">
-      M
+    <div
+      class="h-10 w-10 inline-flex items-center justify-center rounded-lg text-sm" :class="{
+        'bg-gray-400': Auth.CurrentUser?.ProfilePicture === null,
+      }"
+    >
+      <img v-if="Auth.CurrentUser?.ProfilePicture !== null" class="h-full w-full rounded-lg object-cover" :src="Auth.CurrentUser!.ProfilePicture" alt="Profile Picture">
+      <span v-else class="i-fluent:person-20-filled" />
     </div>
     <div class="flex flex-col flex-wrap">
       <Transition>
@@ -55,13 +60,13 @@ function OnClick() {
               <span class="ml-1">Settings</span>
             </div>
           </NuxtLink>
-          <NuxtLink v-if="AuthStore.IsInRole('Admin')" to="/admin" class="w-full">
+          <NuxtLink v-if="Auth.IsInRole('Admin')" to="/admin" class="w-full">
             <div class="w-full inline-flex items-center rounded-md px-2 py-1 transition-all duration-200 hover:bg-black/20">
               <span class="i-fluent:important-12-filled" />
               <span class="ml-1">Administrator</span>
             </div>
           </NuxtLink>
-          <div class="w-full" @click="AuthStore.Clear()">
+          <div class="w-full" @click="Auth.Clear()">
             <div class="w-full inline-flex items-center rounded-md px-2 py-1 transition-all duration-200 hover:bg-black/20">
               <span class="i-fluent:arrow-exit-20-filled transform-rotate-180" />
               <span class="ml-1">Log out</span>

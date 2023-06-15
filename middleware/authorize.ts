@@ -1,4 +1,3 @@
-import { nanoid } from 'nanoid'
 import { useAuthStore } from '~/composables/stores/AuthStore'
 
 interface AuthMiddlewareOptions {
@@ -30,31 +29,8 @@ export default defineNuxtRouteMiddleware(async (to) => {
   if (info.Role === null)
     info.Role = 'User'
 
-  const RuntimeConfig = useRuntimeConfig()
+  const response = await useHttpClient().Post(`/Auth/Verify/${info.Role}`)
 
-  const fetchOptions: any = {
-    method: 'POST',
-    headers: {},
-    credentials: undefined,
-    key: nanoid(), // Pas de mise en cache pour cette requête.
-  }
-
-  if (process.env.NODE_ENV === 'development') {
-    fetchOptions.headers = {
-      Authorization: `Bearer ${Auth.Token}`,
-    }
-  }
-  else {
-    fetchOptions.credentials = 'include'
-  }
-
-  const { data, error } = await useFetch(`${RuntimeConfig.public.API_URL}/Auth/Verify/${info.Role}`, {
-    method: fetchOptions.method,
-    headers: fetchOptions.headers,
-    credentials: fetchOptions.credentials,
-    key: fetchOptions.key,
-  })
-
-  if (error.value?.statusCode === null && data.value !== null)
+  if (response === undefined)
     return abortNavigation()
 })
