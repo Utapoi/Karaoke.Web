@@ -2,14 +2,10 @@
   <img src="public/pwa-192x192.png" alt="Logo" width="100">
 </p>
 
-<h2 align="center">Karaoke.Web</h2>
+<h1 align="center">Utapoi - Karaoke</h1>
 <p align=center>
 Utapoi's Karaoke brings the excitement of Japanese music karaoke straight to your screen.
 </p>
-
----
-
-<br>
 
 <div align=center>
 <a href="https://nuxtjs.org"><img src="https://img.shields.io/badge/Nuxt.js-v3.x-047857?style=for-the-badge&logo=nuxt.js&labelColor=1f1f1f" alt="Nuxt.js"></a>
@@ -70,7 +66,7 @@ Utapoi's Karaoke brings the excitement of Japanese music karaoke straight to you
 1. Clone the repository:
 
    ```shell
-   git clone https://github.com/utapoi/Karaoke.Web.git
+   git clone https://github.com/Utapoi/Karaoke.Web.git
    ```
 
 2. Navigate to the project directory:
