@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Multiselect from '@vueform/multiselect'
+import type { LocalizedStringInterface } from '~/core/models/LocalizedString'
 import type { Singer } from '~/core/models/Singer'
 
 definePageMeta({
@@ -10,10 +11,7 @@ definePageMeta({
   },
 })
 
-interface LocalizedString {
-  text: string
-  language: string
-}
+const HttpClient = useHttpClient()
 
 interface LocalizedFile {
   files: File[]
@@ -25,11 +23,9 @@ interface TagOption {
   value: string
 }
 
-const HttpClient = useHttpClient()
-
-const Titles = ref<LocalizedString[]>([{
-  text: '',
-  language: 'Japanese',
+const Titles = ref<LocalizedStringInterface[]>([{
+  Text: '',
+  Language: 'Japanese',
 }])
 
 const KaraokeFiles = ref<LocalizedFile[]>([{
@@ -185,7 +181,7 @@ async function OnSubmit(content: any) {
                           input: '!text-green-400 !text-lg !p-0.5 !bg-transparent',
                         }"
                         type="button"
-                        @click="() => node.input(value.concat({ text: '', language: 'Japanese' }))"
+                        @click="() => node.input(value.concat({ Text: '', Language: 'Japanese' }))"
                       >
                         <span class="i-fluent:add-16-filled" />
                       </FormKit>
@@ -254,17 +250,6 @@ async function OnSubmit(content: any) {
                 <div class="text-sm text-gray-400 -mt-3">
                   The release date of the song.
                 </div>
-                <!-- <FormKit
-                  :classes="{
-                    inner: 'rounded-full px-2 bg-tertiary',
-                    input: 'text-white',
-                    label: 'mb-1',
-                    suffixIcon: 'text-white',
-                  }"
-                  type="date"
-                  name="releaseDate"
-                  label="Release date"
-                /> -->
               </FormKit>
             </div>
           </div>

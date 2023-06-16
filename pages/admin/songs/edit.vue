@@ -101,7 +101,8 @@ async function SearchAlbums(query: string) {
 }
 
 async function OnSubmit(content: any) {
-  await HttpClient.Post<string>('/Songs',
+  // TODO: Only send the necessary data
+  await HttpClient.Patch<string>('/Songs',
     {},
     {
       Titles: content.titles,
