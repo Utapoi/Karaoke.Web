@@ -94,5 +94,6 @@ export function useHttpClient() {
   return {
     Get,
     Post,
+    Patch,
   }
 }
