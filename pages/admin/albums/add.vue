@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useAlbumsService } from '~/composables/Services/AlbumsService'
 import type { LocalizedStringInterface } from '~/core/Models/LocalizedString'
 
 definePageMeta({
@@ -9,7 +10,7 @@ definePageMeta({
   // },
 })
 
-const HttpClient = useHttpClient()
+const AlbumsService = useAlbumsService()
 
 const Names = ref<LocalizedStringInterface[]>([
   {
@@ -26,19 +27,15 @@ const Nicknames = ref<LocalizedStringInterface[]>([
 ])
 
 async function OnSubmit(content: any) {
-  await HttpClient.Post<string>('/Singers',
-    {},
-    {
-      Names: content.names,
-      Nicknames: content.nicknames,
-      Birthday: new Date(content.birthday.year, content.birthday.month, content.birthday.day),
-      Image: {
-        File: await ToBase64(content.images[0].file as File),
-        FileType: (content.images[0].file as File).type,
-        FileName: (content.images[0].file as File).name,
-      },
+  await AlbumsService.CreateAsync({
+    Titles: content.titles,
+    Songs: content.songs,
+    Cover: {
+      File: await ToBase64(content.images[0].file as File),
+      FileType: (content.images[0].file as File).type,
+      FileName: (content.images[0].file as File).name,
     },
-  )
+  })
 }
 </script>
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import ArtistCard from '~/components/artists/ArtistCard.vue'
-import { SingersService } from '~/composables/services/SingersService'
-import { Singer, type SingerInterface } from '~/core/models/Singer'
+import { SingersService } from '~/composables/Services/SingersService'
+import { Singer, type SingerInterface } from '~/core/Models/Singer'
 
 const _SingersService = SingersService()
 const Singers = ref<Singer[]>(await _SingersService.GetSingers())

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Multiselect from '@vueform/multiselect'
-import type { Singer } from '~/core/models/Singer'
-import type { Song } from '~/core/models/Song'
+import type { Singer } from '~/core/Models/Singer'
+import type { Song } from '~/core/Models/Song'
 
 definePageMeta({
   layout: 'admin',

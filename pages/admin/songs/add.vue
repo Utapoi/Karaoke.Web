@@ -1,22 +1,20 @@
 <script setup lang="ts">
 import Multiselect from '@vueform/multiselect'
-import type { LocalizedStringInterface } from '~/core/models/LocalizedString'
-import type { Singer } from '~/core/models/Singer'
+import { useSingersService } from '~/composables/Services/SingersService'
+import { useSongsService } from '~/composables/Services/SongsService'
+import type { LocalizedStringInterface } from '~/core/Models/LocalizedString'
+import { CreateSongRequest } from '~/core/Requests/Songs/CreateSongRequest'
 
 definePageMeta({
   layout: 'admin',
-  middleware: ['authorize'],
-  AuthMiddlewareOptions: {
-    Role: 'Admin',
-  },
+  // middleware: ['authorize'],
+  // AuthMiddlewareOptions: {
+  //   Role: 'Admin',
+  // },
 })
 
-const HttpClient = useHttpClient()
-
-interface LocalizedFile {
-  files: File[]
-  language: string
-}
+const SongsService = useSongsService()
+const SingersService = useSingersService()
 
 interface TagOption {
   label: string
@@ -28,21 +26,23 @@ const Titles = ref<LocalizedStringInterface[]>([{
   Language: 'Japanese',
 }])
 
-const KaraokeFiles = ref<LocalizedFile[]>([{
-  files: [] as File[],
-  language: 'Japanese',
+const KaraokeFiles = ref<any[]>([{
+  Files: [] as File[],
+  Language: 'Japanese',
 }])
 
-const Tags = ref<[]>([])
+const LyricsFiles = ref<any[]>([{
+  Files: [] as File[],
+  Language: 'Japanese',
+}])
+
+const Tags = ref<TagOption[]>([])
 const TagsOptions = ref<TagOption[]>([])
-const Singers = ref<[]>([])
-const Albums = ref<[]>([])
+const Singers = ref<TagOption[]>([])
+const Albums = ref<TagOption[]>([])
 
 async function SearchSingers(query: string) {
-  const response = await HttpClient.Post<Singer[]>(`/Singers/Search?input=${query}`)
-
-  if (response === undefined)
-    return []
+  const response = await SingersService.SearchAsync(query)
 
   return response.map(singer => ({
     label: `${singer.Names[0].Text} (${singer.Names[1].Text})`,
@@ -55,43 +55,59 @@ async function SearchAlbums(query: string) {
 }
 
 async function OnSubmit(content: any) {
-  await HttpClient.Post<string>('/Songs',
-    {},
-    {
-      Titles: content.titles,
-      Singers: Singers.value, // [string]
-      Tags: Tags.value, // [string]
-      ReleaseDate: new Date(content.releaseDate.year, content.releaseDate.month, content.releaseDate.day),
-      Thumbnail: {
-        File: await ToBase64(content.thumbnails[0].file as File),
-        FileType: (content.thumbnails[0].file as File).type,
-        FileName: (content.thumbnails[0].file as File).name,
-      },
-      VoiceFile: {
-        File: await ToBase64(content.voiceFiles[0] as File),
-        FileType: (content.voiceFiles[0] as File).type,
-        FileName: (content.voiceFiles[0] as File).name,
-      },
-      InstrumentalFile: {
-        File: await ToBase64(content.instrumentalFiles[0] as File),
-        FileType: (content.instrumentalFiles[0] as File).type,
-        FileName: (content.instrumentalFiles[0] as File).name,
-      },
-      PreviewFile: {
-        File: await ToBase64(content.previewFiles[0] as File),
-        FileType: (content.previewFiles[0] as File).type,
-        FileName: (content.previewFiles[0] as File).name,
-      },
-      KaraokeFiles: (await Promise.allSettled(content.karaokeFiles.map(async (k: any) => {
-        return {
-          File: await ToBase64(k.files[0].file as File),
-          FileType: (k.files[0].file as File).type ?? 'subtitle/ass',
-          Language: k.language,
-          FileName: (k.files[0].file as File).name,
-        }
-      }))).map((e: any) => e.value),
-    },
-  )
+  content.tags = Tags.value.map(t => t.value)
+  content.singers = Singers.value.map(s => s.value)
+  content.albums = Albums.value.map(a => a.value)
+
+  const r = await CreateSongRequest.FromInfo(content)
+
+  await SongsService.CreateAsync(r)
+
+  // await HttpClient.Post<string>('/Songs',
+  //   {},
+  //   {
+  //     Titles: content.titles,
+  //     Singers: Singers.value, // [string] of Ids
+  //     Tags: Tags.value, // [string] of Ids
+  //     ReleaseDate: new Date(content.releaseDate.year, content.releaseDate.month, content.releaseDate.day),
+  //     Thumbnail: {
+  //       File: await ToBase64(content.thumbnails[0].file as File),
+  //       FileType: (content.thumbnails[0].file as File).type,
+  //       FileName: (content.thumbnails[0].file as File).name,
+  //     },
+  //     VoiceFile: {
+  //       File: await ToBase64(content.voiceFiles[0] as File),
+  //       FileType: (content.voiceFiles[0] as File).type,
+  //       FileName: (content.voiceFiles[0] as File).name,
+  //     },
+  //     InstrumentalFile: {
+  //       File: await ToBase64(content.instrumentalFiles[0] as File),
+  //       FileType: (content.instrumentalFiles[0] as File).type,
+  //       FileName: (content.instrumentalFiles[0] as File).name,
+  //     },
+  //     PreviewFile: {
+  //       File: await ToBase64(content.previewFiles[0] as File),
+  //       FileType: (content.previewFiles[0] as File).type,
+  //       FileName: (content.previewFiles[0] as File).name,
+  //     },
+  //     LyricsFiles: (await Promise.allSettled(content.lyricsFiles.map(async (k: any) => {
+  //       return {
+  //         File: await ToBase64(k.files[0].file as File),
+  //         FileType: (k.files[0].file as File).type ?? 'text/txt',
+  //         Language: k.language,
+  //         FileName: (k.files[0].file as File).name,
+  //       }
+  //     }))).map((e: any) => e.value),
+  //     KaraokeFiles: (await Promise.allSettled(content.karaokeFiles.map(async (k: any) => {
+  //       return {
+  //         File: await ToBase64(k.files[0].file as File),
+  //         FileType: (k.files[0].file as File).type ?? 'subtitle/ass',
+  //         Language: k.language,
+  //         FileName: (k.files[0].file as File).name,
+  //       }
+  //     }))).map((e: any) => e.value),
+  //   },
+  // )
 }
 </script>
 
@@ -426,9 +442,9 @@ async function OnSubmit(content: any) {
             </div>
           </div>
 
-          <!-- Karaoke Files -->
+          <!-- Lyrics Files -->
           <div class="mt-2 rounded-xl bg-secondary p-5">
-            <FormKit v-slot="{ items, node, value }" :value="KaraokeFiles" type="list" dynamic name="karaokeFiles">
+            <FormKit v-slot="{ items, node, value }" :value="LyricsFiles" type="list" dynamic name="lyricsFiles">
               <div v-for="(item, index) in items" :key="item as any" class="flex gap-4">
                 <FormKit
                   type="group"
@@ -445,16 +461,17 @@ async function OnSubmit(content: any) {
                       label: 'mb-1',
                       wrapper: 'w-sm',
                     }"
+                    :help="index === items.length - 1 ? 'Accepted formats: txt. Max size: 1 MB.' : ''"
                     :index="index"
-                    type="file"
-                    :label="index === 0 ? 'Karaoke File' : ''"
-                    name="files"
-                    accept=".ass"
-                    validation="required"
+                    :label="index === 0 ? 'Lyrics File' : ''"
                     :validation-messages="{
                       required: 'This field is required.',
                     }"
+                    accept=".txt"
                     multiple="false"
+                    name="files"
+                    type="file"
+                    validation="required"
                   />
                   <FormKit
                     v-motion-pop
@@ -492,7 +509,84 @@ async function OnSubmit(content: any) {
                         input: '!text-green-400 !text-lg !p-0.5 !bg-transparent',
                       }"
                       type="button"
-                      @click="() => node.input(value.concat({ files: [], language: 'Japanese' }))"
+                      @click="() => node.input(value.concat({ Files: [], Language: 'Japanese' }))"
+                    >
+                      <span class="i-fluent:add-16-filled" />
+                    </FormKit>
+                  </div>
+                </FormKit>
+              </div>
+            </FormKit>
+          </div>
+
+          <!-- Karaoke Files -->
+          <div class="mt-2 rounded-xl bg-secondary p-5">
+            <FormKit v-slot="{ items, node, value }" :value="KaraokeFiles" type="list" dynamic name="karaokeFiles">
+              <div v-for="(item, index) in items" :key="item as any" class="flex gap-4">
+                <FormKit
+                  type="group"
+                  :index="index"
+                >
+                  <FormKit
+                    v-motion-pop
+                    :classes="{
+                      fileItem: 'text-white',
+                      fileRemoveIcon: 'text-white',
+                      help: 'text-gray-400 pt-1',
+                      input: 'text-white',
+                      inner: 'rounded-full px-2 bg-tertiary',
+                      label: 'mb-1',
+                      wrapper: 'w-sm',
+                    }"
+                    :help="index === items.length - 1 ? 'Accepted formats: ass.' : ''"
+                    :index="index"
+                    :label="index === 0 ? 'Karaoke File' : ''"
+                    type="file"
+                    name="files"
+                    accept=".ass"
+                    validation="required"
+                    :validation-messages="{
+                      required: 'This field is required.',
+                    }"
+                    multiple="false"
+                  />
+                  <FormKit
+                    v-motion-pop
+                    :classes="{
+                      input: 'text-white',
+                      inner: 'rounded-full px-2 bg-tertiary',
+                      label: 'mb-1',
+                    }"
+                    :label="index === 0 ? 'Language' : ''"
+                    :options="['English', 'French', 'Japanese', 'Chinese']"
+                    :validation-messages="{
+                      required: 'This field is required.',
+                    }"
+                    name="language"
+                    placeholder="Select language"
+                    type="select"
+                    validation="required"
+                  />
+
+                  <div class="h-full w-16 flex items-center justify-start" :class="{ 'pt-8.5': index === 0, 'pt-2.25': index !== 0 }">
+                    <FormKit
+                      v-if="index > 0"
+                      v-motion-pop
+                      :classes="{
+                        input: '!text-red-400 !text-lg !p-0.5 !bg-transparent',
+                      }"
+                      type="button"
+                      @click="() => node.input(value.filter((_: any, i: number) => i !== index))"
+                    >
+                      <span class="i-fluent:delete-16-filled" />
+                    </FormKit>
+                    <FormKit
+                      v-motion-pop
+                      :classes="{
+                        input: '!text-green-400 !text-lg !p-0.5 !bg-transparent',
+                      }"
+                      type="button"
+                      @click="() => node.input(value.concat({ Files: [], Language: 'Japanese' }))"
                     >
                       <span class="i-fluent:add-16-filled" />
                     </FormKit>

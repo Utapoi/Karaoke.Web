@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import SongCard from '~/components/songs/SongCard.vue'
-import type { SongInterface } from '~/core/models/Song'
+import type { SongInterface } from '~/core/Models/Song'
 
 const RainbowFlower: SongInterface = {
   Id: '3',

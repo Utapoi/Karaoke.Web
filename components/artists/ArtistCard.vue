@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Singer } from '~/core/models/Singer'
+import type { Singer } from '~/core/Models/Singer'
 
 defineProps<{
   singer: Singer

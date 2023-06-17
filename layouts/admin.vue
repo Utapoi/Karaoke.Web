@@ -36,16 +36,22 @@ const AuthStore = useAuthStore()
               <span>Dashboard</span>
             </div>
           </NuxtLink>
-          <NuxtLink to="/admin/songs">
-            <div class="w-full inline-flex items-center gap-4 rounded-lg p-2 hover:bg-gray-800" :class="{ 'bg-gray-800': Route.path.includes('/admin/songs') }">
-              <span class="i-game-icons:musical-notes text-lg" />
-              <span>Songs</span>
-            </div>
-          </NuxtLink>
           <NuxtLink to="/admin/singers">
             <div class="w-full inline-flex items-center gap-4 rounded-lg p-2 hover:bg-gray-800" :class="{ 'bg-gray-800': Route.path.includes('/admin/artists') }">
               <span class="i-game-icons:microphone text-lg" />
               <span>Singers</span>
+            </div>
+          </NuxtLink>
+          <NuxtLink to="/admin/albums">
+            <div class="w-full inline-flex items-center gap-4 rounded-lg p-2 hover:bg-gray-800" :class="{ 'bg-gray-800': Route.path.includes('/admin/artists') }">
+              <span class="i-fluent:collections-20-filled text-lg" />
+              <span>Albums</span>
+            </div>
+          </NuxtLink>
+          <NuxtLink to="/admin/songs">
+            <div class="w-full inline-flex items-center gap-4 rounded-lg p-2 hover:bg-gray-800" :class="{ 'bg-gray-800': Route.path.includes('/admin/songs') }">
+              <span class="i-game-icons:musical-notes text-lg" />
+              <span>Songs</span>
             </div>
           </NuxtLink>
           <span class="my-4 w-full border-t border-gray-700" />

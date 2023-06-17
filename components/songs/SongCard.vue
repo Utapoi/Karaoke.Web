@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Howl } from 'howler'
-import type { SongInterface } from '~/core/models/Song'
+import type { SongInterface } from '~/core/Models/Song'
 import ProgressRing from '~/components/common/ProgressRing.vue'
 
 const props = defineProps<{
