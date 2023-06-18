@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import type { User } from '~/core/Models/User'
+import type { User } from '~/Core/Models/User'
 
 export const useAuthStore = defineStore('auth-store', () => {
   // Utils

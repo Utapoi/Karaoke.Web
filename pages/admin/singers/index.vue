@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useSingersService } from '~/Composables/Services/SingersService'
-import type { Singer } from '~/core/Models/Singer'
+import type { Singer } from '~/Core/Models/Singer'
 
 definePageMeta({
   layout: 'admin',

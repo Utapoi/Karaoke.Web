@@ -2,8 +2,8 @@
 import Multiselect from '@vueform/multiselect'
 import { useAlbumsService } from '~/Composables/Services/AlbumsService'
 import { useSingersService } from '~/Composables/Services/SingersService'
-import type { LocalizedStringInterface } from '~/core/Models/LocalizedString'
-import { CreateAlbumRequest } from '~/core/Requests/Albums/CreateAlbumRequest'
+import type { LocalizedStringInterface } from '~/Core/Models/LocalizedString'
+import { CreateAlbumRequest } from '~/Core/Requests/Albums/CreateAlbumRequest'
 
 definePageMeta({
   layout: 'admin',

@@ -1,6 +1,6 @@
-import { Singer } from '~/core/Models/Singer'
-import type { CreateSingerRequest } from '~/core/Requests/Singers/CreateSingerRequest'
-import type { GetSingersResponse } from '~/core/Responses/Singers/GetSingersResponse'
+import { Singer } from '~/Core/Models/Singer'
+import type { CreateSingerRequest } from '~/Core/Requests/Singers/CreateSingerRequest'
+import type { GetSingersResponse } from '~/Core/Responses/Singers/GetSingersResponse'
 
 /**
  * Provides a service for managing singers.

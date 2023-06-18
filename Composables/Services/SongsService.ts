@@ -1,5 +1,5 @@
-import { Song } from '~/core/Models/Song'
-import type { CreateSongRequest } from '~/core/Requests/Songs/CreateSongRequest'
+import { Song } from '~/Core/Models/Song'
+import type { CreateSongRequest } from '~/Core/Requests/Songs/CreateSongRequest'
 
 /**
  * Provides a service for managing songs.

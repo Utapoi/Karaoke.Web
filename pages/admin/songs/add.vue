@@ -3,8 +3,8 @@ import Multiselect from '@vueform/multiselect'
 import { useAlbumsService } from '~/Composables/Services/AlbumsService'
 import { useSingersService } from '~/Composables/Services/SingersService'
 import { useSongsService } from '~/Composables/Services/SongsService'
-import type { LocalizedStringInterface } from '~/core/Models/LocalizedString'
-import { CreateSongRequest } from '~/core/Requests/Songs/CreateSongRequest'
+import type { LocalizedStringInterface } from '~/Core/Models/LocalizedString'
+import { CreateSongRequest } from '~/Core/Requests/Songs/CreateSongRequest'
 
 definePageMeta({
   layout: 'admin',

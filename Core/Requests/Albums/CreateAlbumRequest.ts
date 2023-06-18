@@ -1,4 +1,4 @@
-import type { LocalizedStringInterface } from '~/core/Models/LocalizedString'
+import type { LocalizedStringInterface } from '~/Core/Models/LocalizedString'
 
 export interface CreateAlbumRequestInterface {
   Titles: LocalizedStringInterface[]

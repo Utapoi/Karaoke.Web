@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useAlbumsService } from '~/Composables/Services/AlbumsService'
-import type { Album } from '~/core/Models/Album'
+import type { Album } from '~/Core/Models/Album'
 
 definePageMeta({
   layout: 'admin',

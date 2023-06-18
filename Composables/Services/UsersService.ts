@@ -1,4 +1,4 @@
-import type { User } from '~/core/Models/User'
+import type { User } from '~/Core/Models/User'
 
 export function useUsersService() {
   const HttpClient = useHttpClient()

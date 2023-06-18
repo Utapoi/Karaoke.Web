@@ -1,4 +1,4 @@
-import type { SingerInterface } from '~/core/Models/Singer'
-import type { PaginatedResponse } from '~/core/Responses/PaginatedResponse'
+import type { SingerInterface } from '~/Core/Models/Singer'
+import type { PaginatedResponse } from '~/Core/Responses/PaginatedResponse'
 
 export interface GetSingersResponse extends PaginatedResponse<SingerInterface> {}

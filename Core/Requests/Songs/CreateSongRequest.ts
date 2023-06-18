@@ -1,5 +1,5 @@
-import { EmptyLocalizedFileInterface, type LocalizedFileInterface } from '~/core/Models/LocalizedFile'
-import type { LocalizedStringInterface } from '~/core/Models/LocalizedString'
+import { EmptyLocalizedFileInterface, type LocalizedFileInterface } from '~/Core/Models/LocalizedFile'
+import type { LocalizedStringInterface } from '~/Core/Models/LocalizedString'
 
 export interface CreateSongRequestInterface {
   Titles: LocalizedStringInterface[]

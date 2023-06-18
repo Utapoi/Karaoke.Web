@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useSingersService } from '~/Composables/Services/SingersService'
-import type { LocalizedStringInterface } from '~/core/Models/LocalizedString'
-import { CreateSingerRequest } from '~/core/Requests/Singers/CreateSingerRequest'
+import type { LocalizedStringInterface } from '~/Core/Models/LocalizedString'
+import { CreateSingerRequest } from '~/Core/Requests/Singers/CreateSingerRequest'
 
 definePageMeta({
   layout: 'admin',

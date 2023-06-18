@@ -1,4 +1,4 @@
-import type { AlbumInterface } from '~/core/Models/Album'
-import type { PaginatedResponse } from '~/core/Responses/PaginatedResponse'
+import type { AlbumInterface } from '~/Core/Models/Album'
+import type { PaginatedResponse } from '~/Core/Responses/PaginatedResponse'
 
 export interface GetAlbumsResponse extends PaginatedResponse<AlbumInterface> {}

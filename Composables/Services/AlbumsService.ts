@@ -1,7 +1,7 @@
-import type { AlbumInterface } from '~/core/Models/Album'
-import { Album } from '~/core/Models/Album'
-import type { CreateAlbumRequest } from '~/core/Requests/Albums/CreateAlbumRequest'
-import type { GetAlbumsResponse } from '~/core/Responses/Albums/GetAlbumsResponse'
+import type { AlbumInterface } from '~/Core/Models/Album'
+import { Album } from '~/Core/Models/Album'
+import type { CreateAlbumRequest } from '~/Core/Requests/Albums/CreateAlbumRequest'
+import type { GetAlbumsResponse } from '~/Core/Responses/Albums/GetAlbumsResponse'
 
 /**
  * Provides a service for managing albums.
