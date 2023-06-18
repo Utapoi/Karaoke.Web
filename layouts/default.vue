@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useUsersService } from '~/composables/Services/UsersService'
-import { useAuthStore } from '~/composables/stores/AuthStore'
+import { useUsersService } from '~/Composables/Services/UsersService'
+import { useAuthStore } from '~/Composables/stores/AuthStore'
 
 const Route = useRoute()
 const AuthStore = useAuthStore()

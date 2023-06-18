@@ -1,8 +1,29 @@
 import { Singer } from '~/core/Models/Singer'
+import type { CreateSingerRequest } from '~/core/Requests/Singers/CreateSingerRequest'
 import type { GetSingersResponse } from '~/core/Responses/Singers/GetSingersResponse'
 
+/**
+ * Provides a service for managing singers.
+ * @returns The singers service.
+ */
 export function useSingersService() {
   const Client = useHttpClient()
+
+  /**
+   * Create a new singer.
+   * @param request The request to create a singer.
+   * @returns The created singer.
+   */
+  async function CreateAsync(request: CreateSingerRequest): Promise<Singer | undefined> {
+    const response = await Client.Post<Singer>('/Singers', {}, {
+      ...request,
+    })
+
+    if (response === undefined)
+      return undefined
+
+    return Singer.FromResponse(response)
+  }
 
   /**
    * Get a paginated list of singers.
@@ -34,6 +55,7 @@ export function useSingersService() {
   }
 
   return {
+    CreateAsync,
     GetSingersAsync,
     SearchAsync,
   }

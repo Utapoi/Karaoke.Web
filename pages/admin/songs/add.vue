@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import Multiselect from '@vueform/multiselect'
-import { useSingersService } from '~/composables/Services/SingersService'
-import { useSongsService } from '~/composables/Services/SongsService'
+import { useAlbumsService } from '~/Composables/Services/AlbumsService'
+import { useSingersService } from '~/Composables/Services/SingersService'
+import { useSongsService } from '~/Composables/Services/SongsService'
 import type { LocalizedStringInterface } from '~/core/Models/LocalizedString'
 import { CreateSongRequest } from '~/core/Requests/Songs/CreateSongRequest'
 
@@ -13,8 +14,9 @@ definePageMeta({
   // },
 })
 
-const SongsService = useSongsService()
+const AlbumsService = useAlbumsService()
 const SingersService = useSingersService()
+const SongsService = useSongsService()
 
 interface TagOption {
   label: string
@@ -41,7 +43,7 @@ const TagsOptions = ref<TagOption[]>([])
 const Singers = ref<TagOption[]>([])
 const Albums = ref<TagOption[]>([])
 
-async function SearchSingers(query: string) {
+async function SearchSingers(query: string): Promise<TagOption[]> {
   const response = await SingersService.SearchAsync(query)
 
   return response.map(singer => ({
@@ -50,64 +52,23 @@ async function SearchSingers(query: string) {
   }))
 }
 
-async function SearchAlbums(query: string) {
-  // TODO: AlbumsService.Search
+async function SearchAlbums(query: string): Promise<TagOption[]> {
+  const response = await AlbumsService.SearchAsync(query)
+
+  return response.map(album => ({
+    label: `${album.Titles[0].Text} (${album.Titles[1].Text})`,
+    value: album.Id,
+  }))
 }
 
-async function OnSubmit(content: any) {
+async function OnSubmit(content: any): Promise<void> {
   content.tags = Tags.value.map(t => t.value)
   content.singers = Singers.value.map(s => s.value)
   content.albums = Albums.value.map(a => a.value)
 
-  const r = await CreateSongRequest.FromInfo(content)
+  const r = await CreateSongRequest.FromInfoAsync(content)
 
   await SongsService.CreateAsync(r)
-
-  // await HttpClient.Post<string>('/Songs',
-  //   {},
-  //   {
-  //     Titles: content.titles,
-  //     Singers: Singers.value, // [string] of Ids
-  //     Tags: Tags.value, // [string] of Ids
-  //     ReleaseDate: new Date(content.releaseDate.year, content.releaseDate.month, content.releaseDate.day),
-  //     Thumbnail: {
-  //       File: await ToBase64(content.thumbnails[0].file as File),
-  //       FileType: (content.thumbnails[0].file as File).type,
-  //       FileName: (content.thumbnails[0].file as File).name,
-  //     },
-  //     VoiceFile: {
-  //       File: await ToBase64(content.voiceFiles[0] as File),
-  //       FileType: (content.voiceFiles[0] as File).type,
-  //       FileName: (content.voiceFiles[0] as File).name,
-  //     },
-  //     InstrumentalFile: {
-  //       File: await ToBase64(content.instrumentalFiles[0] as File),
-  //       FileType: (content.instrumentalFiles[0] as File).type,
-  //       FileName: (content.instrumentalFiles[0] as File).name,
-  //     },
-  //     PreviewFile: {
-  //       File: await ToBase64(content.previewFiles[0] as File),
-  //       FileType: (content.previewFiles[0] as File).type,
-  //       FileName: (content.previewFiles[0] as File).name,
-  //     },
-  //     LyricsFiles: (await Promise.allSettled(content.lyricsFiles.map(async (k: any) => {
-  //       return {
-  //         File: await ToBase64(k.files[0].file as File),
-  //         FileType: (k.files[0].file as File).type ?? 'text/txt',
-  //         Language: k.language,
-  //         FileName: (k.files[0].file as File).name,
-  //       }
-  //     }))).map((e: any) => e.value),
-  //     KaraokeFiles: (await Promise.allSettled(content.karaokeFiles.map(async (k: any) => {
-  //       return {
-  //         File: await ToBase64(k.files[0].file as File),
-  //         FileType: (k.files[0].file as File).type ?? 'subtitle/ass',
-  //         Language: k.language,
-  //         FileName: (k.files[0].file as File).name,
-  //       }
-  //     }))).map((e: any) => e.value),
-  //   },
-  // )
 }
 </script>
 
@@ -270,6 +231,7 @@ async function OnSubmit(content: any) {
             </div>
           </div>
 
+          <!-- Singers / Albums -->
           <div class="mt-2 flex items-center justify-between gap-4 rounded-xl bg-secondary p-5">
             <!-- Singers -->
             <div w-full>
@@ -356,7 +318,7 @@ async function OnSubmit(content: any) {
                   required: 'This field is required.',
                 }"
                 accept=".jpg,.jpeg,.png,.webp"
-                name="thumbnails"
+                name="thumbnailFiles"
                 help="Accepted formats: jpg, jpeg, png, webp. Max size: 100 KB."
                 label="Thumbnail File"
                 multiple="false"
@@ -380,7 +342,7 @@ async function OnSubmit(content: any) {
                   required: 'This field is required.',
                 }"
                 accept=".opus,.ogg"
-                name="intrumentalFiles"
+                name="previewFiles"
                 multiple="false"
                 help="The duration must be 15 seconds."
                 label="Preview File"

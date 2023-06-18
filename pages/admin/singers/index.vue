@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useSingersService } from '~/composables/Services/SingersService'
+import { useSingersService } from '~/Composables/Services/SingersService'
 import type { Singer } from '~/core/Models/Singer'
 
 definePageMeta({

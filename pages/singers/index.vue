@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import ArtistCard from '~/components/artists/ArtistCard.vue'
-import { SingersService } from '~/composables/Services/SingersService'
+import { SingersService } from '~/Composables/Services/SingersService'
 import { Singer, type SingerInterface } from '~/core/Models/Singer'
 
 const _SingersService = SingersService()

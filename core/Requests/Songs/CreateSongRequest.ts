@@ -58,7 +58,7 @@ export class CreateSongRequest implements CreateSongRequestInterface {
     })
   }
 
-  public static async FromInfo(form: any): Promise<CreateSongRequestInterface> {
+  public static async FromInfoAsync(form: any): Promise<CreateSongRequestInterface> {
     const request = CreateSongRequest.Empty()
 
     request.Titles = form.titles
@@ -68,48 +68,46 @@ export class CreateSongRequest implements CreateSongRequestInterface {
     request.Tags = form.tags
 
     request.ThumbnailFile = {
-      File: await ToBase64(form.thumbnailFile.files[0]),
-      FileType: form.thumbnailFile.files[0].type ?? 'image/png',
-      Language: form.thumbnailFile.language,
-      FileName: form.thumbnailFile.files[0].name,
+      File: await ToBase64(form.thumbnailFiles[0].file as File),
+      FileType: form.thumbnailFiles[0].file.type ?? 'image/png',
+      Language: '', // We don't need language for thumbnail
+      FileName: form.thumbnailFiles[0].file.name,
     }
 
     request.PreviewFile = {
-      File: await ToBase64(form.previewFile.files[0]),
-      FileType: form.previewFile.files[0].type ?? 'audio/ogg',
-      Language: form.previewFile.language,
-      FileName: form.previewFile.files[0].name,
+      File: await ToBase64(form.previewFiles[0].file as File),
+      FileType: form.previewFiles[0].file.type ?? 'audio/ogg',
+      Language: '', // We don't need language for preview
+      FileName: form.previewFiles[0].file.name,
     }
 
     request.VoiceFile = {
-      File: await ToBase64(form.voiceFile.files[0]),
-      FileType: form.voiceFile.files[0].type ?? 'audio/ogg',
-      Language: form.voiceFile.language,
-      FileName: form.voiceFile.files[0].name,
+      File: await ToBase64(form.voiceFiles[0].file as File),
+      FileType: form.voiceFiles[0].file.type ?? 'audio/ogg',
+      Language: '', // We don't need language for voice
+      FileName: form.voiceFiles[0].file.name,
     }
 
     request.InstrumentalFile = {
-      File: await ToBase64(form.instrumentalFile.files[0]),
-      FileType: form.instrumentalFile.files[0].type ?? 'audio/ogg',
-      Language: form.instrumentalFile.language,
-      FileName: form.instrumentalFile.files[0].name,
+      File: await ToBase64(form.instrumentalFiles[0].file as File),
+      FileType: form.instrumentalFiles[0].file.type ?? 'audio/ogg',
+      Language: '',
+      FileName: form.instrumentalFiles[0].file.name,
     }
 
-    // Note(Mikyan): We may need to do something more robust here.
-    // AutoMapper for TS...?
     request.LyricsFiles = (await Promise.allSettled(form.lyricsFiles.map(async (f: any) => {
       return {
-        File: await ToBase64(f.Files[0]),
+        File: await ToBase64(f.files[0].file as File),
         FileType: f.files[0].type ?? 'text/txt',
         Language: f.language,
-        FileName: f.liles[0].name,
+        FileName: f.files[0].name,
       }
     }))).map((e: any) => e.value as LocalizedFileInterface)
 
     request.KaraokeFiles = (await Promise.allSettled(form.karaokeFiles.map(async (f: any) => {
       return {
-        File: await ToBase64(f.files[0]),
-        FileType: f.files[0].type ?? 'text/txt',
+        File: await ToBase64(f.files[0].file as File),
+        FileType: f.files[0].type ?? 'subtitles/ass',
         Language: f.language,
         FileName: f.files[0].name,
       }

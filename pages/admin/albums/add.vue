@@ -1,6 +1,9 @@
 <script setup lang="ts">
-import { useAlbumsService } from '~/composables/Services/AlbumsService'
+import Multiselect from '@vueform/multiselect'
+import { useAlbumsService } from '~/Composables/Services/AlbumsService'
+import { useSingersService } from '~/Composables/Services/SingersService'
 import type { LocalizedStringInterface } from '~/core/Models/LocalizedString'
+import { CreateAlbumRequest } from '~/core/Requests/Albums/CreateAlbumRequest'
 
 definePageMeta({
   layout: 'admin',
@@ -10,32 +13,38 @@ definePageMeta({
   // },
 })
 
+interface TagOption {
+  label: string
+  value: string
+}
+
 const AlbumsService = useAlbumsService()
+const SingersService = useSingersService()
 
-const Names = ref<LocalizedStringInterface[]>([
+const Titles = ref<LocalizedStringInterface[]>([
   {
     Text: '',
     Language: 'Japanese',
   },
 ])
 
-const Nicknames = ref<LocalizedStringInterface[]>([
-  {
-    Text: '',
-    Language: 'Japanese',
-  },
-])
+const Singers = ref<TagOption[]>([])
+
+async function SearchSingersAsync(query: string) {
+  const response = await SingersService.SearchAsync(query)
+
+  return response.map(singer => ({
+    label: `${singer.Names[0].Text} (${singer.Names[1].Text})`,
+    value: singer.Id,
+  }))
+}
 
 async function OnSubmit(content: any) {
-  await AlbumsService.CreateAsync({
-    Titles: content.titles,
-    Songs: content.songs,
-    Cover: {
-      File: await ToBase64(content.images[0].file as File),
-      FileType: (content.images[0].file as File).type,
-      FileName: (content.images[0].file as File).name,
-    },
-  })
+  content.singers = Singers.value.map(s => s.value)
+
+  const request = await CreateAlbumRequest.FromInfoAsync(content)
+
+  await AlbumsService.CreateAsync(request)
 }
 </script>
 
@@ -46,11 +55,11 @@ async function OnSubmit(content: any) {
         <div class="h-0.75 w-14 rounded-full dark:bg-white" />
 
         <h2 class="text-2xl font-semibold">
-          Create Singer
+          Create Album
         </h2>
       </div>
       <div class="mb-4 mt-2 text-sm text-gray-400">
-        Add a new singer to the catalog of Utapoi Karaoke.
+        Add a new album to the catalog of Utapoi Karaoke.
       </div>
     </div>
     <div>
@@ -62,9 +71,9 @@ async function OnSubmit(content: any) {
           @submit="OnSubmit"
         >
           <div class="flex items-start justify-end gap-6 rounded-xl bg-secondary p-5">
-            <!-- Names -->
+            <!-- Titles -->
             <div w-full>
-              <FormKit v-slot="{ items, node, value }" :value="Names" type="list" dynamic name="names">
+              <FormKit v-slot="{ items, node, value }" :value="Titles" type="list" dynamic name="titles">
                 <div v-for="(item, index) in items" :key="item as any" class="flex gap-4">
                   <FormKit
                     :index="index"
@@ -134,9 +143,9 @@ async function OnSubmit(content: any) {
               </FormKit>
             </div>
 
-            <!-- Birthday -->
+            <!-- Release Date -->
             <div>
-              <FormKit type="group" name="birthday">
+              <FormKit type="group" name="releaseDate">
                 <div class="w-full flex items-start justify-end gap-4">
                   <FormKit
                     :classes="{
@@ -188,88 +197,40 @@ async function OnSubmit(content: any) {
                   />
                 </div>
                 <div class="text-sm text-gray-400 -mt-3">
-                  The birthday of the singer.
+                  The release date of the album.
                 </div>
               </FormKit>
             </div>
           </div>
 
-          <div class="mt-2 flex items-start justify-end gap-6 rounded-xl bg-secondary p-5">
-            <!-- Nicknames -->
-            <div w-full>
-              <FormKit v-slot="{ items, node, value }" :value="Nicknames" type="list" dynamic name="nicknames">
-                <div v-for="(item, index) in items" :key="item as any" class="flex gap-4">
-                  <FormKit
-                    :index="index"
-                    type="group"
-                  >
-                    <FormKit
-                      v-motion-pop
-                      :classes="{
-                        input: 'text-white',
-                        inner: 'rounded-full px-2 bg-tertiary',
-                        label: 'mb-1',
-                        wrapper: 'w-xs',
-                      }"
-                      :label="index === 0 ? 'Nickname' : ''"
-                      :validation-messages="{
-                        required: 'This field is required.',
-                      }"
-                      name="text"
-                      placeholder="Singer nickname"
-                      type="text"
-                      validation="required"
-                    />
-                    <FormKit
-                      v-motion-pop
-                      :classes="{
-                        input: 'text-white',
-                        inner: 'rounded-full bg-tertiary',
-                        label: 'mb-1',
-                        option: 'bg-tertiary !text-white',
-                      }"
-                      :label="index === 0 ? 'Language' : ''"
-                      :options="['English', 'French', 'Japanese', 'Chinese']"
-                      :validation-messages="{
-                        required: 'This field is required.',
-                      }"
-                      name="language"
-                      placeholder="Select language"
-                      type="select"
-                      validation="required"
-                    />
-
-                    <div class="h-full w-16 flex items-center justify-start" :class="{ 'pt-8.5': index === 0, 'pt-2.25': index !== 0 }">
-                      <FormKit
-                        v-if="index > 0"
-                        v-motion-pop
-                        :classes="{
-                          input: '!text-red-400 !text-lg !p-0.5 !bg-transparent',
-                        }"
-                        type="button"
-                        @click="() => node.input(value.filter((_: any, i: number) => i !== index))"
-                      >
-                        <span class="i-fluent:delete-16-filled" />
-                      </FormKit>
-                      <FormKit
-                        v-motion-pop
-                        :classes="{
-                          input: '!text-green-400 !text-lg !p-0.5 !bg-transparent',
-                        }"
-                        type="button"
-                        @click="() => node.input(value.concat({ Text: '', Language: 'Japanese' }))"
-                      >
-                        <span class="i-fluent:add-16-filled" />
-                      </FormKit>
-                    </div>
-                  </FormKit>
-                </div>
-              </FormKit>
+          <div class="mt-2 flex items-center justify-between gap-4 rounded-xl bg-secondary p-5">
+            <!-- Singers -->
+            <div class="w-full lg:w-1/2">
+              <div
+                class="mb-2 text-sm font-semibold text-white"
+              >
+                Singers
+              </div>
+              <Multiselect
+                v-model="Singers"
+                :close-on-select="false"
+                :delay="150"
+                :filter-results="false"
+                :min-chars="3"
+                :options="async (query: string) => {
+                  return await SearchSingersAsync(query)
+                }"
+                :resolve-on-load="false"
+                :searchable="true"
+                class="multiselect-dark !border-gray-400 !rounded-full"
+                mode="tags"
+                placeholder="Select singers"
+              />
             </div>
           </div>
 
           <div class="mt-2 flex items-start justify-between gap-4 rounded-xl bg-secondary p-5">
-            <!-- Thumbnail -->
+            <!-- Cover -->
             <div class="w-1/2">
               <FormKit
                 :classes="{
@@ -285,7 +246,7 @@ async function OnSubmit(content: any) {
                   required: 'This field is required.',
                 }"
                 accept=".jpg,.jpeg,.png,.webp"
-                name="images"
+                name="coverFiles"
                 help="Accepted formats: jpg, jpeg, png, webp. Max size: 100 KB."
                 label="Profile Picture File"
                 multiple="false"
@@ -309,3 +270,32 @@ async function OnSubmit(content: any) {
     </div>
   </div>
 </template>
+
+<style src="@vueform/multiselect/themes/default.css">
+</style>
+
+<style>
+.multiselect-dark {
+  --ms-bg: #2b2b2b;
+  --ms-dropdown-bg: #2b2b2b;
+  --ms-border-color: #444;
+  --ms-tag-bg: #555;
+  --ms-tag-color: #fff;
+  --ms-option-bg-pointed: #555;
+  --ms-option-color-pointed: #fff;
+  --ms-option-bg-selected: #555;
+  --ms-option-bg-selected-pointed: #555;
+}
+
+.multiselect-search {
+  border-radius: 9999px;
+}
+
+.multiselect-tags-search {
+  background-color: #2b2b2b!important;
+}
+
+.multiselect-tag  {
+  border-radius: 9999px;
+}
+</style>

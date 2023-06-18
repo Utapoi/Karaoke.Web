@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useAuthStore } from '~/composables/stores/AuthStore'
+import { useAuthStore } from '~/Composables/stores/AuthStore'
 
 const Route = useRoute()
 const AuthStore = useAuthStore()

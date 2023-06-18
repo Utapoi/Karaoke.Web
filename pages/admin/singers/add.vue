@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import { useSingersService } from '~/Composables/Services/SingersService'
 import type { LocalizedStringInterface } from '~/core/Models/LocalizedString'
+import { CreateSingerRequest } from '~/core/Requests/Singers/CreateSingerRequest'
 
 definePageMeta({
   layout: 'admin',
@@ -9,7 +11,7 @@ definePageMeta({
   // },
 })
 
-const HttpClient = useHttpClient()
+const SingersService = useSingersService()
 
 const Names = ref<LocalizedStringInterface[]>([
   {
@@ -26,19 +28,9 @@ const Nicknames = ref<LocalizedStringInterface[]>([
 ])
 
 async function OnSubmit(content: any) {
-  await HttpClient.Post<string>('/Singers',
-    {},
-    {
-      Names: content.names,
-      Nicknames: content.nicknames,
-      Birthday: new Date(content.birthday.year, content.birthday.month, content.birthday.day),
-      Image: {
-        File: await ToBase64(content.images[0].file as File),
-        FileType: (content.images[0].file as File).type,
-        FileName: (content.images[0].file as File).name,
-      },
-    },
-  )
+  const request = await CreateSingerRequest.FromInfoAsync(content)
+
+  await SingersService.CreateAsync(request)
 }
 </script>
 
@@ -272,7 +264,7 @@ async function OnSubmit(content: any) {
           </div>
 
           <div class="mt-2 flex items-start justify-between gap-4 rounded-xl bg-secondary p-5">
-            <!-- Thumbnail -->
+            <!-- Profile Picure -->
             <div class="w-1/2">
               <FormKit
                 :classes="{
@@ -288,7 +280,7 @@ async function OnSubmit(content: any) {
                   required: 'This field is required.',
                 }"
                 accept=".jpg,.jpeg,.png,.webp"
-                name="images"
+                name="profilePictureFiles"
                 help="Accepted formats: jpg, jpeg, png, webp. Max size: 100 KB."
                 label="Profile Picture File"
                 multiple="false"

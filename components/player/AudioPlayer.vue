@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Howl } from 'howler'
-import { PlayerState, usePlayerStore } from '~/composables/player-store'
+import { PlayerState, usePlayerStore } from '~/Composables/player-store'
 
 const props = defineProps<{
   instrumentalUrl: string
