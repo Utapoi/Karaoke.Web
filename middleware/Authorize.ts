@@ -1,4 +1,4 @@
-import { useAuthStore } from '~/Composables/stores/AuthStore'
+import { useAuthStore } from '~/Composables/Stores/AuthStore'
 
 interface AuthMiddlewareOptions {
   Role: string | null

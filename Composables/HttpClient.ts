@@ -1,5 +1,5 @@
 import { createFetch } from '@vueuse/core'
-import { useAuthStore } from './stores/AuthStore'
+import { useAuthStore } from '~/Composables/Stores/AuthStore'
 
 export function useHttpClient() {
   const RuntimeConfig = useRuntimeConfig()
