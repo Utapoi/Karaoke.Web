@@ -13,6 +13,12 @@ export default defineNuxtConfig({
     '@formkit/nuxt',
   ],
 
+  colorMode: {
+    preference: 'system', // default value of $colorMode.preference
+    fallback: 'dark',
+    classSuffix: '',
+  },
+
   experimental: {
     // when using generate, payload js assets included in sw precache manifest
     // but missing on offline, disabling extraction it until fixed
@@ -24,10 +30,6 @@ export default defineNuxtConfig({
   css: [
     '@unocss/reset/tailwind.css',
   ],
-
-  colorMode: {
-    classSuffix: '',
-  },
 
   nitro: {
     experimental: {

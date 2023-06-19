@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useUsersService } from '~/Composables/Services/UsersService'
 import { useAuthStore } from '~/Composables/stores/AuthStore'
+import DarkToggle from '~/components/Common/DarkToggle.vue'
 
 const Route = useRoute()
 const AuthStore = useAuthStore()
@@ -44,15 +45,20 @@ onMounted(async () => {
           </NuxtLink>
         </div>
 
-        <div v-if="AuthStore.IsConnected">
-          <AvatarCard />
-        </div>
-        <div v-else class="flex items-center gap-2">
-          <NuxtLink to="/auth/login">
-            <div class="border border-[#f90b31] rounded-full px-3 py-1 text-sm text-[#f90b31] transition-all duration-200 hover:cursor-pointer hover:bg-[#f90b31] hover:text-white">
-              Login
-            </div>
-          </NuxtLink>
+        <div class="flex items-center gap-4">
+          <div class="flex items-center gap-4">
+            <DarkToggle />
+          </div>
+          <div v-if="AuthStore.IsConnected">
+            <AvatarCard />
+          </div>
+          <div v-else class="flex items-center gap-2">
+            <NuxtLink to="/auth/login">
+              <div class="border border-[#f90b31] rounded-full px-3 py-1 text-sm text-[#f90b31] transition-all duration-200 hover:cursor-pointer hover:bg-[#f90b31] hover:text-white">
+                Login
+              </div>
+            </NuxtLink>
+          </div>
         </div>
       </div>
     </section>

@@ -1,6 +1,7 @@
 import type { SongInterface } from '~/Core/Models/Song'
 import { Song } from '~/Core/Models/Song'
 import type { CreateSongRequest } from '~/Core/Requests/Songs/CreateSongRequest'
+import type { GetSongsResponse } from '~/Core/Responses/Songs/GetSongsResponse'
 
 /**
  * Provides a service for managing songs.
@@ -32,12 +33,12 @@ export function useSongsService() {
    * @returns The list of songs.
    */
   async function GetSongsAsync(skip = 0, take = 10): Promise<Song[]> {
-    const response = await Client.Get<SongInterface[]>(`/Songs?skip=${skip}&take=${take}`)
+    const response = await Client.Get<GetSongsResponse>(`/Songs?skip=${skip}&take=${take}`)
 
     if (response === undefined)
       return []
 
-    return response.map(s => Song.FromResponse(s))
+    return response.Items.map(s => Song.FromResponse(s))
   }
 
   /**

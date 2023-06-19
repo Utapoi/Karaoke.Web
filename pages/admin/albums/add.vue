@@ -18,6 +18,8 @@ interface TagOption {
   value: string
 }
 
+const ColorMode = useColorMode()
+
 const AlbumsService = useAlbumsService()
 const SingersService = useSingersService()
 
@@ -52,13 +54,13 @@ async function OnSubmit(content: any) {
   <div class="mx-auto h-full max-w-6xl px-12 py-8 container">
     <div class="mb-8">
       <div class="inline-flex items-center gap-4">
-        <div class="h-0.75 w-14 rounded-full dark:bg-white" />
+        <div class="bg-mocha-surface2 dark:bg-latte-surface2 h-0.75 w-14 rounded-full" />
 
-        <h2 class="text-2xl font-semibold">
+        <h2 class="text-latte-text dark:text-mocha-text text-2xl font-semibold">
           Create Album
         </h2>
       </div>
-      <div class="mb-4 mt-2 text-sm text-gray-400">
+      <div class="text-latte-subtext1 dark:text-mocha-subtext1 mb-4 mt-2 text-sm">
         Add a new album to the catalog of Utapoi Karaoke.
       </div>
     </div>
@@ -70,7 +72,7 @@ async function OnSubmit(content: any) {
           :actions="false"
           @submit="OnSubmit"
         >
-          <div class="flex items-start justify-end gap-6 rounded-xl bg-secondary p-5">
+          <div class="bg-latte-surface0 dark:bg-mocha-surface0 flex items-start justify-end gap-6 rounded-xl p-5 shadow dark:shadow-none">
             <!-- Titles -->
             <div w-full>
               <FormKit v-slot="{ items, node, value }" :value="Titles" type="list" dynamic name="titles">
@@ -82,9 +84,9 @@ async function OnSubmit(content: any) {
                     <FormKit
                       v-motion-pop
                       :classes="{
-                        input: 'text-white',
-                        inner: 'rounded-full px-2 bg-tertiary',
-                        label: 'mb-1',
+                        input: 'text-latte-subtext1 dark:text-mocha-subtext1',
+                        inner: 'rounded-full px-2 bg-latte-crust dark:bg-mocha-crust',
+                        label: 'mb-1 text-latte-text dark:text-mocha-text',
                         wrapper: 'w-xs',
                       }"
                       :label="index === 0 ? 'Name' : ''"
@@ -99,10 +101,10 @@ async function OnSubmit(content: any) {
                     <FormKit
                       v-motion-pop
                       :classes="{
-                        input: 'text-white',
-                        inner: 'rounded-full bg-tertiary',
-                        label: 'mb-1',
-                        option: 'bg-tertiary !text-white',
+                        input: 'text-latte-subtext1 dark:text-mocha-subtext1',
+                        inner: 'rounded-full px-2 bg-latte-crust dark:bg-mocha-crust',
+                        label: 'mb-1 text-latte-text dark:text-mocha-text',
+                        option: 'bg-latte-crust dark:bg-mocha-crust !text-latte-subtext1 !dark:text-mocha-subtext1',
                       }"
                       :label="index === 0 ? 'Language' : ''"
                       :options="['English', 'French', 'Japanese', 'Chinese']"
@@ -120,7 +122,7 @@ async function OnSubmit(content: any) {
                         v-if="index > 0"
                         v-motion-pop
                         :classes="{
-                          input: '!text-red-400 !text-lg !p-0.5 !bg-transparent',
+                          input: '!text-latte-red !dark:text-mocha-red !text-lg !p-0.5 !bg-transparent',
                         }"
                         type="button"
                         @click="() => node.input(value.filter((_: any, i: number) => i !== index))"
@@ -130,7 +132,7 @@ async function OnSubmit(content: any) {
                       <FormKit
                         v-motion-pop
                         :classes="{
-                          input: '!text-green-400 !text-lg !p-0.5 !bg-transparent',
+                          input: '!text-latte-green !dark:text-mocha-green !text-lg !p-0.5 !bg-transparent',
                         }"
                         type="button"
                         @click="() => node.input(value.concat({ Text: '', Language: 'Japanese' }))"
@@ -149,9 +151,9 @@ async function OnSubmit(content: any) {
                 <div class="w-full flex items-start justify-end gap-4">
                   <FormKit
                     :classes="{
-                      inner: 'rounded-full px-2 bg-tertiary',
-                      input: 'text-white',
-                      label: 'mb-1',
+                      input: 'text-latte-subtext1 dark:text-mocha-subtext1',
+                      inner: 'rounded-full px-2 bg-latte-crust dark:bg-mocha-crust',
+                      label: 'mb-1 text-latte-text dark:text-mocha-text',
                       wrapper: 'max-w-36',
                     }"
                     :validation-messages="{
@@ -165,9 +167,9 @@ async function OnSubmit(content: any) {
                   />
                   <FormKit
                     :classes="{
-                      inner: 'rounded-full px-2 bg-tertiary',
-                      input: 'text-white',
-                      label: 'mb-1',
+                      input: 'text-latte-subtext1 dark:text-mocha-subtext1',
+                      inner: 'rounded-full px-2 bg-latte-crust dark:bg-mocha-crust',
+                      label: 'mb-1 text-latte-text dark:text-mocha-text',
                       wrapper: 'max-w-36',
                     }"
                     :validation-messages="{
@@ -181,9 +183,9 @@ async function OnSubmit(content: any) {
                   />
                   <FormKit
                     :classes="{
-                      inner: 'rounded-full px-2 bg-tertiary',
-                      input: 'text-white',
-                      label: 'mb-1',
+                      input: 'text-latte-subtext1 dark:text-mocha-subtext1',
+                      inner: 'rounded-full px-2 bg-latte-crust dark:bg-mocha-crust',
+                      label: 'mb-1 text-latte-text dark:text-mocha-text',
                       wrapper: 'max-w-36',
                     }"
                     :validation-messages="{
@@ -196,18 +198,18 @@ async function OnSubmit(content: any) {
                     validation="between:1,31"
                   />
                 </div>
-                <div class="text-sm text-gray-400 -mt-3">
+                <div class="text-latte-subtext1 dark:text-mocha-subtext1 text-sm -mt-3">
                   The release date of the album.
                 </div>
               </FormKit>
             </div>
           </div>
 
-          <div class="mt-2 flex items-center justify-between gap-4 rounded-xl bg-secondary p-5">
+          <div class="bg-latte-surface0 dark:bg-mocha-surface0 mt-2 flex items-center justify-between gap-4 rounded-xl p-5">
             <!-- Singers -->
             <div class="w-full lg:w-1/2">
               <div
-                class="mb-2 text-sm font-semibold text-white"
+                class="text-latte-subtext1 dark:text-mocha-subtext1 mb-2 text-sm font-semibold"
               >
                 Singers
               </div>
@@ -222,24 +224,27 @@ async function OnSubmit(content: any) {
                 }"
                 :resolve-on-load="false"
                 :searchable="true"
-                class="multiselect-dark !border-gray-400 !rounded-full"
+                :class="{
+                  'multiselect-dark': ColorMode.value === 'dark',
+                  'multiselect-light': ColorMode.value === 'light',
+                }"
+                class="!border-latte-overlay1 !dark:border-mocha-overlay1 !rounded-full"
                 mode="tags"
                 placeholder="Select singers"
               />
             </div>
           </div>
 
-          <div class="mt-2 flex items-start justify-between gap-4 rounded-xl bg-secondary p-5">
+          <div class="bg-latte-surface0 dark:bg-mocha-surface0 mt-2 flex items-start justify-between gap-4 rounded-xl p-5">
             <!-- Cover -->
             <div class="w-1/2">
               <FormKit
                 :classes="{
-                  fileItem: 'text-white',
-                  fileRemoveIcon: 'text-white',
-                  help: 'text-gray-400 pt-1',
-                  inner: 'rounded-full px-2 bg-tertiary',
-                  input: 'text-white',
-                  label: 'mb-1',
+                  fileItem: 'text-latte-subtext1 dark:text-mocha-subtext1',
+                  fileRemoveIcon: 'text-latte-subtext1 dark:text-mocha-subtext1',
+                  help: 'text-latte-subtext1 dark:text-mocha-subtext1 pt-1',
+                  inner: 'rounded-full px-2 bg-latte-crust dark:bg-mocha-crust',
+                  label: 'mb-1 text-latte-text dark:text-mocha-text',
                   wrapper: '!max-w-full',
                 }"
                 :validation-messages="{
@@ -261,7 +266,7 @@ async function OnSubmit(content: any) {
               type="submit"
               :disabled="!valid"
               :classes="{
-                input: '!rounded-full px-2 !bg-green-700 uppercase font-semibold',
+                input: '!rounded-full px-2 !bg-latte-green !dark:bg-mocha-green uppercase font-semibold',
               }"
             />
           </div>
@@ -276,26 +281,42 @@ async function OnSubmit(content: any) {
 
 <style>
 .multiselect-dark {
-  --ms-bg: #2b2b2b;
-  --ms-dropdown-bg: #2b2b2b;
+  --ms-bg: #171727;
+  --ms-dropdown-bg: #171727;
   --ms-border-color: #444;
-  --ms-tag-bg: #555;
+  --ms-tag-bg: #171727;
   --ms-tag-color: #fff;
-  --ms-option-bg-pointed: #555;
+  --ms-option-bg-pointed: #171727;
   --ms-option-color-pointed: #fff;
-  --ms-option-bg-selected: #555;
-  --ms-option-bg-selected-pointed: #555;
+  --ms-option-bg-selected: #171727;
+  --ms-option-bg-selected-pointed: #171727;
 }
 
-.multiselect-search {
+.multiselect-light {
+  --ms-bg: #dce0e8;
+  --ms-dropdown-bg: #dce0e8;
+  --ms-border-color: #444;
+  --ms-tag-bg: #dce0e8;
+  --ms-tag-color: #fff;
+  --ms-option-bg-pointed: #dce0e8;
+  --ms-option-color-pointed: #fff;
+  --ms-option-bg-selected: #dce0e8;
+  --ms-option-bg-selected-pointed: #dce0e8;
+}
+
+.multiselect-dark .multiselect-tags-search {
+  background-color: #171727!important;
+}
+
+.multiselect-light .multiselect-tags-search {
+  background-color: #dce0e8!important;
+}
+
+.multiselect-tag {
   border-radius: 9999px;
 }
 
-.multiselect-tags-search {
-  background-color: #2b2b2b!important;
-}
-
-.multiselect-tag  {
+.multiselect-search {
   border-radius: 9999px;
 }
 </style>

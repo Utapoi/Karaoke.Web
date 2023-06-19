@@ -39,6 +39,10 @@ export class Song {
     this.PreviewUrl = song.PreviewUrl
   }
 
+  public GetAlbum(): Album {
+    return this.Albums[0] ?? Album.Empty()
+  }
+
   public GetTitle(language: string): string {
     const title = this.Titles.find((title: LocalizedString) => title.Language === language)
 
@@ -46,6 +50,10 @@ export class Song {
       return title.Text
 
     return this.Titles[0].Text
+  }
+
+  public GetSinger(): Singer {
+    return this.Singers[0] ?? Singer.Empty()
   }
 
   public static FromResponse(info: SongInterface): Song {

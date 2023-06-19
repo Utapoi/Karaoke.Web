@@ -26,6 +26,20 @@ export function useSingersService() {
   }
 
   /**
+   * Get a singer by id.
+   * @param id The id of the singer.
+   * @returns The singer.
+   */
+  async function GetAsync(id: string): Promise<Singer | undefined> {
+    const response = await Client.Get<Singer>(`/Singers/${id}`)
+
+    if (response === undefined)
+      return undefined
+
+    return Singer.FromResponse(response)
+  }
+
+  /**
    * Get a paginated list of singers.
    * @param skip The number of items to skip.
    * @param take The number of items to take.
@@ -56,6 +70,7 @@ export function useSingersService() {
 
   return {
     CreateAsync,
+    GetAsync,
     GetSingersAsync,
     SearchAsync,
   }

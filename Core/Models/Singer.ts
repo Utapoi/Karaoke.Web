@@ -28,6 +28,16 @@ export class Singer {
     this.Songs = singer.Songs.map((song: SongInterface) => Song.FromResponse(song))
   }
 
+  public static Empty(): Singer {
+    return new Singer({
+      Id: '',
+      Names: [],
+      ProfilePicture: '',
+      Albums: [],
+      Songs: [],
+    })
+  }
+
   public GetName(language: string): string {
     const name = this.Names.find((name: LocalizedString) => name.Language === language)
 

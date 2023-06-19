@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ArtistCard from '~/Components/Artists/ArtistCard.vue'
+import ArtistCard from '~/components/Artists/ArtistCard.vue'
 import { useSingersService } from '~/Composables/Services/SingersService'
 import type { Singer } from '~/Core/Models/Singer'
 

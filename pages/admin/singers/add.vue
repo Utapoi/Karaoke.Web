@@ -11,6 +11,8 @@ definePageMeta({
   // },
 })
 
+const ColorMode = useColorMode()
+
 const SingersService = useSingersService()
 
 const Names = ref<LocalizedStringInterface[]>([
@@ -38,13 +40,13 @@ async function OnSubmit(content: any) {
   <div class="mx-auto h-full max-w-6xl px-12 py-8 container">
     <div class="mb-8">
       <div class="inline-flex items-center gap-4">
-        <div class="h-0.75 w-14 rounded-full dark:bg-white" />
+        <div class="bg-mocha-surface2 dark:bg-latte-surface2 h-0.75 w-14 rounded-full" />
 
-        <h2 class="text-2xl font-semibold">
+        <h2 class="text-latte-text dark:text-mocha-text text-2xl font-semibold">
           Create Singer
         </h2>
       </div>
-      <div class="mb-4 mt-2 text-sm text-gray-400">
+      <div class="text-latte-subtext1 dark:text-mocha-subtext1 mb-4 mt-2 text-sm">
         Add a new singer to the catalog of Utapoi Karaoke.
       </div>
     </div>
@@ -56,11 +58,11 @@ async function OnSubmit(content: any) {
           :actions="false"
           @submit="OnSubmit"
         >
-          <div class="flex items-start justify-end gap-6 rounded-xl bg-secondary p-5">
+          <div class="bg-latte-surface0 dark:bg-mocha-surface0 flex items-start justify-end gap-6 rounded-xl p-5 shadow dark:shadow-none">
             <!-- Names -->
             <div w-full>
               <FormKit v-slot="{ items, node, value }" :value="Names" type="list" dynamic name="names">
-                <div v-for="(item, index) in items" :key="item as any" class="flex gap-4">
+                <div v-for="(item, index) in items" :key="(item as LocalizedStringInterface).Text" class="flex gap-4">
                   <FormKit
                     :index="index"
                     type="group"
@@ -68,9 +70,9 @@ async function OnSubmit(content: any) {
                     <FormKit
                       v-motion-pop
                       :classes="{
-                        input: 'text-white',
-                        inner: 'rounded-full px-2 bg-tertiary',
-                        label: 'mb-1',
+                        input: 'text-latte-subtext1 dark:text-mocha-subtext1',
+                        inner: 'rounded-full px-2 bg-latte-crust dark:bg-mocha-crust',
+                        label: 'mb-1 text-latte-text dark:text-mocha-text',
                         wrapper: 'w-xs',
                       }"
                       :label="index === 0 ? 'Name' : ''"
@@ -85,10 +87,10 @@ async function OnSubmit(content: any) {
                     <FormKit
                       v-motion-pop
                       :classes="{
-                        input: 'text-white',
-                        inner: 'rounded-full bg-tertiary',
-                        label: 'mb-1',
-                        option: 'bg-tertiary !text-white',
+                        input: 'text-latte-subtext1 dark:text-mocha-subtext1',
+                        inner: 'rounded-full px-2 bg-latte-crust dark:bg-mocha-crust',
+                        label: 'mb-1 text-latte-text dark:text-mocha-text',
+                        option: 'bg-latte-crust dark:bg-mocha-crust !text-latte-subtext1 !dark:text-mocha-subtext1',
                       }"
                       :label="index === 0 ? 'Language' : ''"
                       :options="['English', 'French', 'Japanese', 'Chinese']"
@@ -106,7 +108,7 @@ async function OnSubmit(content: any) {
                         v-if="index > 0"
                         v-motion-pop
                         :classes="{
-                          input: '!text-red-400 !text-lg !p-0.5 !bg-transparent',
+                          input: '!text-latte-red !dark:text-mocha-red !text-lg !p-0.5 !bg-transparent',
                         }"
                         type="button"
                         @click="() => node.input(value.filter((_: any, i: number) => i !== index))"
@@ -116,7 +118,7 @@ async function OnSubmit(content: any) {
                       <FormKit
                         v-motion-pop
                         :classes="{
-                          input: '!text-green-400 !text-lg !p-0.5 !bg-transparent',
+                          input: '!text-latte-green !dark:text-mocha-green !text-lg !p-0.5 !bg-transparent',
                         }"
                         type="button"
                         @click="() => node.input(value.concat({ Text: '', Language: 'Japanese' }))"
@@ -135,9 +137,9 @@ async function OnSubmit(content: any) {
                 <div class="w-full flex items-start justify-end gap-4">
                   <FormKit
                     :classes="{
-                      inner: 'rounded-full px-2 bg-tertiary',
-                      input: 'text-white',
-                      label: 'mb-1',
+                      input: 'text-latte-subtext1 dark:text-mocha-subtext1',
+                      inner: 'rounded-full px-2 bg-latte-crust dark:bg-mocha-crust',
+                      label: 'mb-1 text-latte-text dark:text-mocha-text',
                       wrapper: 'max-w-36',
                     }"
                     :validation-messages="{
@@ -151,9 +153,9 @@ async function OnSubmit(content: any) {
                   />
                   <FormKit
                     :classes="{
-                      inner: 'rounded-full px-2 bg-tertiary',
-                      input: 'text-white',
-                      label: 'mb-1',
+                      input: 'text-latte-subtext1 dark:text-mocha-subtext1',
+                      inner: 'rounded-full px-2 bg-latte-crust dark:bg-mocha-crust',
+                      label: 'mb-1 text-latte-text dark:text-mocha-text',
                       wrapper: 'max-w-36',
                     }"
                     :validation-messages="{
@@ -167,9 +169,9 @@ async function OnSubmit(content: any) {
                   />
                   <FormKit
                     :classes="{
-                      inner: 'rounded-full px-2 bg-tertiary',
-                      input: 'text-white',
-                      label: 'mb-1',
+                      input: 'text-latte-subtext1 dark:text-mocha-subtext1',
+                      inner: 'rounded-full px-2 bg-latte-crust dark:bg-mocha-crust',
+                      label: 'mb-1 text-latte-text dark:text-mocha-text',
                       wrapper: 'max-w-36',
                     }"
                     :validation-messages="{
@@ -182,14 +184,14 @@ async function OnSubmit(content: any) {
                     validation="between:1,31"
                   />
                 </div>
-                <div class="text-sm text-gray-400 -mt-3">
+                <div class="text-latte-subtext1 dark:text-mocha-subtext1 text-sm -mt-3">
                   The birthday of the singer.
                 </div>
               </FormKit>
             </div>
           </div>
 
-          <div class="mt-2 flex items-start justify-end gap-6 rounded-xl bg-secondary p-5">
+          <div class="bg-latte-surface0 dark:bg-mocha-surface0 mt-2 flex items-start justify-end gap-6 rounded-xl p-5">
             <!-- Nicknames -->
             <div w-full>
               <FormKit v-slot="{ items, node, value }" :value="Nicknames" type="list" dynamic name="nicknames">
@@ -201,9 +203,9 @@ async function OnSubmit(content: any) {
                     <FormKit
                       v-motion-pop
                       :classes="{
-                        input: 'text-white',
-                        inner: 'rounded-full px-2 bg-tertiary',
-                        label: 'mb-1',
+                        input: 'text-latte-subtext1 dark:text-mocha-subtext1',
+                        inner: 'rounded-full px-2 bg-latte-crust dark:bg-mocha-crust',
+                        label: 'mb-1 text-latte-text dark:text-mocha-text',
                         wrapper: 'w-xs',
                       }"
                       :label="index === 0 ? 'Nickname' : ''"
@@ -218,10 +220,10 @@ async function OnSubmit(content: any) {
                     <FormKit
                       v-motion-pop
                       :classes="{
-                        input: 'text-white',
-                        inner: 'rounded-full bg-tertiary',
-                        label: 'mb-1',
-                        option: 'bg-tertiary !text-white',
+                        input: 'text-latte-subtext1 dark:text-mocha-subtext1',
+                        inner: 'rounded-full px-2 bg-latte-crust dark:bg-mocha-crust',
+                        label: 'mb-1 text-latte-text dark:text-mocha-text',
+                        option: 'bg-latte-crust dark:bg-mocha-crust !text-latte-subtext1 !dark:text-mocha-subtext1',
                       }"
                       :label="index === 0 ? 'Language' : ''"
                       :options="['English', 'French', 'Japanese', 'Chinese']"
@@ -239,7 +241,7 @@ async function OnSubmit(content: any) {
                         v-if="index > 0"
                         v-motion-pop
                         :classes="{
-                          input: '!text-red-400 !text-lg !p-0.5 !bg-transparent',
+                          input: '!text-latte-red !dark:text-mocha-red !text-lg !p-0.5 !bg-transparent',
                         }"
                         type="button"
                         @click="() => node.input(value.filter((_: any, i: number) => i !== index))"
@@ -249,7 +251,7 @@ async function OnSubmit(content: any) {
                       <FormKit
                         v-motion-pop
                         :classes="{
-                          input: '!text-green-400 !text-lg !p-0.5 !bg-transparent',
+                          input: '!text-latte-green !dark:text-mocha-green !text-lg !p-0.5 !bg-transparent',
                         }"
                         type="button"
                         @click="() => node.input(value.concat({ Text: '', Language: 'Japanese' }))"
@@ -263,17 +265,16 @@ async function OnSubmit(content: any) {
             </div>
           </div>
 
-          <div class="mt-2 flex items-start justify-between gap-4 rounded-xl bg-secondary p-5">
+          <div class="bg-latte-surface0 dark:bg-mocha-surface0 mt-2 flex items-start justify-between gap-4 rounded-xl p-5">
             <!-- Profile Picure -->
             <div class="w-1/2">
               <FormKit
                 :classes="{
-                  fileItem: 'text-white',
-                  fileRemoveIcon: 'text-white',
-                  help: 'text-gray-400 pt-1',
-                  inner: 'rounded-full px-2 bg-tertiary',
-                  input: 'text-white',
-                  label: 'mb-1',
+                  fileItem: 'text-latte-subtext1 dark:text-mocha-subtext1',
+                  fileRemoveIcon: 'text-latte-subtext1 dark:text-mocha-subtext1',
+                  help: 'text-latte-subtext1 dark:text-mocha-subtext1 pt-1',
+                  inner: 'rounded-full px-2 bg-latte-crust dark:bg-mocha-crust',
+                  label: 'mb-1 text-latte-text dark:text-mocha-text',
                   wrapper: '!max-w-full',
                 }"
                 :validation-messages="{
@@ -295,7 +296,7 @@ async function OnSubmit(content: any) {
               type="submit"
               :disabled="!valid"
               :classes="{
-                input: '!rounded-full px-2 !bg-green-700 uppercase font-semibold',
+                input: '!rounded-full px-2 !bg-latte-green !dark:bg-mocha-green uppercase font-semibold',
               }"
             />
           </div>

@@ -22,9 +22,14 @@ html, body , #__nuxt{
     "Noto Color Emoji";
 }
 
-html {
-  background: #1e1e2e;
-  color: white;
+html.dark {
+  /* Equivalent of Catppuccin mocha-base */
+  background-color: #1e1e2e;
+}
+
+html.light {
+  /* Equivalent of Catppuccin latte-base */
+  background-color: #eff1f5;
 }
 
 input {
