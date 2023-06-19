@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { Howl } from 'howler'
-import type { SongInterface } from '~/Core/Models/Song'
-import ProgressRing from '~/components/common/ProgressRing.vue'
+import type { Song } from '~/Core/Models/Song'
+import ProgressRing from '~/components/Common/ProgressRing.vue'
 
 const props = defineProps<{
-  song: SongInterface
+  song: Song
 }>()
 
 // Variables
@@ -107,7 +107,7 @@ onMounted(() => {
             <div class="w-full flex items-center justify-between">
               <NuxtLink :to="`/songs/${song.Id}`" class="w-min">
                 <div class="relative line-clamp-1 block w-full text-ellipsis whitespace-nowrap text-lg font-semibold text-main hover:cursor-pointer">
-                  {{ song.Titles[0].Text }}
+                  {{ song.GetTitle('English') }}
                 </div>
               </NuxtLink>
               <div class="hidden md:block">

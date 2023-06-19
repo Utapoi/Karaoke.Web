@@ -21,7 +21,7 @@ Singers.value = await SingersService.GetSingersAsync(0, 15)
 <template>
   <div class="w-full">
     <div class="w-full px-12 pt-8">
-      <div class="w-full rounded-xl bg-[#222] p-3 shadow">
+      <div class="bg-mocha-surface0 w-full rounded-xl p-3 shadow">
         <div class="flex items-center gap-2">
           <span class="text-sm">{{ Singers.length }} artists</span>
           <div class="mx-2 h-9 w-0.25 bg-gray-500" />
@@ -48,7 +48,7 @@ Singers.value = await SingersService.GetSingersAsync(0, 15)
     <div class="w-full px-12 pt-4">
       <div class="relative overflow-x-auto shadow-md sm:rounded-xl">
         <table class="w-full text-left text-sm text-gray-500 dark:text-gray-400" aria-describedby="Singers">
-          <thead class="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-[#222] dark:text-gray-400">
+          <thead class="dark:bg-mocha-surface0 bg-gray-50 text-xs uppercase text-gray-700 dark:text-gray-400">
             <tr>
               <th scope="col" class="px-6 py-3">
                 Name
@@ -65,7 +65,7 @@ Singers.value = await SingersService.GetSingersAsync(0, 15)
             </tr>
           </thead>
           <tbody v-if="Singers.length > 0">
-            <tr v-for="singer in Singers" :key="singer.Id" class="bg-white transition-all duration-100 dark:bg-[#333] hover:bg-gray-50 dark:hover:bg-[#474747]">
+            <tr v-for="singer in Singers" :key="singer.Id" class="dark:bg-mocha-surface1 bg-white transition-all duration-100 hover:bg-gray-50 dark:hover:bg-[#474747]">
               <th scope="row" class="whitespace-nowrap px-6 py-4 font-medium text-gray-800 dark:text-white">
                 {{ singer.GetName('English') }}
               </th>

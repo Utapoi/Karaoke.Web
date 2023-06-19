@@ -1,4 +1,9 @@
 import {
+  labels as ctpLabels,
+  variants as ctpVariants,
+} from '@catppuccin/palette'
+
+import {
   defineConfig,
   presetAttributify,
   presetIcons,
@@ -7,6 +12,20 @@ import {
   transformerDirectives,
   transformerVariantGroup,
 } from 'unocss'
+
+function extendCatppuccin() {
+  const coloursObject: any = {}
+
+  for (const variant of Object.keys(ctpVariants)) {
+    for (const label of Object.keys(ctpLabels)) {
+      const key = `${variant}-${label}`
+
+      coloursObject[key] = (ctpVariants as any)[variant][label].hex
+    }
+  }
+
+  return coloursObject
+}
 
 export default defineConfig({
   presets: [
@@ -47,6 +66,7 @@ export default defineConfig({
     'max-w-10xl': 'max-w-95rem',
   },
   theme: {
+    colors: extendCatppuccin(),
     breakpoints: {
       'sm': '640px',
       'md': '768px',
@@ -55,6 +75,7 @@ export default defineConfig({
       '2xl': '1536px',
       '3xl': '1920px',
       '4xl': '2560px',
+      '5xl': '3840px',
     },
   },
 })

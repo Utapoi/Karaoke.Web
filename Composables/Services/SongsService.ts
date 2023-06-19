@@ -31,7 +31,7 @@ export function useSongsService() {
    * @param take The number of songs to take.
    * @returns The list of songs.
    */
-  async function GetSongsAsync(skip: number, take: number): Promise<Song[]> {
+  async function GetSongsAsync(skip = 0, take = 10): Promise<Song[]> {
     const response = await Client.Get<SongInterface[]>(`/Songs?skip=${skip}&take=${take}`)
 
     if (response === undefined)

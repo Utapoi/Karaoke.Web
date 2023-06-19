@@ -1,70 +1,11 @@
 <script setup lang="ts">
-import SongCard from '~/components/songs/SongCard.vue'
-import type { SongInterface } from '~/Core/Models/Song'
+import SongCard from '~/components/Songs/SongCard.vue'
+import { useSongsService } from '~/Composables/Services/SongsService'
+import type { Song } from '~/Core/Models/Song'
 
-const RainbowFlower: SongInterface = {
-  Id: '3',
-  Titles: [
-    {
-      Language: 'English',
-      Text: 'Rainbow Flower',
-    },
-    {
-      Language: 'Japanese',
-      Text: '虹の花',
-    },
-  ],
-  Singers: [
-    {
-      Id: '1',
-      Names: [
-        {
-          Language: 'English',
-          Text: 'Tachibana Hibiki (CV: Yuuki Aoi)',
-        },
-        {
-          Language: 'Japanese',
-          Text: '立花響 (CV: 悠木碧)',
-        },
-      ],
-      Albums: [],
-      Songs: [],
-      ProfilePicture: 'https://s4.anilist.co/file/anilistcdn/staff/large/n101686-PTd0lQZMsmcv.png',
-    }],
-  Albums: [{
-    Id: '3',
-    Titles: [
-      {
-        Language: 'English',
-        Text: 'Symphogear G Character Song 2',
-      },
-      {
-        Language: 'Japanese',
-        Text: '戦姫絶唱シンフォギアG キャラクターソング2',
-      },
-    ],
-    AlbumArt: 'https://static.wikia.nocookie.net/senkizesshousymphogear/images/a/a5/Symphogear_G_Character_Song_2.jpg',
-    Singers: [],
-    Songs: [],
-    Tags: [],
-  }],
-  Duration: '3:58',
-  Tags: [
-    {
-      Id: '1',
-      Name: 'Anime',
-    },
-    {
-      Id: '2',
-      Name: 'Symphogear',
-    },
-    {
-      Id: '3',
-      Name: 'Solo Artist',
-    },
-  ],
-  PreviewUrl: 'https://static.wikia.nocookie.net/senkizesshousymphogear/images/f/f5/Rainbow_Flower.ogg',
-}
+const SongsService = useSongsService()
+
+const Songs = ref<Song[]>(await SongsService.GetSongsAsync())
 </script>
 
 <template>
@@ -97,7 +38,9 @@ const RainbowFlower: SongInterface = {
             </div>
             <div class="grid grid-cols-1 mt-4 w-full justify-start gap-2 3xl:grid-cols-3 lg:grid-cols-2">
               <SongCard
-                :song="RainbowFlower"
+                v-for="song in Songs"
+                :key="song.Id"
+                :song="song"
               />
               <SongCard
                 :song="RainbowFlower"
