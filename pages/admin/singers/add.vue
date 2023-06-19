@@ -70,9 +70,9 @@ async function OnSubmit(content: any) {
                     <FormKit
                       v-motion-pop
                       :classes="{
-                        input: 'text-latte-subtext1 dark:text-mocha-subtext1',
+                        input: 'text-latte-subtext1 dark:text-mocha-subtext1 font-sans',
                         inner: 'rounded-full px-2 bg-latte-crust dark:bg-mocha-crust',
-                        label: 'mb-1 text-latte-text dark:text-mocha-text',
+                        label: 'mb-1 text-latte-text dark:text-mocha-text font-sans',
                         wrapper: 'w-xs',
                       }"
                       :label="index === 0 ? 'Name' : ''"
@@ -89,8 +89,8 @@ async function OnSubmit(content: any) {
                       :classes="{
                         input: 'text-latte-subtext1 dark:text-mocha-subtext1',
                         inner: 'rounded-full px-2 bg-latte-crust dark:bg-mocha-crust',
-                        label: 'mb-1 text-latte-text dark:text-mocha-text',
-                        option: 'bg-latte-crust dark:bg-mocha-crust !text-latte-subtext1 !dark:text-mocha-subtext1',
+                        label: 'mb-1 text-latte-text dark:text-mocha-text font-sans',
+                        option: 'bg-latte-crust dark:bg-mocha-crust !text-latte-subtext1 !dark:text-mocha-subtext1 font-sans',
                       }"
                       :label="index === 0 ? 'Language' : ''"
                       :options="['English', 'French', 'Japanese', 'Chinese']"
@@ -139,7 +139,7 @@ async function OnSubmit(content: any) {
                     :classes="{
                       input: 'text-latte-subtext1 dark:text-mocha-subtext1',
                       inner: 'rounded-full px-2 bg-latte-crust dark:bg-mocha-crust',
-                      label: 'mb-1 text-latte-text dark:text-mocha-text',
+                      label: 'mb-1 text-latte-text dark:text-mocha-text font-sans',
                       wrapper: 'max-w-36',
                     }"
                     :validation-messages="{
@@ -155,7 +155,7 @@ async function OnSubmit(content: any) {
                     :classes="{
                       input: 'text-latte-subtext1 dark:text-mocha-subtext1',
                       inner: 'rounded-full px-2 bg-latte-crust dark:bg-mocha-crust',
-                      label: 'mb-1 text-latte-text dark:text-mocha-text',
+                      label: 'mb-1 text-latte-text dark:text-mocha-text font-sans',
                       wrapper: 'max-w-36',
                     }"
                     :validation-messages="{
@@ -171,7 +171,7 @@ async function OnSubmit(content: any) {
                     :classes="{
                       input: 'text-latte-subtext1 dark:text-mocha-subtext1',
                       inner: 'rounded-full px-2 bg-latte-crust dark:bg-mocha-crust',
-                      label: 'mb-1 text-latte-text dark:text-mocha-text',
+                      label: 'mb-1 text-latte-text dark:text-mocha-text font-sans',
                       wrapper: 'max-w-36',
                     }"
                     :validation-messages="{
@@ -203,9 +203,9 @@ async function OnSubmit(content: any) {
                     <FormKit
                       v-motion-pop
                       :classes="{
-                        input: 'text-latte-subtext1 dark:text-mocha-subtext1',
+                        input: 'text-latte-subtext1 dark:text-mocha-subtext1 font-sans',
                         inner: 'rounded-full px-2 bg-latte-crust dark:bg-mocha-crust',
-                        label: 'mb-1 text-latte-text dark:text-mocha-text',
+                        label: 'mb-1 text-latte-text dark:text-mocha-text font-sans',
                         wrapper: 'w-xs',
                       }"
                       :label="index === 0 ? 'Nickname' : ''"
@@ -220,10 +220,10 @@ async function OnSubmit(content: any) {
                     <FormKit
                       v-motion-pop
                       :classes="{
-                        input: 'text-latte-subtext1 dark:text-mocha-subtext1',
+                        input: 'text-latte-subtext1 dark:text-mocha-subtext1 font-sans',
                         inner: 'rounded-full px-2 bg-latte-crust dark:bg-mocha-crust',
-                        label: 'mb-1 text-latte-text dark:text-mocha-text',
-                        option: 'bg-latte-crust dark:bg-mocha-crust !text-latte-subtext1 !dark:text-mocha-subtext1',
+                        label: 'mb-1 text-latte-text dark:text-mocha-text font-sans',
+                        option: 'bg-latte-crust dark:bg-mocha-crust !text-latte-subtext1 !dark:text-mocha-subtext1 font-sans',
                       }"
                       :label="index === 0 ? 'Language' : ''"
                       :options="['English', 'French', 'Japanese', 'Chinese']"
@@ -274,7 +274,7 @@ async function OnSubmit(content: any) {
                   fileRemoveIcon: 'text-latte-subtext1 dark:text-mocha-subtext1',
                   help: 'text-latte-subtext1 dark:text-mocha-subtext1 pt-1',
                   inner: 'rounded-full px-2 bg-latte-crust dark:bg-mocha-crust',
-                  label: 'mb-1 text-latte-text dark:text-mocha-text',
+                  label: 'mb-1 text-latte-text dark:text-mocha-text font-sans',
                   wrapper: '!max-w-full',
                 }"
                 :validation-messages="{
@@ -296,7 +296,7 @@ async function OnSubmit(content: any) {
               type="submit"
               :disabled="!valid"
               :classes="{
-                input: '!rounded-full px-2 !bg-latte-green !dark:bg-mocha-green uppercase font-semibold',
+                input: '!rounded-full px-2 !bg-latte-green font-sans !dark:bg-mocha-green uppercase font-semibold',
               }"
             />
           </div>

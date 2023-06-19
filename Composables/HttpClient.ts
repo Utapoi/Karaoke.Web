@@ -56,12 +56,12 @@ export function useHttpClient() {
     if (body === undefined)
       body = {}
 
-    const { data: r0 } = await ApiFetcher(url, options).post(body)
+    const { data: r0 } = await ApiFetcher(url, options).post(body).json()
 
     if (r0.value !== null)
       return r0.value as T
 
-    const { data: r1 } = await ApiFetcher(url, options).post(body)
+    const { data: r1 } = await ApiFetcher(url, options).post(body).json()
 
     if (r1.value === null)
       return undefined

@@ -84,9 +84,9 @@ async function OnSubmit(content: any) {
                     <FormKit
                       v-motion-pop
                       :classes="{
-                        input: 'text-latte-subtext1 dark:text-mocha-subtext1',
+                        input: 'text-latte-subtext1 dark:text-mocha-subtext1 font-sans',
                         inner: 'rounded-full px-2 bg-latte-crust dark:bg-mocha-crust',
-                        label: 'mb-1 text-latte-text dark:text-mocha-text',
+                        label: 'mb-1 text-latte-text dark:text-mocha-text font-sans',
                         wrapper: 'w-xs',
                       }"
                       :label="index === 0 ? 'Name' : ''"
@@ -101,10 +101,10 @@ async function OnSubmit(content: any) {
                     <FormKit
                       v-motion-pop
                       :classes="{
-                        input: 'text-latte-subtext1 dark:text-mocha-subtext1',
+                        input: 'text-latte-subtext1 dark:text-mocha-subtext1 font-sans',
                         inner: 'rounded-full px-2 bg-latte-crust dark:bg-mocha-crust',
-                        label: 'mb-1 text-latte-text dark:text-mocha-text',
-                        option: 'bg-latte-crust dark:bg-mocha-crust !text-latte-subtext1 !dark:text-mocha-subtext1',
+                        label: 'mb-1 text-latte-text dark:text-mocha-text font-sans',
+                        option: 'bg-latte-crust dark:bg-mocha-crust !text-latte-subtext1 !dark:text-mocha-subtext1 font-sans',
                       }"
                       :label="index === 0 ? 'Language' : ''"
                       :options="['English', 'French', 'Japanese', 'Chinese']"
@@ -151,9 +151,9 @@ async function OnSubmit(content: any) {
                 <div class="w-full flex items-start justify-end gap-4">
                   <FormKit
                     :classes="{
-                      input: 'text-latte-subtext1 dark:text-mocha-subtext1',
+                      input: 'text-latte-subtext1 dark:text-mocha-subtext1 font-sans',
                       inner: 'rounded-full px-2 bg-latte-crust dark:bg-mocha-crust',
-                      label: 'mb-1 text-latte-text dark:text-mocha-text',
+                      label: 'mb-1 text-latte-text dark:text-mocha-text font-sans',
                       wrapper: 'max-w-36',
                     }"
                     :validation-messages="{
@@ -167,9 +167,9 @@ async function OnSubmit(content: any) {
                   />
                   <FormKit
                     :classes="{
-                      input: 'text-latte-subtext1 dark:text-mocha-subtext1',
+                      input: 'text-latte-subtext1 dark:text-mocha-subtext1 font-sans',
                       inner: 'rounded-full px-2 bg-latte-crust dark:bg-mocha-crust',
-                      label: 'mb-1 text-latte-text dark:text-mocha-text',
+                      label: 'mb-1 text-latte-text dark:text-mocha-text font-sans',
                       wrapper: 'max-w-36',
                     }"
                     :validation-messages="{
@@ -183,9 +183,9 @@ async function OnSubmit(content: any) {
                   />
                   <FormKit
                     :classes="{
-                      input: 'text-latte-subtext1 dark:text-mocha-subtext1',
+                      input: 'text-latte-subtext1 dark:text-mocha-subtext1 font-sans',
                       inner: 'rounded-full px-2 bg-latte-crust dark:bg-mocha-crust',
-                      label: 'mb-1 text-latte-text dark:text-mocha-text',
+                      label: 'mb-1 text-latte-text dark:text-mocha-text font-sans',
                       wrapper: 'max-w-36',
                     }"
                     :validation-messages="{
@@ -209,7 +209,7 @@ async function OnSubmit(content: any) {
             <!-- Singers -->
             <div class="w-full lg:w-1/2">
               <div
-                class="text-latte-subtext1 dark:text-mocha-subtext1 mb-2 text-sm font-semibold"
+                class="text-latte-subtext1 dark:text-mocha-subtext1 mb-2 font-sans text-sm font-semibold"
               >
                 Singers
               </div>
@@ -228,7 +228,7 @@ async function OnSubmit(content: any) {
                   'multiselect-dark': ColorMode.value === 'dark',
                   'multiselect-light': ColorMode.value === 'light',
                 }"
-                class="!border-latte-overlay1 !dark:border-mocha-overlay1 !rounded-full"
+                class="!border-latte-overlay1 !dark:border-mocha-overlay1 text-latte-text dark:text-mocha-text font-sans !rounded-full"
                 mode="tags"
                 placeholder="Select singers"
               />
@@ -240,11 +240,11 @@ async function OnSubmit(content: any) {
             <div class="w-1/2">
               <FormKit
                 :classes="{
-                  fileItem: 'text-latte-subtext1 dark:text-mocha-subtext1',
+                  fileItem: 'text-latte-subtext1 dark:text-mocha-subtext1 font-sans',
                   fileRemoveIcon: 'text-latte-subtext1 dark:text-mocha-subtext1',
-                  help: 'text-latte-subtext1 dark:text-mocha-subtext1 pt-1',
+                  help: 'text-latte-subtext1 dark:text-mocha-subtext1 pt-1 font-sans',
                   inner: 'rounded-full px-2 bg-latte-crust dark:bg-mocha-crust',
-                  label: 'mb-1 text-latte-text dark:text-mocha-text',
+                  label: 'mb-1 text-latte-text dark:text-mocha-text font-sans',
                   wrapper: '!max-w-full',
                 }"
                 :validation-messages="{
@@ -266,7 +266,7 @@ async function OnSubmit(content: any) {
               type="submit"
               :disabled="!valid"
               :classes="{
-                input: '!rounded-full px-2 !bg-latte-green !dark:bg-mocha-green uppercase font-semibold',
+                input: '!rounded-full px-2 !bg-latte-green !dark:bg-mocha-green uppercase font-semibold font-sans',
               }"
             />
           </div>
@@ -284,24 +284,28 @@ async function OnSubmit(content: any) {
   --ms-bg: #171727;
   --ms-dropdown-bg: #171727;
   --ms-border-color: #444;
-  --ms-tag-bg: #171727;
+  --ms-tag-bg: #7f849c;
   --ms-tag-color: #fff;
   --ms-option-bg-pointed: #171727;
   --ms-option-color-pointed: #fff;
-  --ms-option-bg-selected: #171727;
-  --ms-option-bg-selected-pointed: #171727;
+  --ms-option-bg-selected: #7f849c;
+  --ms-option-bg-selected-pointed: #7f849c;
+  --ms-ring-color: #b4befe;
+  --ms-ring-width: 1px;
 }
 
 .multiselect-light {
   --ms-bg: #dce0e8;
   --ms-dropdown-bg: #dce0e8;
   --ms-border-color: #444;
-  --ms-tag-bg: #dce0e8;
-  --ms-tag-color: #fff;
+  --ms-tag-bg: #8c8fa1;
+  --ms-tag-color: #4c4f69;
   --ms-option-bg-pointed: #dce0e8;
-  --ms-option-color-pointed: #fff;
+  --ms-option-color-pointed: #4c4f69;
   --ms-option-bg-selected: #dce0e8;
   --ms-option-bg-selected-pointed: #dce0e8;
+  --ms-ring-color: #7287fd;
+  --ms-ring-width: 1px;
 }
 
 .multiselect-dark .multiselect-tags-search {

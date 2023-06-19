@@ -1,3 +1,4 @@
+import type { SingerInterface } from '~/Core/Models/Singer'
 import { Singer } from '~/Core/Models/Singer'
 import type { CreateSingerRequest } from '~/Core/Requests/Singers/CreateSingerRequest'
 import type { GetSingersResponse } from '~/Core/Responses/Singers/GetSingersResponse'
@@ -60,12 +61,17 @@ export function useSingersService() {
    * @returns A list of singers.
    */
   async function SearchAsync(query: string): Promise<Singer[]> {
-    const response = await Client.Post<Singer[]>(`/Singers/Search?input=${query}`)
+    try {
+      const response = await Client.Post<SingerInterface[]>(`/Singers/Search?input=${query}`)
 
-    if (response === undefined)
+      if (response === undefined)
+        return []
+
+      return response.map(singer => Singer.FromResponse(singer))
+    }
+    catch (error: any) {
       return []
-
-    return response.map(singer => Singer.FromResponse(singer))
+    }
   }
 
   return {

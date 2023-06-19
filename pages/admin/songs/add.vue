@@ -14,6 +14,8 @@ definePageMeta({
   // },
 })
 
+const ColorMode = useColorMode()
+
 const AlbumsService = useAlbumsService()
 const SingersService = useSingersService()
 const SongsService = useSongsService()
@@ -47,7 +49,7 @@ async function SearchSingers(query: string): Promise<TagOption[]> {
   const response = await SingersService.SearchAsync(query)
 
   return response.map(singer => ({
-    label: `${singer.Names[0].Text} (${singer.Names[1].Text})`,
+    label: `${singer.Names[0].Text}`,
     value: singer.Id,
   }))
 }
@@ -107,9 +109,9 @@ async function OnSubmit(content: any): Promise<void> {
                     <FormKit
                       v-motion-pop
                       :classes="{
-                        input: 'text-latte-subtext1 dark:text-mocha-subtext1',
+                        input: 'text-latte-subtext1 dark:text-mocha-subtext1 font-sans',
                         inner: 'rounded-full px-2 bg-latte-crust dark:bg-mocha-crust',
-                        label: 'mb-1 text-latte-text dark:text-mocha-text',
+                        label: 'mb-1 text-latte-text dark:text-mocha-text font-sans',
                         wrapper: 'w-xs',
                       }"
                       :label="index === 0 ? 'Title' : ''"
@@ -124,10 +126,10 @@ async function OnSubmit(content: any): Promise<void> {
                     <FormKit
                       v-motion-pop
                       :classes="{
-                        input: 'text-latte-subtext1 dark:text-mocha-subtext1',
+                        input: 'text-latte-subtext1 dark:text-mocha-subtext1 font-sans',
                         inner: 'rounded-full px-2 bg-latte-crust dark:bg-mocha-crust',
-                        label: 'mb-1 text-latte-text dark:text-mocha-text',
-                        option: 'bg-latte-crust dark:bg-mocha-crust !text-latte-subtext1 !dark:text-mocha-subtext1',
+                        label: 'mb-1 text-latte-text dark:text-mocha-text font-sans',
+                        option: 'bg-latte-crust dark:bg-mocha-crust !text-latte-subtext1 !dark:text-mocha-subtext1 font-sans',
                       }"
                       :label="index === 0 ? 'Language' : ''"
                       :options="['English', 'French', 'Japanese', 'Chinese']"
@@ -174,9 +176,9 @@ async function OnSubmit(content: any): Promise<void> {
                 <div class="w-full flex items-start justify-end gap-4">
                   <FormKit
                     :classes="{
-                      input: 'text-latte-subtext1 dark:text-mocha-subtext1',
+                      input: 'text-latte-subtext1 dark:text-mocha-subtext1 font-sans',
                       inner: 'rounded-full px-2 bg-latte-crust dark:bg-mocha-crust',
-                      label: 'mb-1 text-latte-text dark:text-mocha-text',
+                      label: 'mb-1 text-latte-text dark:text-mocha-text font-sans',
                       wrapper: 'max-w-36',
                     }"
                     :validation-messages="{
@@ -191,9 +193,9 @@ async function OnSubmit(content: any): Promise<void> {
                   />
                   <FormKit
                     :classes="{
-                      input: 'text-latte-subtext1 dark:text-mocha-subtext1',
+                      input: 'text-latte-subtext1 dark:text-mocha-subtext1 font-sans',
                       inner: 'rounded-full px-2 bg-latte-crust dark:bg-mocha-crust',
-                      label: 'mb-1 text-latte-text dark:text-mocha-text',
+                      label: 'mb-1 text-latte-text dark:text-mocha-text font-sans',
                       wrapper: 'max-w-36',
                     }"
                     :validation-messages="{
@@ -208,9 +210,9 @@ async function OnSubmit(content: any): Promise<void> {
                   />
                   <FormKit
                     :classes="{
-                      input: 'text-latte-subtext1 dark:text-mocha-subtext1',
+                      input: 'text-latte-subtext1 dark:text-mocha-subtext1 font-sans',
                       inner: 'rounded-full px-2 bg-latte-crust dark:bg-mocha-crust',
-                      label: 'mb-1 text-latte-text dark:text-mocha-text',
+                      label: 'mb-1 text-latte-text dark:text-mocha-text font-sans',
                       wrapper: 'max-w-36',
                     }"
                     :validation-messages="{
@@ -224,7 +226,7 @@ async function OnSubmit(content: any): Promise<void> {
                     validation="between:1,31|required"
                   />
                 </div>
-                <div class="text-latte-subtext1 dark:text-mocha-subtext1 text-sm -mt-3">
+                <div class="text-latte-subtext1 dark:text-mocha-subtext1 font-sans text-sm -mt-3">
                   The release date of the song.
                 </div>
               </FormKit>
@@ -236,7 +238,7 @@ async function OnSubmit(content: any): Promise<void> {
             <!-- Singers -->
             <div w-full>
               <div
-                class="mb-2 text-sm font-semibold text-white"
+                class="text-latte-subtext1 dark:text-mocha-subtext1 mb-2 font-sans text-sm font-semibold"
               >
                 Singers
               </div>
@@ -251,7 +253,11 @@ async function OnSubmit(content: any): Promise<void> {
                 }"
                 :resolve-on-load="false"
                 :searchable="true"
-                class="multiselect-dark !border-gray-400 !rounded-full"
+                :class="{
+                  'multiselect-dark': ColorMode.value === 'dark',
+                  'multiselect-light': ColorMode.value === 'light',
+                }"
+                class="!border-latte-overlay1 !dark:border-mocha-overlay1 text-latte-text dark:text-mocha-text font-sans !rounded-full"
                 mode="tags"
                 placeholder="Select singers"
               />
@@ -260,7 +266,7 @@ async function OnSubmit(content: any): Promise<void> {
             <!-- Albums -->
             <div w-full>
               <div
-                class="mb-2 text-sm font-semibold text-white"
+                class="text-latte-subtext1 dark:text-mocha-subtext1 mb-2 font-sans text-sm font-semibold"
               >
                 Albums
               </div>
@@ -279,7 +285,7 @@ async function OnSubmit(content: any): Promise<void> {
                   'multiselect-dark': ColorMode.value === 'dark',
                   'multiselect-light': ColorMode.value === 'light',
                 }"
-                class="!rounded-full"
+                class="!border-latte-overlay1 !dark:border-mocha-overlay1 text-latte-text dark:text-mocha-text font-sans !rounded-full"
                 mode="tags"
                 placeholder="Select albums"
               />
@@ -289,7 +295,7 @@ async function OnSubmit(content: any): Promise<void> {
           <!-- Tags -->
           <div class="bg-latte-surface0 dark:bg-mocha-surface0 mt-2 rounded-xl p-5">
             <div
-              class="mb-2 text-sm font-semibold text-white"
+              class="text-latte-subtext1 dark:text-mocha-subtext1 mb-2 font-sans text-sm font-semibold"
             >
               Tags
             </div>
@@ -303,7 +309,7 @@ async function OnSubmit(content: any): Promise<void> {
                 'multiselect-dark': ColorMode.value === 'dark',
                 'multiselect-light': ColorMode.value === 'light',
               }"
-              class="!rounded-full"
+              class="!border-latte-overlay1 !dark:border-mocha-overlay1 text-latte-text dark:text-mocha-text font-sans !rounded-full"
               mode="tags"
               placeholder="Select tags"
             />
@@ -314,11 +320,11 @@ async function OnSubmit(content: any): Promise<void> {
             <div w-full>
               <FormKit
                 :classes="{
-                  fileItem: 'text-latte-subtext1 dark:text-mocha-subtext1',
+                  fileItem: 'text-latte-subtext1 dark:text-mocha-subtext1 font-sans',
                   fileRemoveIcon: 'text-latte-subtext1 dark:text-mocha-subtext1',
-                  help: 'text-latte-subtext1 dark:text-mocha-subtext1 pt-1',
+                  help: 'text-latte-subtext1 dark:text-mocha-subtext1 pt-1 font-sans',
                   inner: 'rounded-full px-2 bg-latte-crust dark:bg-mocha-crust',
-                  label: 'mb-1 text-latte-text dark:text-mocha-text',
+                  label: 'mb-1 text-latte-text dark:text-mocha-text font-sans',
                   wrapper: '!max-w-full',
                 }"
                 :validation-messages="{
@@ -337,11 +343,11 @@ async function OnSubmit(content: any): Promise<void> {
               <!-- Preview File -->
               <FormKit
                 :classes="{
-                  fileItem: 'text-latte-subtext1 dark:text-mocha-subtext1',
+                  fileItem: 'text-latte-subtext1 dark:text-mocha-subtext1 font-sans',
                   fileRemoveIcon: 'text-latte-subtext1 dark:text-mocha-subtext1',
-                  help: 'text-latte-subtext1 dark:text-mocha-subtext1 pt-1',
+                  help: 'text-latte-subtext1 dark:text-mocha-subtext1 pt-1 font-sans',
                   inner: 'rounded-full px-2 bg-latte-crust dark:bg-mocha-crust',
-                  label: 'mb-1 text-latte-text dark:text-mocha-text',
+                  label: 'mb-1 text-latte-text dark:text-mocha-text font-sans',
                   wrapper: '!max-w-full',
                 }"
                 :validation-messages="{
@@ -363,11 +369,11 @@ async function OnSubmit(content: any): Promise<void> {
             <div w-full>
               <FormKit
                 :classes="{
-                  fileItem: 'text-latte-subtext1 dark:text-mocha-subtext1',
+                  fileItem: 'text-latte-subtext1 dark:text-mocha-subtext1 font-sans',
                   fileRemoveIcon: 'text-latte-subtext1 dark:text-mocha-subtext1',
-                  help: 'text-latte-subtext1 dark:text-mocha-subtext1 pt-1',
+                  help: 'text-latte-subtext1 dark:text-mocha-subtext1 pt-1 font-sans',
                   inner: 'rounded-full px-2 bg-latte-crust dark:bg-mocha-crust',
-                  label: 'mb-1 text-latte-text dark:text-mocha-text',
+                  label: 'mb-1 text-latte-text dark:text-mocha-text font-sans',
                   wrapper: '!max-w-full',
                 }"
                 :validation-messages="{
@@ -387,11 +393,11 @@ async function OnSubmit(content: any): Promise<void> {
             <div w-full>
               <FormKit
                 :classes="{
-                  fileItem: 'text-latte-subtext1 dark:text-mocha-subtext1',
+                  fileItem: 'text-latte-subtext1 dark:text-mocha-subtext1 font-sans',
                   fileRemoveIcon: 'text-latte-subtext1 dark:text-mocha-subtext1',
-                  help: 'text-latte-subtext1 dark:text-mocha-subtext1 pt-1',
+                  help: 'text-latte-subtext1 dark:text-mocha-subtext1 pt-1 font-sans',
                   inner: 'rounded-full px-2 bg-latte-crust dark:bg-mocha-crust',
-                  label: 'mb-1 text-latte-text dark:text-mocha-text',
+                  label: 'mb-1 text-latte-text dark:text-mocha-text font-sans',
                   wrapper: '!max-w-full',
                 }"
                 :validation-messages="{
@@ -419,11 +425,11 @@ async function OnSubmit(content: any): Promise<void> {
                   <FormKit
                     v-motion-pop
                     :classes="{
-                      fileItem: 'text-latte-subtext1 dark:text-mocha-subtext1',
+                      fileItem: 'text-latte-subtext1 dark:text-mocha-subtext1 font-sans',
                       fileRemoveIcon: 'text-latte-subtext1 dark:text-mocha-subtext1',
-                      help: 'text-latte-subtext1 dark:text-mocha-subtext1 pt-1',
+                      help: 'text-latte-subtext1 dark:text-mocha-subtext1 pt-1 font-sans',
                       inner: 'rounded-full px-2 bg-latte-crust dark:bg-mocha-crust',
-                      label: 'mb-1 text-latte-text dark:text-mocha-text',
+                      label: 'mb-1 text-latte-text dark:text-mocha-text font-sans',
                       wrapper: 'w-sm',
                     }"
                     :help="index === items.length - 1 ? 'Accepted formats: txt. Max size: 1 MB.' : ''"
@@ -441,10 +447,10 @@ async function OnSubmit(content: any): Promise<void> {
                   <FormKit
                     v-motion-pop
                     :classes="{
-                      input: 'text-latte-subtext1 dark:text-mocha-subtext1',
+                      input: 'text-latte-subtext1 dark:text-mocha-subtext1 font-sans',
                       inner: 'rounded-full px-2 bg-latte-crust dark:bg-mocha-crust',
-                      label: 'mb-1 text-latte-text dark:text-mocha-text',
-                      option: 'bg-latte-crust dark:bg-mocha-crust !text-latte-subtext1 !dark:text-mocha-subtext1',
+                      label: 'mb-1 text-latte-text dark:text-mocha-text font-sans',
+                      option: 'bg-latte-crust dark:bg-mocha-crust !text-latte-subtext1 !dark:text-mocha-subtext1 font-sans',
                     }"
                     type="select"
                     :label="index === 0 ? 'Language' : ''"
@@ -496,11 +502,11 @@ async function OnSubmit(content: any): Promise<void> {
                   <FormKit
                     v-motion-pop
                     :classes="{
-                      fileItem: 'text-latte-subtext1 dark:text-mocha-subtext1',
+                      fileItem: 'text-latte-subtext1 dark:text-mocha-subtext1 font-sans',
                       fileRemoveIcon: 'text-latte-subtext1 dark:text-mocha-subtext1',
-                      help: 'text-latte-subtext1 dark:text-mocha-subtext1 pt-1',
+                      help: 'text-latte-subtext1 dark:text-mocha-subtext1 pt-1 font-sans',
                       inner: 'rounded-full px-2 bg-latte-crust dark:bg-mocha-crust',
-                      label: 'mb-1 text-latte-text dark:text-mocha-text',
+                      label: 'mb-1 text-latte-text dark:text-mocha-text font-sans',
                       wrapper: 'w-sm',
                     }"
                     :help="index === items.length - 1 ? 'Accepted formats: ass.' : ''"
@@ -518,10 +524,10 @@ async function OnSubmit(content: any): Promise<void> {
                   <FormKit
                     v-motion-pop
                     :classes="{
-                      input: 'text-latte-subtext1 dark:text-mocha-subtext1',
+                      input: 'text-latte-subtext1 dark:text-mocha-subtext1 font-sans',
                       inner: 'rounded-full px-2 bg-latte-crust dark:bg-mocha-crust',
-                      label: 'mb-1 text-latte-text dark:text-mocha-text',
-                      option: 'bg-latte-crust dark:bg-mocha-crust !text-latte-subtext1 !dark:text-mocha-subtext1',
+                      label: 'mb-1 text-latte-text dark:text-mocha-text font-sans',
+                      option: 'bg-latte-crust dark:bg-mocha-crust !text-latte-subtext1 !dark:text-mocha-subtext1 font-sans',
                     }"
                     :label="index === 0 ? 'Language' : ''"
                     :options="['English', 'French', 'Japanese', 'Chinese']"
@@ -567,7 +573,7 @@ async function OnSubmit(content: any): Promise<void> {
               type="submit"
               :disabled="!valid"
               :classes="{
-                input: '!rounded-full px-2 !bg-latte-green !dark:bg-mocha-green uppercase font-semibold',
+                input: '!rounded-full px-2 !bg-latte-green !dark:bg-mocha-green uppercase font-semibold font-sans',
               }"
             />
           </div>
@@ -585,24 +591,28 @@ async function OnSubmit(content: any): Promise<void> {
   --ms-bg: #171727;
   --ms-dropdown-bg: #171727;
   --ms-border-color: #444;
-  --ms-tag-bg: #171727;
+  --ms-tag-bg: #7f849c;
   --ms-tag-color: #fff;
   --ms-option-bg-pointed: #171727;
   --ms-option-color-pointed: #fff;
-  --ms-option-bg-selected: #171727;
-  --ms-option-bg-selected-pointed: #171727;
+  --ms-option-bg-selected: #7f849c;
+  --ms-option-bg-selected-pointed: #7f849c;
+  --ms-ring-color: #b4befe;
+  --ms-ring-width: 1px;
 }
 
 .multiselect-light {
   --ms-bg: #dce0e8;
   --ms-dropdown-bg: #dce0e8;
   --ms-border-color: #444;
-  --ms-tag-bg: #dce0e8;
-  --ms-tag-color: #fff;
+  --ms-tag-bg: #8c8fa1;
+  --ms-tag-color: #4c4f69;
   --ms-option-bg-pointed: #dce0e8;
-  --ms-option-color-pointed: #fff;
+  --ms-option-color-pointed: #4c4f69;
   --ms-option-bg-selected: #dce0e8;
   --ms-option-bg-selected-pointed: #dce0e8;
+  --ms-ring-color: #7287fd;
+  --ms-ring-width: 1px;
 }
 
 .multiselect-dark .multiselect-tags-search {
