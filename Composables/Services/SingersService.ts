@@ -16,7 +16,7 @@ export function useSingersService() {
    * @returns The created singer.
    */
   async function CreateAsync(request: CreateSingerRequest): Promise<Singer | undefined> {
-    const response = await Client.Post<Singer>('/Singers', {}, {
+    const response = await Client.Post<SingerInterface>('/Singers', {}, {
       ...request,
     })
 
@@ -32,7 +32,7 @@ export function useSingersService() {
    * @returns The singer.
    */
   async function GetAsync(id: string): Promise<Singer | undefined> {
-    const response = await Client.Get<Singer>(`/Singers/${id}`)
+    const response = await Client.Get<SingerInterface>(`/Singers/${id}`)
 
     if (response === undefined)
       return undefined

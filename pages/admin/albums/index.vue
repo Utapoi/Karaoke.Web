@@ -21,13 +21,13 @@ Albums.value = await AlbumsService.GetAlbumsAsync(0, 15)
 <template>
   <div class="w-full">
     <div class="w-full px-12 pt-8">
-      <div class="dark:bg-mocha-surface0 bg-latte-crust w-full rounded-xl p-3 shadow">
+      <div class="w-full rounded-xl bg-latte-crust p-3 shadow dark:bg-mocha-surface0">
         <div class="flex items-center gap-2">
-          <span class="dark:text-mocha-text text-latte-text text-sm">{{ Albums.length }} albums</span>
-          <div class="dark:bg-mocha-surface2 bg-latte-surface2 mx-2 h-9 w-0.25" />
+          <span class="text-sm text-latte-text dark:text-mocha-text">{{ Albums.length }} albums</span>
+          <div class="mx-2 h-9 w-0.25 bg-latte-surface2 dark:bg-mocha-surface2" />
 
-          <div class="dark:border-mocha-overlay0 border-latte-overlay0 border rounded-full">
-            <div class="text-latte-subtext1 dark:text-mocha-subtext1 w-64 inline-flex items-center justify-between gap-6 px-4 py-1.5">
+          <div class="border border-latte-overlay0 rounded-full dark:border-mocha-overlay0">
+            <div class="w-64 inline-flex items-center justify-between gap-6 px-4 py-1.5 text-latte-subtext1 dark:text-mocha-subtext1">
               <span>Search an album...</span>
               <span class="i-fluent:search-20-filled text-lg" />
             </div>
@@ -45,9 +45,10 @@ Albums.value = await AlbumsService.GetAlbumsAsync(0, 15)
           <NuxtLink to="/admin/albums/add" class="ml-4">
             <div
               border="~ dark:mocha-red latte-red"
-              hover="dark:bg-mocha-red bg-latte-red text-latte-base dark:text-mocha-base"
+              hover="dark:bg-mocha-red bg-latte-red text-latte-text dark:text-mocha-text cursor-pointer"
               text="dark:mocha-red latte-red lg"
-              class="inline-flex items-center justify-start gap-1 border border-[#f90b31] rounded-full px-4 py-0.95 text-lg text-[#f90b31] transition-all duration-200 hover:cursor-pointer hover:bg-[#f90b31] hover:text-white"
+              flex="inline items-center justify-start gap-1"
+              class="rounded-full px-4 py-0.95 transition-all duration-200"
             >
               <span class="i-fluent:add-circle-12-filled" />
               <span>Add</span>
@@ -59,7 +60,7 @@ Albums.value = await AlbumsService.GetAlbumsAsync(0, 15)
     <div class="w-full px-12 pt-4">
       <div class="relative overflow-x-auto shadow-md sm:rounded-xl">
         <table class="w-full text-left text-sm text-gray-500 dark:text-gray-400" aria-describedby="Singers">
-          <thead class="bg-latte-crust dark:bg-mocha-crust text-latte-text dark:text-mocha-text text-xs uppercase">
+          <thead class="bg-latte-crust text-xs uppercase text-latte-text dark:bg-mocha-crust dark:text-mocha-text">
             <tr>
               <th scope="col" class="px-6 py-3">
                 Title
@@ -76,7 +77,7 @@ Albums.value = await AlbumsService.GetAlbumsAsync(0, 15)
             </tr>
           </thead>
           <tbody v-if="Albums.length > 0">
-            <tr v-for="album in Albums" :key="album.Id" class="dark:bg-mocha-surface0 bg-latte-surface0 hover:bg-latte-surface1 dark:text-mocha-text text-latte-text dark:hover:bg-mocha-surface1 transition-all duration-100">
+            <tr v-for="album in Albums" :key="album.Id" class="bg-latte-surface0 text-latte-text transition-all duration-100 dark:bg-mocha-surface0 hover:bg-latte-surface1 dark:text-mocha-text dark:hover:bg-mocha-surface1">
               <th scope="row" class="whitespace-nowrap px-6 py-4 font-medium">
                 {{ album.GetTitle('English') }}
               </th>
@@ -87,7 +88,7 @@ Albums.value = await AlbumsService.GetAlbumsAsync(0, 15)
                 {{ album.Songs?.length ?? 0 }}
               </td>
               <td class="px-6 py-4 text-right">
-                <NuxtLink :to="`/admin/albums/edit/${album.Id}`" class="dark:text-mocha-lavender text-latte-lavender font-medium hover:underline">
+                <NuxtLink :to="`/admin/albums/edit/${album.Id}`" class="font-medium text-latte-lavender dark:text-mocha-lavender hover:underline">
                   Edit
                 </NuxtLink>
               </td>

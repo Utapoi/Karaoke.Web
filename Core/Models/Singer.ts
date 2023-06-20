@@ -44,7 +44,7 @@ export class Singer {
     if (name)
       return name.Text
 
-    return this.Names[0].Text
+    return this.Names[0]?.Text ?? ''
   }
 
   public static FromResponse(info: SingerInterface): Singer {

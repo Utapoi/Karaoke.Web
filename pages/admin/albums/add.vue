@@ -36,13 +36,13 @@ async function SearchSingersAsync(query: string) {
   const response = await SingersService.SearchAsync(query)
 
   return response.map(singer => ({
-    label: `${singer.Names[0].Text} (${singer.Names[1].Text})`,
+    label: `${singer.GetName('English')}`,
     value: singer.Id,
   }))
 }
 
 async function OnSubmit(content: any) {
-  content.singers = Singers.value.map(s => s.value)
+  content.singers = Singers.value
 
   const request = await CreateAlbumRequest.FromInfoAsync(content)
 
@@ -51,28 +51,29 @@ async function OnSubmit(content: any) {
 </script>
 
 <template>
-  <div class="mx-auto h-full max-w-6xl px-12 py-8 container">
+  <div class="mx-auto h-full w-full px-12 py-8 container">
     <div class="mb-8">
       <div class="inline-flex items-center gap-4">
-        <div class="bg-mocha-surface2 dark:bg-latte-surface2 h-0.75 w-14 rounded-full" />
+        <div class="h-0.75 w-14 rounded-full bg-mocha-surface2 dark:bg-latte-surface2" />
 
-        <h2 class="text-latte-text dark:text-mocha-text text-2xl font-semibold">
+        <h2 class="text-2xl font-semibold text-latte-text dark:text-mocha-text">
           Create Album
         </h2>
       </div>
-      <div class="text-latte-subtext1 dark:text-mocha-subtext1 mb-4 mt-2 text-sm">
+      <div class="mb-4 mt-2 text-sm text-latte-subtext1 dark:text-mocha-subtext1">
         Add a new album to the catalog of Utapoi Karaoke.
       </div>
     </div>
     <div>
-      <div class="w-full flex items-start justify-end gap-6 rounded-xl p-5">
+      <div class="w-full flex items-start gap-6 rounded-xl p-5">
         <FormKit
           v-slot="{ state: { valid } }"
           type="form"
+          class="w-full"
           :actions="false"
           @submit="OnSubmit"
         >
-          <div class="bg-latte-surface0 dark:bg-mocha-surface0 flex items-start justify-end gap-6 rounded-xl p-5 shadow dark:shadow-none">
+          <div class="w-full flex flex-col items-start gap-6 rounded-xl bg-latte-surface0 p-5 shadow xl:flex-row dark:bg-mocha-surface0 dark:shadow-none">
             <!-- Titles -->
             <div w-full>
               <FormKit v-slot="{ items, node, value }" :value="Titles" type="list" dynamic name="titles">
@@ -94,7 +95,7 @@ async function OnSubmit(content: any) {
                         required: 'This field is required.',
                       }"
                       name="text"
-                      placeholder="Singer name"
+                      placeholder="Album title"
                       type="text"
                       validation="required"
                     />
@@ -135,7 +136,7 @@ async function OnSubmit(content: any) {
                           input: '!text-latte-green !dark:text-mocha-green !text-lg !p-0.5 !bg-transparent',
                         }"
                         type="button"
-                        @click="() => node.input(value.concat({ Text: '', Language: 'Japanese' }))"
+                        @click="() => node.input(items.concat({ Text: '', Language: 'Japanese' }))"
                       >
                         <span class="i-fluent:add-16-filled" />
                       </FormKit>
@@ -198,18 +199,18 @@ async function OnSubmit(content: any) {
                     validation="between:1,31"
                   />
                 </div>
-                <div class="text-latte-subtext1 dark:text-mocha-subtext1 text-sm -mt-3">
+                <div class="text-sm text-latte-subtext1 -mt-3 dark:text-mocha-subtext1">
                   The release date of the album.
                 </div>
               </FormKit>
             </div>
           </div>
 
-          <div class="bg-latte-surface0 dark:bg-mocha-surface0 mt-2 flex items-center justify-between gap-4 rounded-xl p-5">
+          <div class="mt-2 flex items-center justify-between gap-4 rounded-xl bg-latte-surface0 p-5 dark:bg-mocha-surface0">
             <!-- Singers -->
             <div class="w-full lg:w-1/2">
               <div
-                class="text-latte-subtext1 dark:text-mocha-subtext1 mb-2 font-sans text-sm font-semibold"
+                class="mb-2 font-sans text-sm font-semibold text-latte-subtext1 dark:text-mocha-subtext1"
               >
                 Singers
               </div>
@@ -228,14 +229,14 @@ async function OnSubmit(content: any) {
                   'multiselect-dark': ColorMode.value === 'dark',
                   'multiselect-light': ColorMode.value === 'light',
                 }"
-                class="!border-latte-overlay1 !dark:border-mocha-overlay1 text-latte-text dark:text-mocha-text font-sans !rounded-full"
+                class="font-sans text-latte-text !border-latte-overlay1 !rounded-full dark:text-mocha-text !dark:border-mocha-overlay1"
                 mode="tags"
                 placeholder="Select singers"
               />
             </div>
           </div>
 
-          <div class="bg-latte-surface0 dark:bg-mocha-surface0 mt-2 flex items-start justify-between gap-4 rounded-xl p-5">
+          <div class="mt-2 flex items-start justify-between gap-4 rounded-xl bg-latte-surface0 p-5 dark:bg-mocha-surface0">
             <!-- Cover -->
             <div class="w-1/2">
               <FormKit
@@ -253,7 +254,7 @@ async function OnSubmit(content: any) {
                 accept=".jpg,.jpeg,.png,.webp"
                 name="coverFiles"
                 help="Accepted formats: jpg, jpeg, png, webp. Max size: 100 KB."
-                label="Profile Picture File"
+                label="Cover File"
                 multiple="false"
                 type="file"
                 validation="required"

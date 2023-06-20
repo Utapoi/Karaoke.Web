@@ -1,5 +1,5 @@
 import { EmptyLocalizedFileInterface, type LocalizedFileInterface } from '~/Core/Models/LocalizedFile'
-import type { LocalizedStringInterface } from '~/Core/Models/LocalizedString'
+import type { LocalizedString, LocalizedStringInterface } from '~/Core/Models/LocalizedString'
 
 export interface CreateSongRequestInterface {
   Titles: LocalizedStringInterface[]
@@ -61,7 +61,7 @@ export class CreateSongRequest implements CreateSongRequestInterface {
   public static async FromInfoAsync(form: any): Promise<CreateSongRequestInterface> {
     const request = CreateSongRequest.Empty()
 
-    request.Titles = form.titles
+    request.Titles = form.titles.filter((x: LocalizedString) => x.Text !== '')
     request.ReleaseDate = new Date(form.releaseDate.year, form.releaseDate.month, form.releaseDate.day)
     request.Singers = form.singers // [string] of Ids
     request.Albums = form.albums

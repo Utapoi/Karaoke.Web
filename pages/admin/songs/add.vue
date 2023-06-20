@@ -78,15 +78,15 @@ async function OnSubmit(content: any): Promise<void> {
   <div class="mx-auto h-full max-w-6xl px-12 py-8 container">
     <div class="mb-8">
       <div class="inline-flex items-center gap-4">
-        <div class="bg-mocha-surface2 dark:bg-latte-surface2 h-0.75 w-14 rounded-full" />
+        <div class="h-0.75 w-14 rounded-full bg-mocha-surface2 dark:bg-latte-surface2" />
 
-        <h2 class="text-latte-text dark:text-mocha-text text-2xl font-semibold">
+        <h2 class="text-2xl font-semibold text-latte-text dark:text-mocha-text">
           Create Song
         </h2>
       </div>
-      <div class="text-latte-subtext1 dark:text-mocha-subtext1 mb-4 mt-2 text-sm">
+      <div class="mb-4 mt-2 text-sm text-latte-subtext1 dark:text-mocha-subtext1">
         Add a new song to the catalog of Utapoi Karaoke.<br>
-        <span class="text-latte-red dark:text-mocha-red font-semibold">Don't forget to create a new singer and a new album before if necessary.</span>
+        <span class="font-semibold text-latte-red dark:text-mocha-red">Don't forget to create a new singer and a new album before if necessary.</span>
       </div>
     </div>
     <div>
@@ -97,7 +97,7 @@ async function OnSubmit(content: any): Promise<void> {
           :actions="false"
           @submit="OnSubmit"
         >
-          <div class="bg-latte-surface0 dark:bg-mocha-surface0 flex items-start justify-end gap-6 rounded-xl p-5">
+          <div class="flex items-start justify-end gap-6 rounded-xl bg-latte-surface0 p-5 dark:bg-mocha-surface0">
             <!-- Titles -->
             <div w-full>
               <FormKit v-slot="{ items, node, value }" :value="Titles" type="list" dynamic name="titles">
@@ -226,7 +226,7 @@ async function OnSubmit(content: any): Promise<void> {
                     validation="between:1,31|required"
                   />
                 </div>
-                <div class="text-latte-subtext1 dark:text-mocha-subtext1 font-sans text-sm -mt-3">
+                <div class="font-sans text-sm text-latte-subtext1 -mt-3 dark:text-mocha-subtext1">
                   The release date of the song.
                 </div>
               </FormKit>
@@ -234,11 +234,11 @@ async function OnSubmit(content: any): Promise<void> {
           </div>
 
           <!-- Singers / Albums -->
-          <div class="bg-latte-surface0 dark:bg-mocha-surface0 mt-2 flex items-center justify-between gap-4 rounded-xl p-5">
+          <div class="mt-2 flex items-center justify-between gap-4 rounded-xl bg-latte-surface0 p-5 dark:bg-mocha-surface0">
             <!-- Singers -->
             <div w-full>
               <div
-                class="text-latte-subtext1 dark:text-mocha-subtext1 mb-2 font-sans text-sm font-semibold"
+                class="mb-2 font-sans text-sm font-semibold text-latte-subtext1 dark:text-mocha-subtext1"
               >
                 Singers
               </div>
@@ -257,7 +257,7 @@ async function OnSubmit(content: any): Promise<void> {
                   'multiselect-dark': ColorMode.value === 'dark',
                   'multiselect-light': ColorMode.value === 'light',
                 }"
-                class="!border-latte-overlay1 !dark:border-mocha-overlay1 text-latte-text dark:text-mocha-text font-sans !rounded-full"
+                class="font-sans text-latte-text !border-latte-overlay1 !rounded-full dark:text-mocha-text !dark:border-mocha-overlay1"
                 mode="tags"
                 placeholder="Select singers"
               />
@@ -266,7 +266,7 @@ async function OnSubmit(content: any): Promise<void> {
             <!-- Albums -->
             <div w-full>
               <div
-                class="text-latte-subtext1 dark:text-mocha-subtext1 mb-2 font-sans text-sm font-semibold"
+                class="mb-2 font-sans text-sm font-semibold text-latte-subtext1 dark:text-mocha-subtext1"
               >
                 Albums
               </div>
@@ -285,7 +285,7 @@ async function OnSubmit(content: any): Promise<void> {
                   'multiselect-dark': ColorMode.value === 'dark',
                   'multiselect-light': ColorMode.value === 'light',
                 }"
-                class="!border-latte-overlay1 !dark:border-mocha-overlay1 text-latte-text dark:text-mocha-text font-sans !rounded-full"
+                class="font-sans text-latte-text !border-latte-overlay1 !rounded-full dark:text-mocha-text !dark:border-mocha-overlay1"
                 mode="tags"
                 placeholder="Select albums"
               />
@@ -293,9 +293,9 @@ async function OnSubmit(content: any): Promise<void> {
           </div>
 
           <!-- Tags -->
-          <div class="bg-latte-surface0 dark:bg-mocha-surface0 mt-2 rounded-xl p-5">
+          <div class="mt-2 rounded-xl bg-latte-surface0 p-5 dark:bg-mocha-surface0">
             <div
-              class="text-latte-subtext1 dark:text-mocha-subtext1 mb-2 font-sans text-sm font-semibold"
+              class="mb-2 font-sans text-sm font-semibold text-latte-subtext1 dark:text-mocha-subtext1"
             >
               Tags
             </div>
@@ -309,13 +309,13 @@ async function OnSubmit(content: any): Promise<void> {
                 'multiselect-dark': ColorMode.value === 'dark',
                 'multiselect-light': ColorMode.value === 'light',
               }"
-              class="!border-latte-overlay1 !dark:border-mocha-overlay1 text-latte-text dark:text-mocha-text font-sans !rounded-full"
+              class="font-sans text-latte-text !border-latte-overlay1 !rounded-full dark:text-mocha-text !dark:border-mocha-overlay1"
               mode="tags"
               placeholder="Select tags"
             />
           </div>
 
-          <div class="bg-latte-surface0 dark:bg-mocha-surface0 mt-2 flex items-start justify-between gap-4 rounded-xl p-5">
+          <div class="mt-2 flex items-start justify-between gap-4 rounded-xl bg-latte-surface0 p-5 dark:bg-mocha-surface0">
             <!-- Thumbnail -->
             <div w-full>
               <FormKit
@@ -364,7 +364,7 @@ async function OnSubmit(content: any): Promise<void> {
             </div>
           </div>
 
-          <div class="bg-latte-surface0 dark:bg-mocha-surface0 mt-2 flex items-start justify-between gap-4 rounded-xl p-5">
+          <div class="mt-2 flex items-start justify-between gap-4 rounded-xl bg-latte-surface0 p-5 dark:bg-mocha-surface0">
             <!-- Voice File -->
             <div w-full>
               <FormKit
@@ -415,7 +415,7 @@ async function OnSubmit(content: any): Promise<void> {
           </div>
 
           <!-- Lyrics Files -->
-          <div class="bg-latte-surface0 dark:bg-mocha-surface0 mt-2 rounded-xl p-5">
+          <div class="mt-2 rounded-xl bg-latte-surface0 p-5 dark:bg-mocha-surface0">
             <FormKit v-slot="{ items, node, value }" :value="LyricsFiles" type="list" dynamic name="lyricsFiles">
               <div v-for="(item, index) in items" :key="item as any" class="flex gap-4">
                 <FormKit
@@ -492,7 +492,7 @@ async function OnSubmit(content: any): Promise<void> {
           </div>
 
           <!-- Karaoke Files -->
-          <div class="bg-latte-surface0 dark:bg-mocha-surface0 mt-2 rounded-xl p-5">
+          <div class="mt-2 rounded-xl bg-latte-surface0 p-5 dark:bg-mocha-surface0">
             <FormKit v-slot="{ items, node, value }" :value="KaraokeFiles" type="list" dynamic name="karaokeFiles">
               <div v-for="(item, index) in items" :key="item as any" class="flex gap-4">
                 <FormKit

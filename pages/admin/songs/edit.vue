@@ -165,7 +165,7 @@ async function OnSubmit(content: any) {
           :actions="false"
           @submit="OnSubmit"
         >
-          <div class="flex items-start justify-end gap-6 rounded-xl bg-secondary p-5">
+          <div class="bg-secondary flex items-start justify-end gap-6 rounded-xl p-5">
             <!-- Titles -->
             <div w-full>
               <FormKit v-slot="{ items, node, value }" :value="Titles" type="list" dynamic name="titles">
@@ -312,7 +312,7 @@ async function OnSubmit(content: any) {
             </div>
           </div>
 
-          <div class="mt-2 flex items-center justify-between gap-4 rounded-xl bg-secondary p-5">
+          <div class="bg-secondary mt-2 flex items-center justify-between gap-4 rounded-xl p-5">
             <!-- Singers -->
             <div w-full>
               <div
@@ -363,7 +363,7 @@ async function OnSubmit(content: any) {
           </div>
 
           <!-- Tags -->
-          <div class="mt-2 rounded-xl bg-secondary p-5">
+          <div class="bg-secondary mt-2 rounded-xl p-5">
             <div
               class="mb-2 text-sm font-semibold text-white"
             >
@@ -381,7 +381,7 @@ async function OnSubmit(content: any) {
             />
           </div>
 
-          <div class="mt-2 flex items-start justify-between gap-4 rounded-xl bg-secondary p-5">
+          <div class="bg-secondary mt-2 flex items-start justify-between gap-4 rounded-xl p-5">
             <!-- Thumbnail -->
             <div w-full>
               <FormKit
@@ -432,7 +432,7 @@ async function OnSubmit(content: any) {
             </div>
           </div>
 
-          <div class="mt-2 flex items-start justify-between gap-4 rounded-xl bg-secondary p-5">
+          <div class="bg-secondary mt-2 flex items-start justify-between gap-4 rounded-xl p-5">
             <!-- Voice File -->
             <div w-full>
               <FormKit
@@ -485,7 +485,7 @@ async function OnSubmit(content: any) {
           </div>
 
           <!-- Karaoke Files -->
-          <div class="mt-2 rounded-xl bg-secondary p-5">
+          <div class="bg-secondary mt-2 rounded-xl p-5">
             <FormKit v-slot="{ items, node, value }" :value="KaraokeFiles" type="list" dynamic name="karaokeFiles">
               <div v-for="(item, index) in items" :key="item as any" class="flex gap-4">
                 <FormKit

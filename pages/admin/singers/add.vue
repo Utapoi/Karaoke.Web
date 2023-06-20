@@ -11,8 +11,6 @@ definePageMeta({
   // },
 })
 
-const ColorMode = useColorMode()
-
 const SingersService = useSingersService()
 
 const Names = ref<LocalizedStringInterface[]>([
@@ -40,13 +38,13 @@ async function OnSubmit(content: any) {
   <div class="mx-auto h-full max-w-6xl px-12 py-8 container">
     <div class="mb-8">
       <div class="inline-flex items-center gap-4">
-        <div class="bg-mocha-surface2 dark:bg-latte-surface2 h-0.75 w-14 rounded-full" />
+        <div class="h-0.75 w-14 rounded-full bg-mocha-surface2 dark:bg-latte-surface2" />
 
-        <h2 class="text-latte-text dark:text-mocha-text text-2xl font-semibold">
+        <h2 class="text-2xl font-semibold text-latte-text dark:text-mocha-text">
           Create Singer
         </h2>
       </div>
-      <div class="text-latte-subtext1 dark:text-mocha-subtext1 mb-4 mt-2 text-sm">
+      <div class="mb-4 mt-2 text-sm text-latte-subtext1 dark:text-mocha-subtext1">
         Add a new singer to the catalog of Utapoi Karaoke.
       </div>
     </div>
@@ -58,7 +56,7 @@ async function OnSubmit(content: any) {
           :actions="false"
           @submit="OnSubmit"
         >
-          <div class="bg-latte-surface0 dark:bg-mocha-surface0 flex items-start justify-end gap-6 rounded-xl p-5 shadow dark:shadow-none">
+          <div class="flex items-start justify-end gap-6 rounded-xl bg-latte-surface0 p-5 shadow dark:bg-mocha-surface0 dark:shadow-none">
             <!-- Names -->
             <div w-full>
               <FormKit v-slot="{ items, node, value }" :value="Names" type="list" dynamic name="names">
@@ -121,7 +119,7 @@ async function OnSubmit(content: any) {
                           input: '!text-latte-green !dark:text-mocha-green !text-lg !p-0.5 !bg-transparent',
                         }"
                         type="button"
-                        @click="() => node.input(value.concat({ Text: '', Language: 'Japanese' }))"
+                        @click="() => Names.push({ Text: '', Language: 'Japanese' } as LocalizedStringInterface)"
                       >
                         <span class="i-fluent:add-16-filled" />
                       </FormKit>
@@ -184,14 +182,14 @@ async function OnSubmit(content: any) {
                     validation="between:1,31"
                   />
                 </div>
-                <div class="text-latte-subtext1 dark:text-mocha-subtext1 text-sm -mt-3">
+                <div class="text-sm text-latte-subtext1 -mt-3 dark:text-mocha-subtext1">
                   The birthday of the singer.
                 </div>
               </FormKit>
             </div>
           </div>
 
-          <div class="bg-latte-surface0 dark:bg-mocha-surface0 mt-2 flex items-start justify-end gap-6 rounded-xl p-5">
+          <div class="mt-2 flex items-start justify-end gap-6 rounded-xl bg-latte-surface0 p-5 dark:bg-mocha-surface0">
             <!-- Nicknames -->
             <div w-full>
               <FormKit v-slot="{ items, node, value }" :value="Nicknames" type="list" dynamic name="nicknames">
@@ -265,7 +263,7 @@ async function OnSubmit(content: any) {
             </div>
           </div>
 
-          <div class="bg-latte-surface0 dark:bg-mocha-surface0 mt-2 flex items-start justify-between gap-4 rounded-xl p-5">
+          <div class="mt-2 flex items-start justify-between gap-4 rounded-xl bg-latte-surface0 p-5 dark:bg-mocha-surface0">
             <!-- Profile Picure -->
             <div class="w-1/2">
               <FormKit
