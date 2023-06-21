@@ -1,5 +1,6 @@
+import type { CreateAlbumInfo } from '~/Core/Forms/CreateAlbumInfo'
 import type { LocalizedFileInterface } from '~/Core/Models/LocalizedFile'
-import type { LocalizedString, LocalizedStringInterface } from '~/Core/Models/LocalizedString'
+import type { LocalizedStringInterface } from '~/Core/Models/LocalizedString'
 
 export interface CreateAlbumRequestInterface {
   Titles: LocalizedStringInterface[]
@@ -30,16 +31,16 @@ export class CreateAlbumRequest implements CreateAlbumRequestInterface {
     })
   }
 
-  public static async FromInfoAsync(form: any): Promise<CreateAlbumRequestInterface> {
+  public static async FromInfoAsync(form: CreateAlbumInfo): Promise<CreateAlbumRequestInterface> {
     return {
-      Titles: form.titles.filter((x: LocalizedString) => x.Text !== ''),
-      ReleaseDate: new Date(form.releaseDate.year, form.releaseDate.month, form.releaseDate.day),
-      Singers: form.singers,
+      Titles: form.Titles,
+      ReleaseDate: form.ReleaseDate,
+      Singers: form.Singers,
       CoverFile: {
-        File: await ToBase64(form.coverFiles[0].file as File),
-        FileType: form.coverFiles[0].file.type ?? 'image/png',
-        Language: '', // We don't need language for profile picture
-        FileName: form.coverFiles[0].file.name,
+        File: await ToBase64(form.CoverFile as File),
+        FileType: form.CoverFile!.type ?? 'image/png',
+        Language: '', // We don't need language for cover
+        FileName: form.CoverFile!.name,
       },
     }
   }

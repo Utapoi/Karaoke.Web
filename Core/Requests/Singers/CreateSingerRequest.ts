@@ -1,5 +1,6 @@
 import type { LocalizedFileInterface } from '~/Core/Models/LocalizedFile'
-import type { LocalizedString, LocalizedStringInterface } from '~/Core/Models/LocalizedString'
+import type { LocalizedStringInterface } from '~/Core/Models/LocalizedString'
+import type { CreateSingerInfo } from '~/Core/Forms/CreateSingerInfo'
 
 export interface CreateSingerRequestInterface {
   Names: LocalizedStringInterface[]
@@ -30,17 +31,16 @@ export class CreateSingerRequest implements CreateSingerRequestInterface {
     })
   }
 
-  public static async FromInfoAsync(form: any): Promise<CreateSingerRequestInterface> {
-    console.log(form.names.slice(0))
+  public static async FromInfoAsync(form: CreateSingerInfo): Promise<CreateSingerRequestInterface> {
     return {
-      Names: form.names.filter((x: LocalizedString) => x.Text !== ''),
-      Nicknames: form.nicknames.filter((x: LocalizedString) => x.Text !== ''),
-      Birthday: new Date(form.birthday.year, form.birthday.month, form.birthday.day),
+      Names: form.Names,
+      Nicknames: form.Nicknames,
+      Birthday: form.Birthday,
       ProfilePictureFile: {
-        File: await ToBase64(form.profilePictureFiles[0].file as File),
-        FileType: form.profilePictureFiles[0].file.type ?? 'image/png',
+        File: await ToBase64(form.ProfilePictureFile!),
+        FileType: form.ProfilePictureFile!.type ?? 'image/png',
         Language: '', // We don't need language for profile picture
-        FileName: form.profilePictureFiles[0].file.name,
+        FileName: form.ProfilePictureFile!.name,
       },
     }
   }

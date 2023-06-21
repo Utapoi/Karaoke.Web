@@ -41,7 +41,7 @@ export class Singer {
   public GetName(language: string): string {
     const name = this.Names.find((name: LocalizedString) => name.Language === language)
 
-    if (name)
+    if (name !== undefined)
       return name.Text
 
     return this.Names[0]?.Text ?? ''

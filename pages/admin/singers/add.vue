@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import { nanoid } from 'nanoid'
 import { useSingersService } from '~/Composables/Services/SingersService'
 import type { LocalizedStringInterface } from '~/Core/Models/LocalizedString'
 import { CreateSingerRequest } from '~/Core/Requests/Singers/CreateSingerRequest'
+import type { CreateSingerInfo } from '~/Core/Forms/CreateSingerInfo'
 
 definePageMeta({
   layout: 'admin',
@@ -13,25 +15,100 @@ definePageMeta({
 
 const SingersService = useSingersService()
 
-const Names = ref<LocalizedStringInterface[]>([
-  {
+const Info = ref<CreateSingerInfo>({
+  Names: [{
+    Id: nanoid(),
     Text: '',
     Language: 'Japanese',
-  },
-])
-
-const Nicknames = ref<LocalizedStringInterface[]>([
-  {
+  }],
+  Nicknames: [{
+    Id: nanoid(),
     Text: '',
     Language: 'Japanese',
-  },
-])
+  }],
+  Birthday: null,
+  ProfilePictureFile: null,
+})
 
-async function OnSubmit(content: any) {
-  const request = await CreateSingerRequest.FromInfoAsync(content)
+/**
+ * Function called when the user adds a new name
+ */
+function OnAddName() {
+  Info.value.Names.push(
+    {
+      Id: nanoid(),
+      Text: '',
+      Language: '',
+    } as LocalizedStringInterface)
+}
+
+/**
+ * Function called when the user removes a name
+ * @param id The id of the name to remove
+ */
+function OnRemoveName(id: string) {
+  const n = Info.value.Names
+  const idx = n.findIndex((x: LocalizedStringInterface) => x.Id === id)
+
+  n.splice(idx, 1)
+
+  Info.value.Names = n
+}
+
+/**
+ * Function called when the user adds a new nickname
+ */
+function OnAddNickname() {
+  Info.value.Nicknames.push(
+    {
+      Text: '',
+      Language: '',
+    } as LocalizedStringInterface)
+}
+
+/**
+ * Function called when the user removes a nickname
+ * @param id The id of the nickname to remove
+ */
+function OnRemoveNickname(id: string) {
+  const n = Info.value.Nicknames
+  const idx = n.findIndex((x: LocalizedStringInterface) => x.Id === id)
+
+  n.splice(idx, 1)
+
+  Info.value.Nicknames = n
+}
+
+/**
+ * Function called when the user submits the form
+ */
+async function OnSubmit() {
+  const request = await CreateSingerRequest.FromInfoAsync(Info.value)
 
   await SingersService.CreateAsync(request)
+  localStorage.removeItem('Utapoi-Form-CreateSinger')
 }
+
+// On Mounted
+onMounted(() => {
+  const data = localStorage.getItem('Utapoi-Form-CreateSinger')
+
+  if (data !== null)
+    Info.value = JSON.parse(data)
+})
+
+/**
+ * Watch for changes in the form and save them to local storage
+ * so that the user can continue where they left off.
+ */
+watchDeep(Info, () => {
+  const d = Info.value
+
+  // Note(Mikyan): We can't save the file to local storage so we remove it
+  d.ProfilePictureFile = null
+
+  localStorage.setItem('Utapoi-Form-CreateSinger', JSON.stringify(d))
+})
 </script>
 
 <template>
@@ -49,256 +126,137 @@ async function OnSubmit(content: any) {
       </div>
     </div>
     <div>
-      <div class="w-full flex items-start justify-end gap-6 rounded-xl p-5">
-        <FormKit
-          v-slot="{ state: { valid } }"
-          type="form"
-          :actions="false"
-          @submit="OnSubmit"
+      <div class="p-5">
+        <form
+          class="w-full flex flex-col items-start justify-start gap-2"
+          @submit.prevent="OnSubmit"
         >
-          <div class="flex items-start justify-end gap-6 rounded-xl bg-latte-surface0 p-5 shadow dark:bg-mocha-surface0 dark:shadow-none">
-            <!-- Names -->
-            <div w-full>
-              <FormKit v-slot="{ items, node, value }" :value="Names" type="list" dynamic name="names">
-                <div v-for="(item, index) in items" :key="(item as LocalizedStringInterface).Text" class="flex gap-4">
-                  <FormKit
-                    :index="index"
-                    type="group"
-                  >
-                    <FormKit
-                      v-motion-pop
-                      :classes="{
-                        input: 'text-latte-subtext1 dark:text-mocha-subtext1 font-sans',
-                        inner: 'rounded-full px-2 bg-latte-crust dark:bg-mocha-crust',
-                        label: 'mb-1 text-latte-text dark:text-mocha-text font-sans',
-                        wrapper: 'w-xs',
-                      }"
-                      :label="index === 0 ? 'Name' : ''"
-                      :validation-messages="{
-                        required: 'This field is required.',
-                      }"
-                      name="text"
-                      placeholder="Singer name"
-                      type="text"
-                      validation="required"
-                    />
-                    <FormKit
-                      v-motion-pop
-                      :classes="{
-                        input: 'text-latte-subtext1 dark:text-mocha-subtext1',
-                        inner: 'rounded-full px-2 bg-latte-crust dark:bg-mocha-crust',
-                        label: 'mb-1 text-latte-text dark:text-mocha-text font-sans',
-                        option: 'bg-latte-crust dark:bg-mocha-crust !text-latte-subtext1 !dark:text-mocha-subtext1 font-sans',
-                      }"
-                      :label="index === 0 ? 'Language' : ''"
-                      :options="['English', 'French', 'Japanese', 'Chinese']"
-                      :validation-messages="{
-                        required: 'This field is required.',
-                      }"
-                      name="language"
-                      placeholder="Select language"
-                      type="select"
-                      validation="required"
-                    />
+          <div class="w-full flex flex-col justify-between gap-2 rounded-xl bg-latte-surface0 p-5 shadow xl:flex-row dark:bg-mocha-surface0 dark:shadow-none">
+            <div class="flex flex-col gap-2">
+              <div v-for="(name, idx) in Info.Names" :key="name.Id" v-motion-pop class="flex items-center justify-start gap-6">
+                <TextInputField
+                  v-model="name.Text"
+                  :value="name.Text"
+                  label="Name"
+                  placeholder="Singer name"
+                  :name="`singer-name-${name.Id}`"
+                  :show-label="idx === 0"
+                />
 
-                    <div class="h-full w-16 flex items-center justify-start" :class="{ 'pt-8.5': index === 0, 'pt-2.25': index !== 0 }">
-                      <FormKit
-                        v-if="index > 0"
-                        v-motion-pop
-                        :classes="{
-                          input: '!text-latte-red !dark:text-mocha-red !text-lg !p-0.5 !bg-transparent',
-                        }"
-                        type="button"
-                        @click="() => node.input(value.filter((_: any, i: number) => i !== index))"
-                      >
-                        <span class="i-fluent:delete-16-filled" />
-                      </FormKit>
-                      <FormKit
-                        v-motion-pop
-                        :classes="{
-                          input: '!text-latte-green !dark:text-mocha-green !text-lg !p-0.5 !bg-transparent',
-                        }"
-                        type="button"
-                        @click="() => Names.push({ Text: '', Language: 'Japanese' } as LocalizedStringInterface)"
-                      >
-                        <span class="i-fluent:add-16-filled" />
-                      </FormKit>
-                    </div>
-                  </FormKit>
+                <SelectInputField
+                  v-model="name.Language"
+                  label="Language"
+                  placeholder="Select language"
+                  :name="`singer-name-language-${idx}`"
+                  :show-label="idx === 0"
+                  :options="[
+                    { text: 'English', value: 'English' },
+                    { text: 'Japanese', value: 'Japanese' },
+                    { text: 'Chinese', value: 'Chinese' },
+                    { text: 'French', value: 'French' },
+                  ]"
+                />
+
+                <div
+                  class="h-full flex items-center justify-center gap-3" :class="{
+                    'mt-7': idx === 0,
+                    'mt-1': idx > 0,
+                  }"
+                >
+                  <div v-if="idx > 0" class="text-lg text-latte-red hover:cursor-pointer dark:text-mocha-red" @click="() => OnRemoveName(name.Id)">
+                    <div class="i-fluent:delete-16-filled" />
+                  </div>
+                  <div class="text-lg text-latte-green hover:cursor-pointer dark:text-mocha-green" @click="OnAddName">
+                    <div class="i-fluent:add-16-filled" />
+                  </div>
                 </div>
-              </FormKit>
+              </div>
             </div>
-
-            <!-- Birthday -->
-            <div>
-              <FormKit type="group" name="birthday">
-                <div class="w-full flex items-start justify-end gap-4">
-                  <FormKit
-                    :classes="{
-                      input: 'text-latte-subtext1 dark:text-mocha-subtext1',
-                      inner: 'rounded-full px-2 bg-latte-crust dark:bg-mocha-crust',
-                      label: 'mb-1 text-latte-text dark:text-mocha-text font-sans',
-                      wrapper: 'max-w-36',
-                    }"
-                    :validation-messages="{
-                      between: '1900~2050 only.',
-                    }"
-                    name="year"
-                    label="Year"
-                    placeholder="2000"
-                    type="text"
-                    validation="between:1900,2050"
-                  />
-                  <FormKit
-                    :classes="{
-                      input: 'text-latte-subtext1 dark:text-mocha-subtext1',
-                      inner: 'rounded-full px-2 bg-latte-crust dark:bg-mocha-crust',
-                      label: 'mb-1 text-latte-text dark:text-mocha-text font-sans',
-                      wrapper: 'max-w-36',
-                    }"
-                    :validation-messages="{
-                      between: '1~12 only.',
-                    }"
-                    name="month"
-                    label="Month"
-                    placeholder="06"
-                    type="text"
-                    validation="between:1,12"
-                  />
-                  <FormKit
-                    :classes="{
-                      input: 'text-latte-subtext1 dark:text-mocha-subtext1',
-                      inner: 'rounded-full px-2 bg-latte-crust dark:bg-mocha-crust',
-                      label: 'mb-1 text-latte-text dark:text-mocha-text font-sans',
-                      wrapper: 'max-w-36',
-                    }"
-                    :validation-messages="{
-                      between: '1~31 only.',
-                    }"
-                    name="day"
-                    label="Day"
-                    placeholder="14"
-                    type="text"
-                    validation="between:1,31"
-                  />
-                </div>
-                <div class="text-sm text-latte-subtext1 -mt-3 dark:text-mocha-subtext1">
-                  The birthday of the singer.
-                </div>
-              </FormKit>
-            </div>
-          </div>
-
-          <div class="mt-2 flex items-start justify-end gap-6 rounded-xl bg-latte-surface0 p-5 dark:bg-mocha-surface0">
-            <!-- Nicknames -->
-            <div w-full>
-              <FormKit v-slot="{ items, node, value }" :value="Nicknames" type="list" dynamic name="nicknames">
-                <div v-for="(item, index) in items" :key="item as any" class="flex gap-4">
-                  <FormKit
-                    :index="index"
-                    type="group"
-                  >
-                    <FormKit
-                      v-motion-pop
-                      :classes="{
-                        input: 'text-latte-subtext1 dark:text-mocha-subtext1 font-sans',
-                        inner: 'rounded-full px-2 bg-latte-crust dark:bg-mocha-crust',
-                        label: 'mb-1 text-latte-text dark:text-mocha-text font-sans',
-                        wrapper: 'w-xs',
-                      }"
-                      :label="index === 0 ? 'Nickname' : ''"
-                      :validation-messages="{
-                        required: 'This field is required.',
-                      }"
-                      name="text"
-                      placeholder="Singer nickname"
-                      type="text"
-                      validation="required"
-                    />
-                    <FormKit
-                      v-motion-pop
-                      :classes="{
-                        input: 'text-latte-subtext1 dark:text-mocha-subtext1 font-sans',
-                        inner: 'rounded-full px-2 bg-latte-crust dark:bg-mocha-crust',
-                        label: 'mb-1 text-latte-text dark:text-mocha-text font-sans',
-                        option: 'bg-latte-crust dark:bg-mocha-crust !text-latte-subtext1 !dark:text-mocha-subtext1 font-sans',
-                      }"
-                      :label="index === 0 ? 'Language' : ''"
-                      :options="['English', 'French', 'Japanese', 'Chinese']"
-                      :validation-messages="{
-                        required: 'This field is required.',
-                      }"
-                      name="language"
-                      placeholder="Select language"
-                      type="select"
-                      validation="required"
-                    />
-
-                    <div class="h-full w-16 flex items-center justify-start" :class="{ 'pt-8.5': index === 0, 'pt-2.25': index !== 0 }">
-                      <FormKit
-                        v-if="index > 0"
-                        v-motion-pop
-                        :classes="{
-                          input: '!text-latte-red !dark:text-mocha-red !text-lg !p-0.5 !bg-transparent',
-                        }"
-                        type="button"
-                        @click="() => node.input(value.filter((_: any, i: number) => i !== index))"
-                      >
-                        <span class="i-fluent:delete-16-filled" />
-                      </FormKit>
-                      <FormKit
-                        v-motion-pop
-                        :classes="{
-                          input: '!text-latte-green !dark:text-mocha-green !text-lg !p-0.5 !bg-transparent',
-                        }"
-                        type="button"
-                        @click="() => node.input(value.concat({ Text: '', Language: 'Japanese' }))"
-                      >
-                        <span class="i-fluent:add-16-filled" />
-                      </FormKit>
-                    </div>
-                  </FormKit>
-                </div>
-              </FormKit>
-            </div>
-          </div>
-
-          <div class="mt-2 flex items-start justify-between gap-4 rounded-xl bg-latte-surface0 p-5 dark:bg-mocha-surface0">
-            <!-- Profile Picure -->
-            <div class="w-1/2">
-              <FormKit
-                :classes="{
-                  fileItem: 'text-latte-subtext1 dark:text-mocha-subtext1',
-                  fileRemoveIcon: 'text-latte-subtext1 dark:text-mocha-subtext1',
-                  help: 'text-latte-subtext1 dark:text-mocha-subtext1 pt-1',
-                  inner: 'rounded-full px-2 bg-latte-crust dark:bg-mocha-crust',
-                  label: 'mb-1 text-latte-text dark:text-mocha-text font-sans',
-                  wrapper: '!max-w-full',
-                }"
-                :validation-messages="{
-                  required: 'This field is required.',
-                }"
-                accept=".jpg,.jpeg,.png,.webp"
-                name="profilePictureFiles"
-                help="Accepted formats: jpg, jpeg, png, webp. Max size: 100 KB."
-                label="Profile Picture File"
-                multiple="false"
-                type="file"
-                validation="required"
+            <div class="flex gap-2">
+              <TextInputField
+                :value="Info.Birthday?.getFullYear().toString()"
+                class="w-28"
+                label="Year"
+                placeholder="2000"
+                name="singer-birthday-year"
+                @update:model-value="(v: string) => Info.Birthday !== null ? Info.Birthday.setFullYear(Number(v)) : Info.Birthday = new Date(Number(v), 0, 1)"
+              />
+              <TextInputField
+                :value="(Info.Birthday === null ? '' : Info.Birthday.getMonth() + 1).toString()"
+                class="w-28"
+                label="Month"
+                placeholder="01"
+                name="singer-birthday-year"
+                @update:model-value="(v: string) => Info.Birthday !== null ? Info.Birthday.setMonth(Number(v) - 1) : Info.Birthday = new Date(0, Number(v) - 1, 1)"
+              />
+              <TextInputField
+                :value="Info.Birthday?.getDate().toString()"
+                class="w-28"
+                label="Day"
+                placeholder="01"
+                name="singer-birthday-year"
+                @update:model-value="(v: string) => Info.Birthday !== null ? Info.Birthday.setDate(Number(v)) : Info.Birthday = new Date(0, 0, Number(v))"
               />
             </div>
           </div>
 
-          <div class="mt-4 w-full inline-flex justify-end">
-            <FormKit
-              type="submit"
-              :disabled="!valid"
-              :classes="{
-                input: '!rounded-full px-2 !bg-latte-green font-sans !dark:bg-mocha-green uppercase font-semibold',
-              }"
+          <div class="w-full flex flex-col justify-between gap-2 rounded-xl bg-latte-surface0 p-5 shadow xl:flex-row dark:bg-mocha-surface0 dark:shadow-none">
+            <div class="flex flex-col gap-2">
+              <div v-for="(nickname, idx) in Info.Nicknames" :key="nickname.Id" v-motion-pop class="flex items-center justify-start gap-6">
+                <TextInputField
+                  v-model="nickname.Text"
+                  label="Nickname"
+                  placeholder="Singer nickname"
+                  :name="`singer-nickname-${nickname.Id}`"
+                  :show-label="idx === 0"
+                />
+
+                <SelectInputField
+                  v-model="nickname.Language"
+                  label="Language"
+                  placeholder="Select language"
+                  :name="`singer-nickname-language-${idx}`"
+                  :show-label="idx === 0"
+                  :options="[
+                    { text: 'English', value: 'English' },
+                    { text: 'Japanese', value: 'Japanese' },
+                    { text: 'Chinese', value: 'Chinese' },
+                    { text: 'French', value: 'French' },
+                  ]"
+                />
+
+                <div
+                  class="h-full flex items-center justify-center gap-3" :class="{
+                    'mt-7': idx === 0,
+                    'mt-1': idx > 0,
+                  }"
+                >
+                  <div v-if="idx > 0" class="text-lg text-latte-red hover:cursor-pointer dark:text-mocha-red" @click="OnRemoveNickname(nickname.Id)">
+                    <div class="i-fluent:delete-16-filled" />
+                  </div>
+                  <div class="text-lg text-latte-green hover:cursor-pointer dark:text-mocha-green" @click="OnAddNickname()">
+                    <div class="i-fluent:add-16-filled" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="w-full flex flex-col justify-between gap-2 rounded-xl bg-latte-surface0 p-5 shadow xl:flex-row dark:bg-mocha-surface0 dark:shadow-none">
+            <FileInputField
+              class="w-1/2"
+              label="Profile Picture"
+              name="singer-profile-picture-file"
+              @update:model-value="(v: Array<File>) => Info.ProfilePictureFile = v[0]"
             />
           </div>
-        </FormKit>
+
+          <div class="mt-4 w-full inline-flex justify-end">
+            <button type="submit" class="rounded-full bg-latte-green px-4 py-2 font-semibold uppercase text-latte-base hover:cursor-pointer dark:bg-mocha-green dark:text-mocha-base">
+              Submit
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
