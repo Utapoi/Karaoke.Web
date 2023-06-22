@@ -1,11 +1,5 @@
 <script setup lang="ts">
-/**
- * Represents an option in the select
- */
-export interface SelectInputFieldOptions {
-  value: string
-  text: string
-}
+import type { SelectInputFieldOptions } from '~/Core/Forms/Options/SelectInputFieldOptions'
 
 /**
  * The props for the select input field
@@ -90,7 +84,7 @@ function OnInputChanged(e: SelectInputFieldOptions) {
       <div
         class="absolute top-2 w-full rounded-xl bg-latte-surface1 shadow dark:bg-mocha-surface1" :style="{
           left: `${SelectRef.getBoundingClientRect().left}px`,
-          top: `${SelectRef.getBoundingClientRect().bottom + 8}px`,
+          top: `${SelectRef.getBoundingClientRect().bottom + useWindowScroll().y.value ?? 0 + 20}px`,
           width: `${SelectRef.getBoundingClientRect().width}px`,
         }"
         @mouseleave="IsOpen = false"

@@ -121,21 +121,21 @@ watchDeep(Info, () => {
         >
           <div class="w-full flex flex-col justify-between gap-2 rounded-xl bg-latte-surface0 p-5 shadow xl:flex-row dark:bg-mocha-surface0 dark:shadow-none">
             <div class="flex flex-col gap-2">
-              <div v-for="(name, idx) in Info.Titles" :key="name.Id" v-motion-pop class="w-full flex items-center justify-start gap-6">
+              <div v-for="(title, idx) in Info.Titles" :key="title.Id" v-motion-pop class="w-full flex items-center justify-start gap-6">
                 <TextInputField
-                  v-model="name.Text"
+                  v-model="title.Text"
                   label="Title"
                   placeholder="Album title"
-                  :name="`album-title-${name.Id}`"
+                  :name="`album-title-${title.Id}`"
                   :show-label="idx === 0"
-                  :value="name.Text"
+                  :value="title.Text"
                 />
 
                 <SelectInputField
-                  v-model="name.Language"
+                  v-model="title.Language"
                   label="Language"
                   placeholder="Select language"
-                  :name="`singer-name-language-${idx}`"
+                  :name="`album-title-language-${idx}`"
                   :show-label="idx === 0"
                   :options="[
                     { text: 'English', value: 'English' },

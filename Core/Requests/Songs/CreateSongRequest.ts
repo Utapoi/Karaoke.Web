@@ -1,5 +1,7 @@
+import type { CreateFileInfo } from '~/Core/Forms/CreateFileInfo'
+import type { CreateSongInfo } from '~/Core/Forms/CreateSongInfo'
 import { EmptyLocalizedFileInterface, type LocalizedFileInterface } from '~/Core/Models/LocalizedFile'
-import type { LocalizedString, LocalizedStringInterface } from '~/Core/Models/LocalizedString'
+import type { LocalizedStringInterface } from '~/Core/Models/LocalizedString'
 
 export interface CreateSongRequestInterface {
   Titles: LocalizedStringInterface[]
@@ -58,58 +60,64 @@ export class CreateSongRequest implements CreateSongRequestInterface {
     })
   }
 
-  public static async FromInfoAsync(form: any): Promise<CreateSongRequestInterface> {
+  public static async FromInfoAsync(form: CreateSongInfo): Promise<CreateSongRequestInterface> {
     const request = CreateSongRequest.Empty()
 
-    request.Titles = form.titles.filter((x: LocalizedString) => x.Text !== '')
-    request.ReleaseDate = new Date(form.releaseDate.year, form.releaseDate.month, form.releaseDate.day)
-    request.Singers = form.singers // [string] of Ids
-    request.Albums = form.albums
-    request.Tags = form.tags
+    request.Titles = form.Titles
+    request.ReleaseDate = form.ReleaseDate ?? new Date()
+    request.Singers = form.Singers // [string] of Ids
+    request.Albums = form.Albums
+    request.Tags = form.Tags
 
+    // Note(Mikyan): This will never be null at this point.
     request.ThumbnailFile = {
-      File: await ToBase64(form.thumbnailFiles[0].file as File),
-      FileType: form.thumbnailFiles[0].file.type ?? 'image/png',
+      File: await ToBase64(form.ThumbnailFile.File as File),
+      FileType: form.ThumbnailFile.File!.type ?? 'image/png',
       Language: '', // We don't need language for thumbnail
-      FileName: form.thumbnailFiles[0].file.name,
+      FileName: form.ThumbnailFile.File!.name,
     }
 
+    // Note(Mikyan): This will never be null at this point.
     request.PreviewFile = {
-      File: await ToBase64(form.previewFiles[0].file as File),
-      FileType: form.previewFiles[0].file.type ?? 'audio/ogg',
+      File: await ToBase64(form.PreviewFile.File as File),
+      FileType: form.PreviewFile.File!.type ?? 'audio/ogg',
       Language: '', // We don't need language for preview
-      FileName: form.previewFiles[0].file.name,
+      FileName: form.PreviewFile.File!.name,
     }
 
+    // Note(Mikyan): This will never be null at this point.
     request.VoiceFile = {
-      File: await ToBase64(form.voiceFiles[0].file as File),
-      FileType: form.voiceFiles[0].file.type ?? 'audio/ogg',
+      File: await ToBase64(form.VoiceFile.File as File),
+      FileType: form.VoiceFile.File!.type ?? 'audio/ogg',
       Language: '', // We don't need language for voice
-      FileName: form.voiceFiles[0].file.name,
+      FileName: form.VoiceFile.File!.name,
     }
 
+    // Note(Mikyan): This will never be null at this point.
     request.InstrumentalFile = {
-      File: await ToBase64(form.instrumentalFiles[0].file as File),
-      FileType: form.instrumentalFiles[0].file.type ?? 'audio/ogg',
+      File: await ToBase64(form.InstrumentalFile.File as File),
+      FileType: form.InstrumentalFile.File!.type ?? 'audio/ogg',
       Language: '',
-      FileName: form.instrumentalFiles[0].file.name,
+      FileName: form.InstrumentalFile.File!.name,
     }
 
-    request.LyricsFiles = (await Promise.allSettled(form.lyricsFiles.map(async (f: any) => {
+    // Note(Mikyan): This will never be null at this point.
+    request.LyricsFiles = (await Promise.allSettled(form.LyricsFiles.map(async (f: CreateFileInfo) => {
       return {
-        File: await ToBase64(f.files[0].file as File),
-        FileType: f.files[0].type ?? 'text/txt',
-        Language: f.language,
-        FileName: f.files[0].name,
+        File: await ToBase64(f.File as File),
+        FileType: f.File!.type ?? 'text/plain',
+        Language: f.Language,
+        FileName: f.File!.name,
       }
     }))).map((e: any) => e.value as LocalizedFileInterface)
 
-    request.KaraokeFiles = (await Promise.allSettled(form.karaokeFiles.map(async (f: any) => {
+    // Note(Mikyan): This will never be null at this point.
+    request.KaraokeFiles = (await Promise.allSettled(form.KaraokeFiles.map(async (f: CreateFileInfo) => {
       return {
-        File: await ToBase64(f.files[0].file as File),
-        FileType: f.files[0].type ?? 'subtitles/ass',
-        Language: f.language,
-        FileName: f.files[0].name,
+        File: await ToBase64(f.File as File),
+        FileType: f.File!.type ?? 'subtitles/ass',
+        Language: f.Language,
+        FileName: f.File!.name,
       }
     }))).map((e: any) => e.value as LocalizedFileInterface)
 
