@@ -10,7 +10,6 @@ export default defineNuxtConfig({
     '@pinia-plugin-persistedstate/nuxt',
     '@nuxtjs/color-mode',
     '@vite-pwa/nuxt',
-    '@formkit/nuxt',
   ],
 
   colorMode: {
