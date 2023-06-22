@@ -18,15 +18,15 @@ Songs.value = await SongsService.GetSongsAsync(0, 15)
 </script>
 
 <template>
-  <div class="w-full">
+  <div class="mx-auto max-w-10xl w-full">
     <div class="w-full px-12 pt-8">
-      <div class="dark:bg-mocha-surface0 bg-latte-crust w-full rounded-xl p-3 shadow dark:shadow-none">
+      <div class="w-full rounded-xl bg-latte-crust p-3 shadow dark:bg-mocha-surface0 dark:shadow-none">
         <div class="flex items-center gap-2">
-          <span class="dark:text-mocha-text text-latte-text text-sm">0 songs</span>
-          <div class="dark:bg-mocha-surface2 bg-latte-surface2 mx-2 h-9 w-0.25" />
+          <span class="text-sm text-latte-text dark:text-mocha-text">0 songs</span>
+          <div class="mx-2 h-9 w-0.25 bg-latte-surface2 dark:bg-mocha-surface2" />
 
-          <div class="dark:border-mocha-overlay0 border-latte-overlay0 border rounded-full">
-            <div class="text-latte-subtext1 dark:text-mocha-subtext1 w-64 inline-flex items-center justify-between gap-6 px-4 py-1.5">
+          <div class="border border-latte-overlay0 rounded-full dark:border-mocha-overlay0">
+            <div class="w-64 inline-flex items-center justify-between gap-6 px-4 py-1.5 text-latte-subtext1 dark:text-mocha-subtext1">
               <span>Search a song...</span>
               <span class="i-fluent:search-20-filled text-lg" />
             </div>
@@ -58,7 +58,7 @@ Songs.value = await SongsService.GetSongsAsync(0, 15)
     <div class="w-full px-12 pt-4">
       <div class="relative overflow-x-auto shadow-md sm:rounded-xl">
         <table class="w-full text-left text-sm" aria-describedby="Songs">
-          <thead class="bg-latte-crust dark:bg-mocha-crust text-latte-text dark:text-mocha-text text-xs uppercase">
+          <thead class="bg-latte-crust text-xs uppercase text-latte-text dark:bg-mocha-crust dark:text-mocha-text">
             <tr>
               <th scope="col" class="px-6 py-3">
                 Title
@@ -78,7 +78,7 @@ Songs.value = await SongsService.GetSongsAsync(0, 15)
             </tr>
           </thead>
           <tbody>
-            <tr v-for="song in Songs" :key="song.Id" class="dark:bg-mocha-surface0 bg-latte-surface0 hover:bg-latte-surface1 dark:text-mocha-text text-latte-text dark:hover:bg-mocha-surface1 transition-all duration-100">
+            <tr v-for="song in Songs" :key="song.Id" class="bg-latte-surface0 text-latte-text transition-all duration-100 dark:bg-mocha-surface0 hover:bg-latte-surface1 dark:text-mocha-text dark:hover:bg-mocha-surface1">
               <th scope="row" class="whitespace-nowrap px-6 py-4 font-medium text-gray-800 dark:text-white">
                 {{ song.GetTitle('English') }}
               </th>
@@ -92,7 +92,7 @@ Songs.value = await SongsService.GetSongsAsync(0, 15)
                 {{ song.Duration }}
               </td>
               <td class="px-6 py-4 text-right">
-                <NuxtLink :to="`/admin/songs/edit/${song.Id}`" class="dark:text-mocha-lavender text-latte-lavender font-medium hover:underline">
+                <NuxtLink :to="`/admin/songs/edit/${song.Id}`" class="font-medium text-latte-lavender dark:text-mocha-lavender hover:underline">
                   Edit
                 </NuxtLink>
               </td>

@@ -19,7 +19,7 @@ Albums.value = await AlbumsService.GetAlbumsAsync(0, 15)
 </script>
 
 <template>
-  <div class="w-full">
+  <div class="mx-auto max-w-10xl w-full">
     <div class="w-full px-12 pt-8">
       <div class="w-full rounded-xl bg-latte-crust p-3 shadow dark:bg-mocha-surface0">
         <div class="flex items-center gap-2">
