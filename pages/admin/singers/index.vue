@@ -21,7 +21,7 @@ Singers.value = await SingersService.GetSingersAsync(0, 15)
 <template>
   <div class="mx-auto max-w-10xl w-full w-full">
     <div class="w-full px-12 pt-8">
-      <div class="w-full rounded-xl bg-latte-crust p-3 shadow dark:bg-mocha-surface0">
+      <div class="w-full rounded-xl bg-latte-crust p-3 shadow dark:bg-mocha-crust">
         <div class="flex items-center gap-2">
           <span class="text-sm text-latte-text dark:text-mocha-text">{{ Singers.length }} artists</span>
           <div class="mx-2 h-9 w-0.25 bg-latte-surface2 dark:bg-mocha-surface2" />
@@ -45,9 +45,10 @@ Singers.value = await SingersService.GetSingersAsync(0, 15)
           <NuxtLink to="/admin/singers/add" class="ml-4">
             <div
               border="~ dark:mocha-red latte-red"
-              hover="dark:bg-mocha-red bg-latte-red text-latte-base dark:text-mocha-base"
+              hover="dark:bg-mocha-red bg-latte-red text-latte-text dark:text-mocha-text cursor-pointer"
               text="dark:mocha-red latte-red lg"
-              class="inline-flex items-center justify-start gap-1 border border-[#f90b31] rounded-full px-4 py-0.95 text-lg text-[#f90b31] transition-all duration-200 hover:cursor-pointer hover:bg-[#f90b31] hover:text-white"
+              flex="inline items-center justify-start gap-1"
+              class="rounded-full px-4 py-0.95 transition-all duration-200"
             >
               <span class="i-fluent:add-circle-12-filled" />
               <span>Add</span>

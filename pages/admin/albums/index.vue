@@ -21,7 +21,7 @@ Albums.value = await AlbumsService.GetAlbumsAsync(0, 15)
 <template>
   <div class="mx-auto max-w-10xl w-full">
     <div class="w-full px-12 pt-8">
-      <div class="w-full rounded-xl bg-latte-crust p-3 shadow dark:bg-mocha-surface0">
+      <div class="w-full rounded-xl bg-latte-crust p-3 shadow dark:bg-mocha-crust">
         <div class="flex items-center gap-2">
           <span class="text-sm text-latte-text dark:text-mocha-text">{{ Albums.length }} albums</span>
           <div class="mx-2 h-9 w-0.25 bg-latte-surface2 dark:bg-mocha-surface2" />
