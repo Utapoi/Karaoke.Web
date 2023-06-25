@@ -58,7 +58,7 @@ const Options = ref<Array<TagInputFieldOptions>>(props.options)
 /**
  * The selected option from the select
  */
-const Selected = ref<Array<string>>(Array<string>())
+const Selected = ref<Array<TagInputFieldOptions>>(Array<TagInputFieldOptions>())
 
 /**
  * The state of the select
@@ -69,22 +69,20 @@ const IsOpen = ref<boolean>(false)
  * Function called when the input changes
  */
 function OnInputChanged(e: TagInputFieldOptions) {
-  const value = e.text
-
-  Selected.value.push(value)
-  events('update:modelValue', Selected.value)
+  Selected.value.push(e)
+  events('update:modelValue', Selected.value.map(x => x.value))
 
   IsOpen.value = props.closeOnSelect
   SearchValue.value = ''
   Options.value = []
 }
 
-function OnRemoveSelected(e: string) {
+function OnRemoveSelected(e: TagInputFieldOptions) {
   const index = Selected.value.indexOf(e)
 
   if (index > -1) {
     Selected.value.splice(index, 1)
-    events('update:modelValue', Selected.value)
+    events('update:modelValue', Selected.value.map(x => x.value))
   }
 }
 
@@ -95,9 +93,9 @@ async function OnEnterPressed() {
     return
 
   if (props.createOption) {
-    Selected.value.push(value)
+    Selected.value.push({ value, text: value })
     SearchValue.value = ''
-    events('update:modelValue', Selected.value)
+    events('update:modelValue', Selected.value.map(x => x.value))
   }
 }
 
@@ -136,8 +134,8 @@ async function OnSearchChanged(e: Event) {
       <div class="w-full flex items-center justify-between gap-4 hover:cursor-pointer">
         <div class="flex gap-2">
           <div v-if="Selected.length > 0 || searchable" class="flex flex-wrap gap-2">
-            <div v-for="selected in Selected" :key="selected" class="inline-flex items-center gap-2 whitespace-nowrap rounded-full bg-latte-surface2 px-2 dark:bg-mocha-surface2">
-              {{ selected }} <div class="i-fluent:delete-12-filled" @click.prevent="OnRemoveSelected(selected)" />
+            <div v-for="selected in Selected" :key="selected.value" class="inline-flex items-center gap-2 whitespace-nowrap rounded-full bg-latte-surface2 px-2 dark:bg-mocha-surface2">
+              {{ selected.text }} <div class="i-fluent:delete-12-filled" @click.prevent="OnRemoveSelected(selected)" />
             </div>
             <div v-if="searchable" class="min-w-24">
               <input
@@ -149,7 +147,6 @@ async function OnSearchChanged(e: Event) {
                 :placeholder="placeholder"
                 @input="OnSearchChanged"
                 @keypress.enter="OnEnterPressed"
-                @blur="IsOpen = !closeOnSelect"
               >
             </div>
           </div>
@@ -173,11 +170,11 @@ async function OnSearchChanged(e: Event) {
           top: `${SelectRef.getBoundingClientRect().bottom + useWindowScroll().y.value ?? 0 + 20}px`,
           width: `${SelectRef.getBoundingClientRect().width}px`,
         }"
-        @mouseleave="IsOpen = false"
+        @mouseleave="IsOpen = !closeOnSelect"
       >
         <div v-if="Options.length > 0" class="flex flex-col justify-between p-2 text-latte-text dark:text-mocha-text">
-          <div v-for="option in Options" :key="option.value" class="text-ellipsis whitespace-nowrap rounded-2xl px-3 py-1 transition-all duration-150 hover:cursor-pointer hover:bg-latte-surface2 hover:dark:bg-mocha-surface2">
-            <div @click="OnInputChanged(option)">
+          <div v-for="option in Options" :key="option.value" class="h-full w-full text-ellipsis whitespace-nowrap rounded-2xl px-3 py-1 transition-all duration-150 hover:cursor-pointer hover:bg-latte-surface2 hover:dark:bg-mocha-surface2" @click="OnInputChanged(option)">
+            <div>
               {{ option.text }}
             </div>
           </div>

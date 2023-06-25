@@ -8,7 +8,6 @@ export function useHttpClient() {
   const ApiFetcher = createFetch({
     baseUrl: RuntimeConfig.public.API_URL,
     fetchOptions: {
-      credentials: 'include',
       cache: 'no-cache',
     },
     options: {
@@ -27,8 +26,6 @@ export function useHttpClient() {
   async function Get<T>(url: string, options?: RequestInit): Promise<T | undefined> {
     if (options === undefined)
       options = {}
-
-    options.credentials = 'include'
 
     const { data: r0 } = await ApiFetcher(url, options)
       .get()
@@ -51,8 +48,6 @@ export function useHttpClient() {
     if (options === undefined)
       options = {}
 
-    options.credentials = 'include'
-
     if (body === undefined)
       body = {}
 
@@ -61,12 +56,7 @@ export function useHttpClient() {
     if (r0.value !== null)
       return r0.value as T
 
-    const { data: r1 } = await ApiFetcher(url, options).post(body).json()
-
-    if (r1.value === null)
-      return undefined
-
-    return r1.value as T
+    return undefined
   }
 
   async function Patch<T>(url: string, options?: RequestInit, body: any = undefined): Promise<T | undefined> {

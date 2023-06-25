@@ -25,14 +25,12 @@ export class Album {
   Tags: Tag[] = []
 
   constructor(album: AlbumInterface) {
-    // Note(Mikyan): We could also use AutoMapper for TS here.
-
     this.Id = album.Id
     this.Titles = album.Titles.map((title: LocalizedStringInterface) => LocalizedString.FromResponse(title))
     this.Singers = album.Singers.map((singer: SingerInterface) => Singer.FromResponse(singer))
     this.AlbumArt = album.AlbumArt
     this.Songs = album.Songs.map((song: SongInterface) => Song.FromResponse(song))
-    this.Tags = album.Tags.map((tag: TagInterface) => Tag.FromResponse(tag))
+    this.Tags = album.Tags?.map((tag: TagInterface) => Tag.FromResponse(tag)) ?? []
   }
 
   public GetTitle(language: string): string {

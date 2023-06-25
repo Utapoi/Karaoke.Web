@@ -47,7 +47,7 @@ export function useAlbumsService() {
    * @returns A list of albums.
    */
   async function SearchAsync(query: string): Promise<Album[]> {
-    const response = await Client.Post<AlbumInterface[]>(`/Albums/Search?input=${query}`)
+    const response = await Client.Post<AlbumInterface[]>(`/Albums/Search?query=${query}`)
 
     if (response === undefined)
       return []

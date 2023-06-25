@@ -4,6 +4,7 @@ import { useSingersService } from '~/Composables/Services/SingersService'
 import type { LocalizedStringInterface } from '~/Core/Models/LocalizedString'
 import { CreateSingerRequest } from '~/Core/Requests/Singers/CreateSingerRequest'
 import type { CreateSingerInfo } from '~/Core/Forms/CreateSingerInfo'
+import LanguageOptions from '~/Core/Forms/Options/LanguageOptions'
 
 definePageMeta({
   layout: 'admin',
@@ -26,7 +27,9 @@ const Info = ref<CreateSingerInfo>({
     Text: '',
     Language: 'Japanese',
   }],
-  Birthday: null,
+  BirthdayYear: 0,
+  BirthdayMonth: 0,
+  BirthdayDay: 0,
   ProfilePictureFile: null,
 })
 
@@ -86,15 +89,15 @@ async function OnSubmit() {
   const request = await CreateSingerRequest.FromInfoAsync(Info.value)
 
   await SingersService.CreateAsync(request)
-  localStorage.removeItem('Utapoi-Form-CreateSinger')
+  // localStorage.removeItem('Utapoi-Form-CreateSinger')
 }
 
 // On Mounted
 onMounted(() => {
-  const data = localStorage.getItem('Utapoi-Form-CreateSinger')
+  // const data = localStorage.getItem('Utapoi-Form-CreateSinger')
 
-  if (data !== null)
-    Info.value = JSON.parse(data)
+  // if (data !== null)
+  //   Info.value = JSON.parse(data)
 })
 
 /**
@@ -102,12 +105,12 @@ onMounted(() => {
  * so that the user can continue where they left off.
  */
 watchDeep(Info, () => {
-  const d = Info.value
+  // const d = Info.value
 
   // Note(Mikyan): We can't save the file to local storage so we remove it
-  d.ProfilePictureFile = null
+  // d.ProfilePictureFile = null
 
-  localStorage.setItem('Utapoi-Form-CreateSinger', JSON.stringify(d))
+  // localStorage.setItem('Utapoi-Form-CreateSinger', JSON.stringify(d))
 })
 </script>
 
@@ -136,7 +139,6 @@ watchDeep(Info, () => {
               <div v-for="(name, idx) in Info.Names" :key="name.Id" v-motion-pop class="flex items-center justify-start gap-6">
                 <TextInputField
                   v-model="name.Text"
-                  :value="name.Text"
                   label="Name"
                   placeholder="Singer name"
                   :name="`singer-name-${name.Id}`"
@@ -149,12 +151,7 @@ watchDeep(Info, () => {
                   placeholder="Select language"
                   :name="`singer-name-language-${idx}`"
                   :show-label="idx === 0"
-                  :options="[
-                    { text: 'English', value: 'English' },
-                    { text: 'Japanese', value: 'Japanese' },
-                    { text: 'Chinese', value: 'Chinese' },
-                    { text: 'French', value: 'French' },
-                  ]"
+                  :options="LanguageOptions"
                 />
 
                 <div
@@ -174,28 +171,25 @@ watchDeep(Info, () => {
             </div>
             <div class="flex gap-2">
               <TextInputField
-                :value="Info.Birthday?.getFullYear().toString()"
                 class="w-28"
                 label="Year"
                 placeholder="2000"
                 name="singer-birthday-year"
-                @update:model-value="(v: string) => Info.Birthday !== null ? Info.Birthday.setFullYear(Number(v)) : Info.Birthday = new Date(Number(v), 0, 1)"
+                @update:model-value="(v: string) => Info.BirthdayYear = Number(v)"
               />
               <TextInputField
-                :value="(Info.Birthday === null ? '' : Info.Birthday.getMonth() + 1).toString()"
                 class="w-28"
                 label="Month"
                 placeholder="01"
                 name="singer-birthday-year"
-                @update:model-value="(v: string) => Info.Birthday !== null ? Info.Birthday.setMonth(Number(v) - 1) : Info.Birthday = new Date(0, Number(v) - 1, 1)"
+                @update:model-value="(v: string) => Info.BirthdayMonth = Number(v)"
               />
               <TextInputField
-                :value="Info.Birthday?.getDate().toString()"
                 class="w-28"
                 label="Day"
                 placeholder="01"
                 name="singer-birthday-year"
-                @update:model-value="(v: string) => Info.Birthday !== null ? Info.Birthday.setDate(Number(v)) : Info.Birthday = new Date(0, 0, Number(v))"
+                @update:model-value="(v: string) => Info.BirthdayDay = Number(v)"
               />
             </div>
           </div>
@@ -217,12 +211,7 @@ watchDeep(Info, () => {
                   placeholder="Select language"
                   :name="`singer-nickname-language-${idx}`"
                   :show-label="idx === 0"
-                  :options="[
-                    { text: 'English', value: 'English' },
-                    { text: 'Japanese', value: 'Japanese' },
-                    { text: 'Chinese', value: 'Chinese' },
-                    { text: 'French', value: 'French' },
-                  ]"
+                  :options="LanguageOptions"
                 />
 
                 <div
@@ -247,7 +236,9 @@ watchDeep(Info, () => {
               class="w-1/2"
               label="Profile Picture"
               name="singer-profile-picture-file"
-              @update:model-value="(v: Array<File>) => Info.ProfilePictureFile = v[0]"
+              @update:model-value="(v: Array<File>) => {
+                Info.ProfilePictureFile = v[0]
+              }"
             />
           </div>
 

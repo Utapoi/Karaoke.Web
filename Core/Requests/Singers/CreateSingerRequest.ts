@@ -35,7 +35,7 @@ export class CreateSingerRequest implements CreateSingerRequestInterface {
     return {
       Names: form.Names,
       Nicknames: form.Nicknames,
-      Birthday: form.Birthday,
+      Birthday: new Date(form.BirthdayYear, form.BirthdayMonth, form.BirthdayDay),
       ProfilePictureFile: {
         File: await ToBase64(form.ProfilePictureFile!),
         FileType: form.ProfilePictureFile!.type ?? 'image/png',

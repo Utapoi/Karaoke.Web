@@ -34,7 +34,7 @@ export class CreateAlbumRequest implements CreateAlbumRequestInterface {
   public static async FromInfoAsync(form: CreateAlbumInfo): Promise<CreateAlbumRequestInterface> {
     return {
       Titles: form.Titles,
-      ReleaseDate: form.ReleaseDate,
+      ReleaseDate: new Date(form.ReleaseDateYear, form.ReleaseDateMonth, form.ReleaseDateDay),
       Singers: form.Singers,
       CoverFile: {
         File: await ToBase64(form.CoverFile as File),

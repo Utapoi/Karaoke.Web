@@ -90,8 +90,8 @@ function OnInputChanged(e: SelectInputFieldOptions) {
         @mouseleave="IsOpen = false"
       >
         <div class="flex flex-col justify-between p-2 text-latte-text dark:text-mocha-text">
-          <div v-for="option in options" :key="option.value" class="text-ellipsis whitespace-nowrap rounded-2xl px-3 py-1 transition-all duration-150 hover:cursor-pointer hover:bg-latte-surface2 hover:dark:bg-mocha-surface2">
-            <div @click="OnInputChanged(option)">
+          <div v-for="option in options" :key="option.value" class="w-full text-ellipsis whitespace-nowrap rounded-2xl px-3 py-1 transition-all duration-150 hover:cursor-pointer hover:bg-latte-surface2 hover:dark:bg-mocha-surface2" @click.prevent="OnInputChanged(option)">
+            <div>
               {{ option.text }}
             </div>
           </div>

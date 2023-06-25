@@ -25,7 +25,9 @@ const Info = ref<CreateAlbumInfo>({
     Language: 'Japanese',
   }],
   Singers: [],
-  ReleaseDate: null,
+  ReleaseDateYear: 0,
+  ReleaseDateMonth: 0,
+  ReleaseDateDay: 0,
   CoverFile: null,
 })
 
@@ -74,15 +76,15 @@ async function OnSubmit() {
   const request = await CreateAlbumRequest.FromInfoAsync(Info.value)
 
   await AlbumsService.CreateAsync(request)
-  localStorage.removeItem('Utapoi-Form-CreateAlbum')
+  // localStorage.removeItem('Utapoi-Form-CreateAlbum')
 }
 
 // On Mounted
 onMounted(() => {
-  const data = localStorage.getItem('Utapoi-Form-CreateAlbum')
+  // const data = localStorage.getItem('Utapoi-Form-CreateAlbum')
 
-  if (data !== null)
-    Info.value = JSON.parse(data)
+  // if (data !== null)
+  //  Info.value = JSON.parse(data)
 })
 
 /**
@@ -90,12 +92,12 @@ onMounted(() => {
  * so that the user can continue where they left off.
  */
 watchDeep(Info, () => {
-  const d = Info.value
+  // const d = Info.value
 
   // Note(Mikyan): We can't save the file to local storage so we remove it
-  d.CoverFile = null
+  // d.CoverFile = null
 
-  localStorage.setItem('Utapoi-Form-CreateAlbum', JSON.stringify(d))
+  // localStorage.setItem('Utapoi-Form-CreateAlbum', JSON.stringify(d))
 })
 </script>
 
@@ -166,24 +168,24 @@ watchDeep(Info, () => {
                 label="Year"
                 name="album-release-date-year"
                 placeholder="2000"
-                :value="Info.ReleaseDate?.getFullYear().toString()"
-                @update:model-value="(v: string) => Info.ReleaseDate !== null ? Info.ReleaseDate.setFullYear(Number(v)) : Info.ReleaseDate = new Date(Number(v), 0, 1)"
+                :value="Info.ReleaseDateYear.toString()"
+                @update:model-value="(v: string) => Info.ReleaseDateYear = Number(v)"
               />
               <TextInputField
                 class="w-28"
                 label="Month"
                 name="album-release-date-year"
                 placeholder="01"
-                :value="(!Info.ReleaseDate ? '' : Info.ReleaseDate.getMonth() + 1).toString()"
-                @update:model-value="(v: string) => Info.ReleaseDate !== null ? Info.ReleaseDate.setMonth(Number(v) - 1) : Info.ReleaseDate = new Date(0, Number(v) - 1, 1)"
+                :value="Info.ReleaseDateMonth.toString()"
+                @update:model-value="(v: string) => Info.ReleaseDateMonth = Number(v)"
               />
               <TextInputField
                 class="w-28"
                 label="Day"
                 name="album-release-date-year"
                 placeholder="01"
-                :value="Info.ReleaseDate?.getDate().toString()"
-                @update:model-value="(v: string) => Info.ReleaseDate !== null ? Info.ReleaseDate.setDate(Number(v)) : Info.ReleaseDate = new Date(0, 0, Number(v))"
+                :value="Info.ReleaseDateDay.toString()"
+                @update:model-value="(v: string) => Info.ReleaseDateDay = Number(v)"
               />
             </div>
           </div>
@@ -205,7 +207,9 @@ watchDeep(Info, () => {
               class="w-1/2"
               label="Cover Image"
               name="album-cover-file"
-              @update:model-value="(v: Array<File>) => Info.CoverFile = v[0]"
+              @update:model-value="(v: Array<File>) => {
+                Info.CoverFile = v[0]
+              }"
             />
           </div>
 
