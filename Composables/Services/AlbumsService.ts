@@ -26,6 +26,10 @@ export function useAlbumsService() {
     return Album.FromResponse(response)
   }
 
+  async function DeleteAsync(id: string): Promise<void> {
+    await Client.Delete(`/Albums/${id}`)
+  }
+
   /**
    * Get a paginated list of albums.
    * @param skip The number of items to skip.
@@ -57,6 +61,7 @@ export function useAlbumsService() {
 
   return {
     CreateAsync,
+    DeleteAsync,
     GetAlbumsAsync,
     SearchAsync,
   }

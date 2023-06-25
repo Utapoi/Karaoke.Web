@@ -23,6 +23,13 @@ export function useHttpClient() {
 
   })
 
+  async function Delete(url: string, options?: RequestInit): Promise<void> {
+    if (options === undefined)
+      options = {}
+
+    await ApiFetcher(url, options).delete()
+  }
+
   async function Get<T>(url: string, options?: RequestInit): Promise<T | undefined> {
     if (options === undefined)
       options = {}
@@ -82,6 +89,7 @@ export function useHttpClient() {
   }
 
   return {
+    Delete,
     Get,
     Post,
     Patch,

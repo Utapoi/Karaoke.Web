@@ -33,7 +33,7 @@ export class Album {
     this.Tags = album.Tags?.map((tag: TagInterface) => Tag.FromResponse(tag)) ?? []
   }
 
-  public GetTitle(language: string): string {
+  public GetTitle(language = 'English'): string {
     const title = this.Titles.find((title: LocalizedString) => title.Language === language)
 
     if (title)

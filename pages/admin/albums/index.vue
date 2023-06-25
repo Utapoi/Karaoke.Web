@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useAlbumsService } from '~/Composables/Services/AlbumsService'
 import type { Album } from '~/Core/Models/Album'
+import ActionConfirm from '~/components/Common/ActionConfirm.vue'
 
 definePageMeta({
   layout: 'admin',
@@ -82,15 +83,32 @@ Albums.value = await AlbumsService.GetAlbumsAsync(0, 15)
                 {{ album.GetTitle('English') }}
               </th>
               <td class="px-6 py-4">
-                {{ album.Singers?.length ?? 0 }}
+                <p v-for="singer in album.Singers" :key="singer.Id">
+                  {{ singer.GetName('English') }}
+                </p>
               </td>
               <td class="px-6 py-4">
                 {{ album.Songs?.length ?? 0 }}
               </td>
-              <td class="px-6 py-4 text-right">
-                <NuxtLink :to="`/admin/albums/edit/${album.Id}`" class="font-medium text-latte-lavender dark:text-mocha-lavender hover:underline">
-                  Edit
+              <td class="w-full inline-flex items-center justify-end gap-2 px-6 py-4">
+                <NuxtLink :to="`/albums/${album.Id}`" class="font-medium text-latte-green dark:text-mocha-green" title="Details">
+                  <div class="i-carbon:view" />
                 </NuxtLink>
+                <NuxtLink :to="`/admin/albums/edit/${album.Id}`" class="font-medium text-latte-lavender dark:text-mocha-lavender" title="Edit">
+                  <div class="i-carbon:pen" />
+                </NuxtLink>
+                <ActionConfirm
+                  :title="`Delete '${album.GetTitle()}'`"
+                  message="Are you sure you want to delete this album?"
+                  type="danger"
+                  :on-confirm="async () => await AlbumsService.DeleteAsync(album.Id)"
+                >
+                  <template #button="slotProps">
+                    <div class="font-medium text-latte-red hover:cursor-pointer dark:text-mocha-red" title="Delete" @click.prevent="slotProps.reveal">
+                      <div class="i-carbon:delete" />
+                    </div>
+                  </template>
+                </ActionConfirm>
               </td>
             </tr>
           </tbody>

@@ -165,7 +165,7 @@ async function OnSearchChanged(e: Event) {
     </div>
     <Teleport v-if="IsOpen && SelectRef" to="body">
       <div
-        class="absolute top-2 w-full rounded-xl bg-latte-surface1 shadow dark:bg-mocha-surface1" :style="{
+        class="absolute w-full rounded-xl bg-latte-surface1 shadow dark:bg-mocha-surface1" :style="{
           left: `${SelectRef.getBoundingClientRect().left}px`,
           top: `${SelectRef.getBoundingClientRect().bottom + useWindowScroll().y.value ?? 0 + 20}px`,
           width: `${SelectRef.getBoundingClientRect().width}px`,
