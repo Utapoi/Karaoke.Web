@@ -26,10 +26,10 @@ export class Album {
 
   constructor(album: AlbumInterface) {
     this.Id = album.Id
-    this.Titles = album.Titles.map((title: LocalizedStringInterface) => LocalizedString.FromResponse(title))
-    this.Singers = album.Singers.map((singer: SingerInterface) => Singer.FromResponse(singer))
+    this.Titles = album.Titles?.map((title: LocalizedStringInterface) => LocalizedString.FromResponse(title))
+    this.Singers = album.Singers?.map((singer: SingerInterface) => Singer.FromResponse(singer))
     this.AlbumArt = album.AlbumArt
-    this.Songs = album.Songs.map((song: SongInterface) => Song.FromResponse(song))
+    this.Songs = album.Songs?.map((song: SongInterface) => Song.FromResponse(song))
     this.Tags = album.Tags?.map((tag: TagInterface) => Tag.FromResponse(tag)) ?? []
   }
 
@@ -53,7 +53,10 @@ export class Album {
     })
   }
 
-  public static FromResponse(info: AlbumInterface): Album {
+  public static FromResponse(info: AlbumInterface | null): Album {
+    if (info === null)
+      return Album.Empty()
+
     return new Album(info)
   }
 }

@@ -70,7 +70,7 @@ function GetIconFromType(type: string) {
       class="relative"
     >
       <div
-        class="absolute w-full rounded-xl bg-latte-surface1 p-5 shadow-md dark:bg-mocha-surface1" :style="{
+        class="absolute w-full border-2 border-latte-surface0 rounded-xl bg-latte-surface1 p-5 shadow-md dark:border-mocha-surface0 dark:bg-mocha-surface1" :style="{
           top: `${Target.getBoundingClientRect().top + 25}px`,
           left: `${Target.getBoundingClientRect().left - 405}px`,
           width: `450px`,

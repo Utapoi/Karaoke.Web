@@ -1,6 +1,7 @@
 import type { SingerInterface } from '~/Core/Models/Singer'
 import { Singer } from '~/Core/Models/Singer'
 import type { CreateSingerRequest } from '~/Core/Requests/Singers/CreateSingerRequest'
+import type { PaginatedResponse } from '~/Core/Responses/PaginatedResponse'
 import type { GetSingersResponse } from '~/Core/Responses/Singers/GetSingersResponse'
 
 /**
@@ -39,7 +40,6 @@ export function useSingersService() {
 
     return Singer.FromResponse(response)
   }
-
   /**
    * Get a paginated list of singers.
    * @param skip The number of items to skip.
@@ -48,6 +48,21 @@ export function useSingersService() {
    */
   async function GetSingersAsync(skip = 0, take = 10): Promise<Singer[]> {
     const response = await Client.Get<GetSingersResponse>(`/singers?skip=${skip}&take=${take}`)
+
+    if (response === undefined)
+      return []
+
+    return response.Items.map(singer => Singer.FromResponse(singer))
+  }
+
+  /**
+   * Get a paginated list of singers for the admin panel.
+   * @param skip The number of items to skip.
+   * @param take The number of items to take.
+   * @returns A list of singers.
+   */
+  async function GetSingersForAdminAsync(skip = 0, take = 10): Promise<Singer[]> {
+    const response = await Client.Get<PaginatedResponse<SingerInterface>>(`/Admin/Singers?skip=${skip}&take=${take}`)
 
     if (response === undefined)
       return []
@@ -78,6 +93,7 @@ export function useSingersService() {
     CreateAsync,
     GetAsync,
     GetSingersAsync,
+    GetSingersForAdminAsync,
     SearchAsync,
   }
 }

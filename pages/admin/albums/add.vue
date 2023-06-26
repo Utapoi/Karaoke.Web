@@ -177,14 +177,14 @@ watchDeep(Info, () => {
                 name="album-release-date-year"
                 placeholder="01"
                 :value="Info.ReleaseDateMonth.toString()"
-                @update:model-value="(v: string) => Info.ReleaseDateMonth = Number(v)"
+                @update:model-value="(v: string) => Info.ReleaseDateMonth = Number(v) - 1"
               />
               <TextInputField
                 class="w-28"
                 label="Day"
                 name="album-release-date-year"
                 placeholder="01"
-                :value="Info.ReleaseDateDay.toString()"
+                :value="Info.ReleaseDateDay !== 0 ? Info.ReleaseDateDay.toString() : ''"
                 @update:model-value="(v: string) => Info.ReleaseDateDay = Number(v)"
               />
             </div>

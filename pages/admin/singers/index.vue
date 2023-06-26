@@ -15,7 +15,7 @@ const SingersService = useSingersService()
 // Refs
 const Singers = ref<Singer[]>([])
 
-Singers.value = await SingersService.GetSingersAsync(0, 15)
+Singers.value = await SingersService.GetSingersForAdminAsync(0, 15)
 </script>
 
 <template>

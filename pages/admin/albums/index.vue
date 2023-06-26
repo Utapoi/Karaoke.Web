@@ -16,7 +16,7 @@ const AlbumsService = useAlbumsService()
 // Refs
 const Albums = ref<Album[]>([])
 
-Albums.value = await AlbumsService.GetAlbumsAsync(0, 15)
+Albums.value = await AlbumsService.GetAlbumsForAdminAsync(0, 15)
 </script>
 
 <template>

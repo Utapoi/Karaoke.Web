@@ -25,7 +25,7 @@ export class Singer {
     this.Names = singer.Names.map((name: LocalizedStringInterface) => LocalizedString.FromResponse(name))
     this.ProfilePicture = singer.ProfilePicture
     this.Albums = singer.Albums?.map((album: AlbumInterface) => Album.FromResponse(album))
-    this.Songs = singer.Songs.map((song: SongInterface) => Song.FromResponse(song))
+    this.Songs = singer.Songs?.map((song: SongInterface) => Song.FromResponse(song))
   }
 
   public static Empty(): Singer {
@@ -47,7 +47,10 @@ export class Singer {
     return this.Names[0]?.Text ?? ''
   }
 
-  public static FromResponse(info: SingerInterface): Singer {
+  public static FromResponse(info: SingerInterface | null): Singer {
+    if (info === null)
+      return Singer.Empty()
+
     return new Singer(info)
   }
 }
