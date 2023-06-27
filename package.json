@@ -40,6 +40,7 @@
     "@vueuse/motion": "^2.0.0",
     "howler": "^2.2.3",
     "libass-wasm": "^4.1.0",
-    "nanoid": "^4.0.2"
+    "nanoid": "^4.0.2",
+    "wavesurfer.js": "7.0.0-beta.11"
   }
 }

@@ -20,6 +20,9 @@ dependencies:
   nanoid:
     specifier: ^4.0.2
     version: 4.0.2
+  wavesurfer.js:
+    specifier: 7.0.0-beta.11
+    version: 7.0.0-beta.11
 
 devDependencies:
   '@antfu/eslint-config':
@@ -9932,6 +9935,10 @@ packages:
       glob-to-regexp: 0.4.1
       graceful-fs: 4.2.11
     dev: true
+
+  /wavesurfer.js@7.0.0-beta.11:
+    resolution: {integrity: sha512-PwcnEIcV3x8Zi0XMWFkzRy0NsJyTaFITIXByoQn/y6OqtJn9W5jzryTvt/mxv+FcKAWA7yGqkxRGX336D0iWTQ==}
+    dev: false
 
   /wcwidth@1.0.1:
     resolution: {integrity: sha512-XHPEwS0q6TaxcvG85+8EYkbiCux2XtWG2mkc47Ng2A77BQu9+DqIOJldST4HgPkuea7dvKSj5VgX3P1d4rW8Tg==}
