@@ -49,19 +49,16 @@ Utapoi's Karaoke brings the excitement of Japanese music karaoke straight to you
 
 - [Node.js](https://nodejs.org) (latest LTS)
 - [PNPM](https://pnpm.io) (latest LTS)
-- [mkcert](https://github.com/FiloSottile/mkcert)
 
 <br>
 
 ### Setting up Local Development
 
-1. After installing `mkcert`, run the following command to initialize it:
+1. In order to install pnpm, run the following command:
 
    ```shell
-   mkcert -install
+   npm install -g pnpm@latest
    ```
-
-   This will generate the necessary root certificates to enable local HTTPS development.
 
 2. Proceed with the rest of your local development setup.
 
@@ -95,10 +92,10 @@ Utapoi's Karaoke brings the excitement of Japanese music karaoke straight to you
 1. Start the local development server:
 
    ```shell
-   pnpm run dev
+   npm run dev
    ```
 
-2. Open your browser and visit [https://localhost:3000](https://localhost:3000) to access the Karaoke.Web application.
+2. Open your browser and visit [http://localhost:3000](http://localhost:3000) to access the Karaoke.Web application.
 
 <br>
 
