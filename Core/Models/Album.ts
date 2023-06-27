@@ -11,7 +11,7 @@ export interface AlbumInterface {
   Id: string
   Titles: LocalizedStringInterface[]
   Singers: SingerInterface[]
-  AlbumArt: string
+  Cover: string
   Songs: SongInterface[]
   Tags: TagInterface[]
 }
@@ -20,7 +20,7 @@ export class Album {
   Id: string
   Titles: LocalizedString[] = []
   Singers: Singer[] = []
-  AlbumArt: string
+  Cover: string
   Songs: Song[] = []
   Tags: Tag[] = []
 
@@ -28,7 +28,7 @@ export class Album {
     this.Id = album.Id
     this.Titles = album.Titles?.map((title: LocalizedStringInterface) => LocalizedString.FromResponse(title))
     this.Singers = album.Singers?.map((singer: SingerInterface) => Singer.FromResponse(singer))
-    this.AlbumArt = album.AlbumArt
+    this.Cover = album.Cover
     this.Songs = album.Songs?.map((song: SongInterface) => Song.FromResponse(song))
     this.Tags = album.Tags?.map((tag: TagInterface) => Tag.FromResponse(tag)) ?? []
   }
@@ -47,7 +47,7 @@ export class Album {
       Id: '',
       Titles: [],
       Singers: [],
-      AlbumArt: '',
+      Cover: '',
       Songs: [],
       Tags: [],
     })
