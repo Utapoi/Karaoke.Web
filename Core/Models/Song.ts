@@ -16,6 +16,7 @@ export interface SongInterface {
   ReleaseDate: Date
   Tags: TagInterface[]
   PreviewUrl: string
+  OriginalUrl: string
 }
 
 export class Song {
@@ -27,6 +28,7 @@ export class Song {
   ReleaseDate: Date
   Tags: Tag[]
   PreviewUrl: string
+  OriginalUrl: string
 
   constructor(song: SongInterface) {
     this.Id = song.Id
@@ -37,13 +39,22 @@ export class Song {
     this.ReleaseDate = song.ReleaseDate
     this.Tags = song.Tags.map((tag: TagInterface) => Tag.FromResponse(tag))
     this.PreviewUrl = song.PreviewUrl
+    this.OriginalUrl = song.OriginalUrl
   }
 
   public GetAlbum(): Album {
     return this.Albums[0] ?? Album.Empty()
   }
 
-  public GetTitle(language: string): string {
+  public GetAlbums(): Album[] {
+    return this.Albums
+  }
+
+  public GetCover(): string {
+    return this.GetAlbum().Cover
+  }
+
+  public GetTitle(language = 'English'): string {
     const title = this.Titles.find((title: LocalizedString) => title.Language === language)
 
     if (title)

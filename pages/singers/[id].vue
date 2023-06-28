@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import WaveSurfer from 'wavesurfer.js'
 import { useSingersService } from '~/Composables/Services/SingersService'
 import type { Singer } from '~/Core/Models/Singer'
 
@@ -23,44 +22,6 @@ CurrentSinger.value = Response
 
 const BackgroundCover = computed<string>(() => `url('https://localhost:7215${CurrentSinger.value?.GetRandomAlbumCover()}')`)
 
-const PopularSongWaveContainer = ref<HTMLDivElement | undefined>(undefined)
-const PopularSongWave = ref<WaveSurfer | undefined>(undefined)
-const PopularSongIsPlaying = ref<boolean>(false)
-
-function OnPlayClicked() {
-  PopularSongWave.value?.play()
-  PopularSongIsPlaying.value = true
-}
-
-function OnPauseClicked() {
-  PopularSongWave.value?.pause()
-  PopularSongIsPlaying.value = false
-}
-
-watch(PopularSongWaveContainer, (v) => {
-  if (v === undefined)
-    return
-
-  PopularSongWave.value = WaveSurfer.create({
-    container: '#popular-song-wave',
-    waveColor: '#fefefe',
-    progressColor: '#f90b31',
-    barWidth: 3,
-    barRadius: 3,
-    barGap: 2,
-    cursorWidth: 0,
-    height: 74,
-    url: '/test/innocent_starter.mp3',
-  })
-
-  PopularSongWave.value.setVolume(0.25)
-
-  PopularSongWave.value.on('interaction', () => {
-    PopularSongWave.value?.play()
-    PopularSongIsPlaying.value = true
-  })
-})
-
 useHead({
   title: `${CurrentSinger.value!.GetName()} | Utapoi`,
 })
@@ -83,22 +44,43 @@ useHead({
               </div>
               <div class="mt-2 h-full flex flex-col items-start">
                 <!-- Names / Nicknames -->
-                <h1 class="text-3xl font-semibold text-latte-text dark:text-mocha-text">
-                  {{ CurrentSinger.GetName() }}
-                </h1>
-                <h2 class="text-md text-latte-subtext0 dark:text-mocha-subtext0">
-                  <span v-for="nickname in CurrentSinger.GetNicknames()" :key="nickname">{{ nickname }}</span>
+                <div class="flex flex-col items-start gap-0">
+                  <h1 class="text-3xl font-semibold text-latte-text dark:text-mocha-text">
+                    {{ CurrentSinger.GetName() }}
+                  </h1>
+                  <p class="text-latte-text dark:text-mocha-text">
+                    <span class="text-xs text-latte-subtext1 dark:text-mocha-subtext1">or</span> {{ CurrentSinger.GetNicknames().join(', ') }}
+                  </p>
+                </div>
+                <h2 v-if="CurrentSinger.HasActivities()" class="text-md text-latte-subtext0 dark:text-mocha-subtext0">
+                  {{ CurrentSinger.GetActivities().join(', ') }}
                 </h2>
-                <p class="mt-8 whitespace-normal text-sm text-latte-text dark:text-mocha-text">
-                  Ouais je vais rajouter les informations genre la date de naissance, le groupe sanguin, etc
-                </p>
+                <div class="mt-6 w-full flex flex-wrap items-center gap-2 text-sm text-latte-text dark:text-mocha-text">
+                  <p v-if="CurrentSinger.Birthday !== null" class="inline-flex items-center gap-1 rounded-full bg-latte-surface2 px-3 py-1 shadow dark:bg-mocha-surface2">
+                    <span class="i-fluent:food-cake-20-filled text-lg text-latte-lavender dark:text-mocha-lavender" />
+                    <span>{{ new Date(CurrentSinger.Birthday).toLocaleDateString() }}</span>
+                  </p>
+                  <p class="inline-flex items-center gap-1 rounded-full bg-latte-surface2 px-3 py-1 shadow dark:bg-mocha-surface2">
+                    <span class="i-fluent:briefcase-12-filled text-lg text-latte-lavender dark:text-mocha-lavender" />
+                    <span v-if="CurrentSinger.HasActivities()">{{ CurrentSinger.GetActivities().join(', ') }}</span>
+                    <span v-else>Singer</span>
+                  </p>
+                  <p v-if="CurrentSinger.AlbumsCount > 0" class="inline-flex items-center gap-1 rounded-full bg-latte-surface2 px-3 py-1 shadow dark:bg-mocha-surface2">
+                    <span class="i-fluent:cd-16-filled text-lg text-latte-lavender dark:text-mocha-lavender" />
+                    <span>{{ CurrentSinger.AlbumsCount }} {{ CurrentSinger.AlbumsCount > 1 ? "albums" : "album" }}</span>
+                  </p>
+                  <p v-if="CurrentSinger.SongsCount > 0" class="inline-flex items-center gap-1 rounded-full bg-latte-surface2 px-3 py-1 shadow dark:bg-mocha-surface2">
+                    <span class="i-fluent:music-note-1-20-filled text-lg text-latte-lavender dark:text-mocha-lavender" />
+                    <span>{{ CurrentSinger.SongsCount }} {{ CurrentSinger.SongsCount > 1 ? "songs" : "song" }}</span>
+                  </p>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
         <!-- Tabs -->
-        <div class="mx-auto w-full overflow-x-scroll overflow-y-hidden rounded-b-xl bg-latte-surface0 text-latte-text shadow backdrop-blur-md md:overflow-x-hidden dark:bg-mocha-surface0 dark:text-mocha-text">
+        <div class="mx-auto w-full overflow-x-scroll overflow-y-hidden rounded-b-xl bg-latte-surface0 text-latte-text shadow backdrop-blur-md sm:overflow-x-hidden dark:bg-mocha-surface0 dark:text-mocha-text">
           <div class="w-full flex items-center justify-start gap-12 px-5 py-3">
             <div class="relative h-full text-latte-red dark:text-mocha-red">
               <h3>Information</h3>
@@ -110,7 +92,7 @@ useHead({
             <div>
               <h3>Songs</h3>
             </div>
-            <div class="pr-5 lg:pr-0">
+            <div class="pr-5 sm:pr-0">
               <h3>Stats</h3>
             </div>
           </div>
@@ -118,41 +100,33 @@ useHead({
 
         <!-- Popular Song -->
         <!-- Until the stats are released this will be the latest added song. -->
-        <div class="mb-2 mt-6 rounded-xl bg-latte-surface0 dark:bg-mocha-surface0">
+        <div v-if="CurrentSinger.PopularSong !== null" class="mb-2 mt-6 rounded-xl bg-latte-surface0 dark:bg-mocha-surface0">
           <div class="flex items-center gap-6 md:flex-row">
             <div>
-              <img class="h-38 min-w-38 rounded-l-xl object-cover" src="https://upload.wikimedia.org/wikipedia/en/e/e9/Innocent_starter_%28cover%29.jpg">
+              <img class="h-38 min-w-38 rounded-l-xl object-cover" :src="CurrentSinger.PopularSong.GetCover()">
             </div>
             <div class="flex flex-col items-center gap-4 md:flex-row md:gap-0">
               <div class="flex flex-col items-start whitespace-nowrap">
                 <p class="text-latte-text dark:text-mocha-text">
-                  Innocent Starter
+                  {{ CurrentSinger.PopularSong.GetTitle() }}
                 </p>
                 <p class="text-sm text-latte-subtext1 dark:text-mocha-subtext1">
                   Nana Mizuki
                 </p>
               </div>
-              <div class="mx-4 rounded-full bg-latte-surface1 p-3 text-xl text-latte-text hover:cursor-pointer dark:bg-mocha-surface1 dark:text-mocha-text">
-                <div
-                  v-if="PopularSongIsPlaying === false"
-                  class="i-fluent:play-16-filled"
-                  @click.prevent="OnPlayClicked"
-                />
-                <div
-                  v-else
-                  class="i-fluent:pause-16-filled"
-                  @click.prevent="OnPauseClicked"
-                />
-              </div>
             </div>
-            <div id="popular-song-wave" ref="PopularSongWaveContainer" class="relative hidden w-full pr-5 lg:block" />
+            <SongWave :song-url="CurrentSinger.PopularSong.OriginalUrl" song-wave-class="hidden pr-5 md:block" />
           </div>
         </div>
 
         <!-- Latest Songs -->
-        <div class="my-2 rounded-xl bg-latte-surface0 p-5 dark:bg-mocha-surface0">
+        <div
+          class="my-2 rounded-xl bg-latte-surface0 p-5 dark:bg-mocha-surface0" :class="{
+            'mb-2 mt-6': CurrentSinger.PopularSong === null,
+            'my-2': CurrentSinger.PopularSong !== null,
+          }"
+        >
           <div class="mb-6 flex items-center gap-2">
-            <div class="h-0.25 w-12 rounded-full bg-latte-text dark:bg-mocha-text" />
             <h2 class="text-2xl text-latte-text dark:text-mocha-text">
               Latest Songs
             </h2>
@@ -162,26 +136,23 @@ useHead({
         <!-- Latest Albums -->
         <div class="my-2 rounded-xl bg-latte-surface0 p-5 dark:bg-mocha-surface0">
           <div class="mb-6 flex items-center gap-2">
-            <div class="h-0.25 w-12 rounded-full bg-latte-text dark:bg-mocha-text" />
             <h2 class="text-2xl text-latte-text dark:text-mocha-text">
               Latest Albums
             </h2>
           </div>
-          <div class="grid grid-cols-2 w-full gap-4 text-latte-text lg:grid-cols-5 md:grid-cols-4 dark:text-mocha-text">
-            <div v-for="album in CurrentSinger.Albums" :key="album.Id">
-              <NuxtLink :to="`/albums/${album.Id}`">
-                <img class="aspect-1/1 h-38 h-min w-38 rounded-xl object-cover" :src="`https://localhost:7215${album.Cover}`">
-              </NuxtLink>
+          <div class="grid grid-cols-2 w-full items-center gap-5 text-latte-text lg:grid-cols-7 md:grid-cols-5 sm:grid-cols-4 dark:text-mocha-text">
+            <div v-for="album in CurrentSinger.Albums.slice(0, 7)" :key="album.Id">
+              <AlbumCard :album="album" :singers="[CurrentSinger]" />
             </div>
           </div>
         </div>
 
-        <div class="my-2 rounded-xl bg-latte-surface0 p-5 shadow dark:bg-mocha-surface0">
+        <div v-if="CurrentSinger.Descriptions.length > 0" class="my-2 rounded-xl bg-latte-surface0 p-5 shadow dark:bg-mocha-surface0">
           <h2 class="text-xl text-latte-text dark:text-mocha-text">
             About {{ CurrentSinger.GetName() }}
           </h2>
-          <p class="mt-6 whitespace-normal text-sm text-latte-subtext1 dark:text-mocha-subtext1">
-            Nana Mizuki is a renowned Japanese singer and voice actress. With a career spanning over two decades, she has established herself as one of the most successful and influential artists in the Japanese music industry. Nana's powerful and versatile vocals, coupled with her charismatic stage presence, have captivated audiences worldwide.
+          <p class="prose dark:prose-invert prose-latte-subtext1 dark:prose-mocha-subtext1 mt-6 whitespace-normal text-sm">
+            {{ CurrentSinger.GetDescription() }}
           </p>
         </div>
       </div>

@@ -22,6 +22,7 @@ export default defineNuxtConfig({
     '~/components',
     { path: '~/components/Forms' },
     { path: '~/components/Common' },
+    { path: '~/components/Albums' },
     { path: '~/components/Artists' },
     { path: '~/components/Songs' },
   ],
