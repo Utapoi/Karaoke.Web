@@ -80,12 +80,7 @@ export function useHttpClient() {
     if (r0.value !== null)
       return r0.value as T
 
-    const { data: r1 } = await ApiFetcher(url, options).patch(body)
-
-    if (r1.value === null)
-      return undefined
-
-    return r1.value as T
+    return undefined
   }
 
   return {

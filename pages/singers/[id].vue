@@ -9,6 +9,8 @@ const Router = useRouter()
 
 const SingersService = useSingersService()
 
+const SelectedTab = ref<number>(0)
+
 const SingerId = ref<string>(Route.params.id.toString())
 const CurrentSinger = ref<Singer | undefined>(undefined)
 
@@ -45,16 +47,18 @@ const BackgroundCover = computed<string>(() => `url('https://localhost:7215${Cur
               <div class="mt-2 h-full flex flex-col items-start">
                 <!-- Names / Nicknames -->
                 <div class="flex flex-col items-start gap-0">
-                  <h1 class="text-3xl font-semibold text-latte-text dark:text-mocha-text">
-                    {{ CurrentSinger.GetName() }}
-                  </h1>
+                  <div class="flex items-center gap-4">
+                    <h1 class="text-3xl font-semibold text-latte-text dark:text-mocha-text">
+                      {{ CurrentSinger.GetName() }}
+                    </h1>
+                    <!-- TODO: v-if="CurrentUser === Roles.Admin" or something like this. -->
+                    <NuxtLink :to="`/admin/singers/${CurrentSinger.Id}/edit`" target="_blank" class="i-carbon:pen cursor-pointer text-sm text-latte-red dark:text-mocha-red" />
+                  </div>
+
                   <p class="text-latte-text dark:text-mocha-text">
-                    <span class="text-xs text-latte-subtext1 dark:text-mocha-subtext1">or</span> {{ CurrentSinger.GetNicknames().join(', ') }}
+                    <span class="text-xs text-latte-subtext1 dark:text-mocha-subtext1">or</span> {{ CurrentSinger.Nicknames.map(x => x.Text).join(', ') }}
                   </p>
                 </div>
-                <h2 v-if="CurrentSinger.HasActivities()" class="text-md text-latte-subtext0 dark:text-mocha-subtext0">
-                  {{ CurrentSinger.GetActivities().join(', ') }}
-                </h2>
                 <div class="mt-6 w-full flex flex-wrap items-center gap-2 text-sm text-latte-text dark:text-mocha-text">
                   <p v-if="CurrentSinger.Birthday !== null" class="inline-flex items-center gap-1 rounded-full bg-latte-surface2 px-3 py-1 shadow dark:bg-mocha-surface2">
                     <span class="i-fluent:food-cake-20-filled text-lg text-latte-lavender dark:text-mocha-lavender" />
@@ -82,9 +86,15 @@ const BackgroundCover = computed<string>(() => `url('https://localhost:7215${Cur
         <!-- Tabs -->
         <div class="mx-auto w-full overflow-x-scroll overflow-y-hidden rounded-b-xl bg-latte-surface0 text-latte-text shadow backdrop-blur-md sm:overflow-x-hidden dark:bg-mocha-surface0 dark:text-mocha-text">
           <div class="w-full flex items-center justify-start gap-12 px-5 py-3">
-            <div class="relative h-full text-latte-red dark:text-mocha-red">
+            <div
+              class="relative h-full text-latte-red hover:cursor-pointer dark:text-mocha-red" :class="{
+                'text-latte-red dark:text-mocha-red': SelectedTab === 0,
+                'text-latte-text dark:text-mocha-text': SelectedTab !== 0,
+              }"
+              @click.prevent="SelectedTab = 0"
+            >
               <h3>Information</h3>
-              <div class="absolute border-b-2 border-latte-red -bottom-3.15 -left-1 -right-1 dark:border-mocha-red" />
+              <div v-if="SelectedTab === 0" class="absolute border-b-2 border-latte-red -bottom-3.15 -left-1 -right-1 dark:border-mocha-red" />
             </div>
             <div>
               <h3>Albums</h3>
@@ -98,63 +108,7 @@ const BackgroundCover = computed<string>(() => `url('https://localhost:7215${Cur
           </div>
         </div>
 
-        <!-- Popular Song -->
-        <!-- Until the stats are released this will be the latest added song. -->
-        <div v-if="CurrentSinger.PopularSong !== null" class="mb-2 mt-6 rounded-xl bg-latte-surface0 dark:bg-mocha-surface0">
-          <div class="flex items-center gap-6 md:flex-row">
-            <div>
-              <img class="h-38 min-w-38 rounded-l-xl object-cover" :src="CurrentSinger.PopularSong.GetCover()">
-            </div>
-            <div class="flex flex-col items-center gap-4 md:flex-row md:gap-0">
-              <div class="flex flex-col items-start whitespace-nowrap">
-                <p class="text-latte-text dark:text-mocha-text">
-                  {{ CurrentSinger.PopularSong.GetTitle() }}
-                </p>
-                <p class="text-sm text-latte-subtext1 dark:text-mocha-subtext1">
-                  Nana Mizuki
-                </p>
-              </div>
-            </div>
-            <SongWave :song-url="CurrentSinger.PopularSong.OriginalUrl" song-wave-class="hidden pr-5 md:block" />
-          </div>
-        </div>
-
-        <!-- Latest Songs -->
-        <div
-          class="my-2 rounded-xl bg-latte-surface0 p-5 dark:bg-mocha-surface0" :class="{
-            'mb-2 mt-6': CurrentSinger.PopularSong === null,
-            'my-2': CurrentSinger.PopularSong !== null,
-          }"
-        >
-          <div class="mb-6 flex items-center gap-2">
-            <h2 class="text-2xl text-latte-text dark:text-mocha-text">
-              Latest Songs
-            </h2>
-          </div>
-        </div>
-
-        <!-- Latest Albums -->
-        <div class="my-2 rounded-xl bg-latte-surface0 p-5 dark:bg-mocha-surface0">
-          <div class="mb-6 flex items-center gap-2">
-            <h2 class="text-2xl text-latte-text dark:text-mocha-text">
-              Latest Albums
-            </h2>
-          </div>
-          <div class="grid grid-cols-2 w-full items-center gap-5 text-latte-text lg:grid-cols-7 md:grid-cols-5 sm:grid-cols-4 dark:text-mocha-text">
-            <div v-for="album in CurrentSinger.Albums.slice(0, 7)" :key="album.Id">
-              <AlbumCard :album="album" :singers="[CurrentSinger]" />
-            </div>
-          </div>
-        </div>
-
-        <div v-if="CurrentSinger.Descriptions.length > 0" class="my-2 rounded-xl bg-latte-surface0 p-5 shadow dark:bg-mocha-surface0">
-          <h2 class="text-xl text-latte-text dark:text-mocha-text">
-            About {{ CurrentSinger.GetName() }}
-          </h2>
-          <p class="mt-6 whitespace-normal text-sm prose prose-latte-subtext1 dark:prose-mocha-subtext1 dark:prose-invert">
-            {{ CurrentSinger.GetDescription() }}
-          </p>
-        </div>
+        <SingerInformationTab v-if="SelectedTab === 0" :singer="CurrentSinger" />
       </div>
     </div>
   </div>

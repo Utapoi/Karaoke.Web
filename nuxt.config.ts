@@ -24,6 +24,7 @@ export default defineNuxtConfig({
     { path: '~/components/Common' },
     { path: '~/components/Albums' },
     { path: '~/components/Artists' },
+    { path: '~/components/Artists/Singers' },
     { path: '~/components/Songs' },
   ],
 

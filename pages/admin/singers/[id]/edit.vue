@@ -211,11 +211,11 @@ async function OnSubmit() {
                 @update:model-value="(v: string) => EditSingerInfo.BirthdayYear = Number(v)"
               />
               <TextInputField
-                :value="EditSingerInfo.BirthdayMonth.toString()"
+                :value="(EditSingerInfo.BirthdayMonth + 1).toString()"
                 class="w-28"
                 label="Month"
                 placeholder="01"
-                name="singer-birthday-year"
+                name="singer-birthday-month"
                 @update:model-value="(v: string) => EditSingerInfo.BirthdayMonth = Number(v) - 1"
               />
               <TextInputField
@@ -223,8 +223,8 @@ async function OnSubmit() {
                 class="w-28"
                 label="Day"
                 placeholder="01"
-                name="singer-birthday-year"
-                @update:model-value="(v: string) => EditSingerInfo.BirthdayDay = Number(v)"
+                name="singer-birthday-day"
+                @update:model-value="(v: string) => EditSingerInfo.BirthdayDay = Number(v) + 1"
               />
             </div>
           </div>

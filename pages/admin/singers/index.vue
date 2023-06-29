@@ -91,7 +91,7 @@ Singers.value = await SingersService.GetSingersForAdminAsync(0, 15)
                 <NuxtLink :to="`/singers/${singer.Id}`" class="font-medium text-latte-green dark:text-mocha-green" title="Details">
                   <div class="i-carbon:view" />
                 </NuxtLink>
-                <NuxtLink :to="`/admin/singers/edit/${singer.Id}`" class="font-medium text-latte-lavender dark:text-mocha-lavender" title="Edit">
+                <NuxtLink :to="`/admin/singers/${singer.Id}/edit`" class="font-medium text-latte-lavender dark:text-mocha-lavender" title="Edit">
                   <div class="i-carbon:pen" />
                 </NuxtLink>
                 <ActionConfirm

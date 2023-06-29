@@ -244,15 +244,15 @@ watchDeep(Info, () => {
                 class="w-28"
                 label="Month"
                 placeholder="01"
-                name="singer-birthday-year"
+                name="singer-birthday-month"
                 @update:model-value="(v: string) => Info.BirthdayMonth = Number(v) - 1"
               />
               <TextInputField
                 class="w-28"
                 label="Day"
                 placeholder="01"
-                name="singer-birthday-year"
-                @update:model-value="(v: string) => Info.BirthdayDay = Number(v)"
+                name="singer-birthday-day"
+                @update:model-value="(v: string) => Info.BirthdayDay = Number(v) + 1"
               />
             </div>
           </div>

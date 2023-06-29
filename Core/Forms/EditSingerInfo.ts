@@ -32,8 +32,20 @@ export function IEditSingerInfoFromSinger(singer: ISinger): IEditSingerInfo {
   const bday = new Date(singer.Birthday ?? '')
 
   return {
-    Names: singer.Names,
-    Nicknames: singer.Nicknames,
+    Names: singer.Names.length > 0
+      ? singer.Names
+      : [{
+          Id: nanoid(),
+          Text: '',
+          Language: 'Japanese',
+        }],
+    Nicknames: singer.Nicknames.length > 0
+      ? singer.Nicknames
+      : [{
+          Id: nanoid(),
+          Text: '',
+          Language: 'Japanese',
+        }],
     BirthdayYear: bday.getFullYear() ?? 0,
     BirthdayMonth: bday.getMonth() ?? 0,
     BirthdayDay: bday.getDate() ?? 0,
