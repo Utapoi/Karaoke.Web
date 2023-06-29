@@ -12,6 +12,9 @@ export interface ISinger {
   Descriptions: LocalizedString[]
   Activities: LocalizedString[]
   Birthday: string | null
+  BloodType: string | null
+  Height: number
+  Nationality: string | null
   PopularSong: SongInterface | null
   ProfilePicture: string
   Albums: AlbumInterface[]
@@ -27,6 +30,9 @@ export class Singer {
   Descriptions: LocalizedString[] = []
   Activities: LocalizedString[] = []
   Birthday: string | null = null
+  BloodType: string | null = null
+  Height = 0
+  Nationality: string | null = null
   PopularSong: Song | null = null
   ProfilePicture: string
   Albums: Album[] = []
@@ -41,6 +47,9 @@ export class Singer {
     this.Descriptions = singer.Descriptions?.map((description: ILocalizedString) => LocalizedString.FromResponse(description))
     this.Activities = singer.Activities?.map((activity: ILocalizedString) => LocalizedString.FromResponse(activity))
     this.Birthday = singer.Birthday
+    this.BloodType = singer.BloodType
+    this.Height = singer.Height
+    this.Nationality = singer.Nationality
     this.PopularSong = singer.PopularSong ? Song.FromResponse(singer.PopularSong) : null
     this.ProfilePicture = singer.ProfilePicture
     this.Albums = singer.Albums?.map((album: AlbumInterface) => Album.FromResponse(album))
@@ -61,6 +70,9 @@ export class Singer {
       Descriptions: [],
       Activities: [],
       Birthday: null,
+      BloodType: null,
+      Height: 0,
+      Nationality: null,
       ProfilePicture: '',
       PopularSong: null,
       Albums: [],
@@ -77,6 +89,15 @@ export class Singer {
    */
   public GetName(language = 'English'): string {
     const name = this.Names.find((name: LocalizedString) => name.Language === language)
+
+    if (name !== undefined)
+      return name.Text
+
+    return this.Names[0]?.Text ?? ''
+  }
+
+  public GetNativeName(): string {
+    const name = this.Names.find((name: LocalizedString) => name.Language === this.Nationality)
 
     if (name !== undefined)
       return name.Text

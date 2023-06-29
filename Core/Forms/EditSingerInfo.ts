@@ -10,6 +10,9 @@ export interface IEditSingerInfo {
   BirthdayDay: number
   Descriptions: ILocalizedString[]
   Activities: ILocalizedString[]
+  BloodType: string | null
+  Height: number
+  Nationality: string | null
 
   // Note(Mikyan): null means no change, otherwise this is a new profile picture.
   ProfilePictureFile: File | null
@@ -24,6 +27,9 @@ export function EmptyIEditSingerInfo(): IEditSingerInfo {
     BirthdayDay: 0,
     Descriptions: [],
     Activities: [],
+    BloodType: null,
+    Height: 0,
+    Nationality: null,
     ProfilePictureFile: null,
   }
 }
@@ -63,6 +69,9 @@ export function IEditSingerInfoFromSinger(singer: ISinger): IEditSingerInfo {
           Text: '',
           Language: 'Japanese',
         }],
+    BloodType: singer.BloodType ?? null,
+    Height: singer.Height ?? 0,
+    Nationality: singer.Nationality ?? null,
     ProfilePictureFile: null,
   }
 }

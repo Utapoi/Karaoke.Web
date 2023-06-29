@@ -5,6 +5,7 @@ import type { ILocalizedString } from '~/Core/Models/LocalizedString'
 import { CreateSingerRequest } from '~/Core/Requests/Singers/CreateSingerRequest'
 import type { ICreateSingerInfo } from '~/Core/Forms/CreateSingerInfo'
 import LanguageOptions from '~/Core/Forms/Options/LanguageOptions'
+import BloodTypeOptions from '~/Core/Forms/Options/BloodTypeOptions'
 
 definePageMeta({
   layout: 'admin',
@@ -40,6 +41,9 @@ const Info = ref<ICreateSingerInfo>({
   BirthdayYear: 0,
   BirthdayMonth: 0,
   BirthdayDay: 0,
+  Height: 0,
+  BloodType: '',
+  Nationality: '',
   ProfilePictureFile: null,
 })
 
@@ -149,29 +153,7 @@ async function OnSubmit() {
   const request = await CreateSingerRequest.FromInfoAsync(Info.value)
 
   await SingersService.CreateAsync(request)
-  // localStorage.removeItem('Utapoi-Form-CreateSinger')
 }
-
-// On Mounted
-onMounted(() => {
-  // const data = localStorage.getItem('Utapoi-Form-CreateSinger')
-
-  // if (data !== null)
-  //   Info.value = JSON.parse(data)
-})
-
-/**
- * Watch for changes in the form and save them to local storage
- * so that the user can continue where they left off.
- */
-watchDeep(Info, () => {
-  // const d = Info.value
-
-  // Note(Mikyan): We can't save the file to local storage so we remove it
-  // d.ProfilePictureFile = null
-
-  // localStorage.setItem('Utapoi-Form-CreateSinger', JSON.stringify(d))
-})
 </script>
 
 <template>
@@ -194,13 +176,13 @@ watchDeep(Info, () => {
           class="w-full flex flex-col items-start justify-start gap-2"
           @submit.prevent="OnSubmit"
         >
-          <!-- Names and Birthday -->
-          <div class="w-full flex flex-col justify-between gap-2 rounded-xl bg-latte-surface0 p-5 shadow xl:flex-row dark:bg-mocha-surface0 dark:shadow-none">
-            <!-- Names -->
-            <div class="flex flex-col gap-2">
-              <div v-for="(name, idx) in Info.Names" :key="name.Id" v-motion-pop class="flex items-center justify-start gap-2">
+          <!-- Names -->
+          <div class="w-full flex rounded-xl bg-latte-surface0 p-5 shadow dark:bg-mocha-surface0 dark:shadow-none">
+            <div class="w-full flex flex-col gap-2">
+              <div v-for="(name, idx) in Info.Names" :key="name.Id" v-motion-pop class="w-full flex items-center justify-start gap-2">
                 <TextInputField
                   v-model="name.Text"
+                  class="w-1/2"
                   label="Name"
                   placeholder="Singer name"
                   :name="`singer-name-${name.Id}`"
@@ -230,6 +212,33 @@ watchDeep(Info, () => {
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+
+          <!-- Personal Information -->
+          <div class="w-full flex flex-col justify-between gap-2 rounded-xl bg-latte-surface0 p-5 shadow xl:flex-row dark:bg-mocha-surface0 dark:shadow-none">
+            <div class="flex items-center gap-2">
+              <SelectInputField
+                label="Nationality"
+                placeholder="Select the nationality"
+                name="singer-nationality"
+                :options="LanguageOptions"
+                @update:model-value="(v: string) => Info.Nationality = v"
+              />
+              <TextInputField
+                class="w-28"
+                label="Height"
+                placeholder="150"
+                name="singer-height"
+                @update:model-value="(v: string) => Info.Height = Number(v)"
+              />
+              <SelectInputField
+                label="Blood Type"
+                placeholder="Select a blood type"
+                name="singer-bloodtype"
+                :options="BloodTypeOptions"
+                @update:model-value="(v: string) => Info.BloodType = v"
+              />
             </div>
             <!-- Birthday -->
             <div class="flex gap-2">

@@ -6,6 +6,7 @@ import type { ILocalizedString } from '~/Core/Models/LocalizedString'
 import type { Singer } from '~/Core/Models/Singer'
 import { EditSingerRequest } from '~/Core/Requests/Singers/EditSingerRequest'
 import LanguageOptions from '~/Core/Forms/Options/LanguageOptions'
+import BloodTypeOptions from '~/Core/Forms/Options/BloodTypeOptions'
 
 definePageMeta({
   layout: 'admin',
@@ -161,14 +162,14 @@ async function OnSubmit() {
           class="w-full flex flex-col items-start justify-start gap-2"
           @submit.prevent="OnSubmit"
         >
-          <!-- Names and Birthday -->
-          <div class="w-full flex flex-col justify-between gap-2 rounded-xl bg-latte-surface0 p-5 shadow xl:flex-row dark:bg-mocha-surface0 dark:shadow-none">
-            <!-- Names -->
-            <div class="flex flex-col gap-2">
-              <div v-for="(name, idx) in EditSingerInfo.Names" :key="name.Id" v-motion-pop class="flex items-center justify-start gap-2">
+          <!-- Names -->
+          <div class="w-full flex rounded-xl bg-latte-surface0 p-5 shadow dark:bg-mocha-surface0 dark:shadow-none">
+            <div class="w-full flex flex-col gap-2">
+              <div v-for="(name, idx) in EditSingerInfo.Names" :key="name.Id" v-motion-pop class="w-full flex items-center justify-start gap-2">
                 <TextInputField
                   v-model="name.Text"
                   :value="name.Text"
+                  class="w-1/2"
                   label="Name"
                   placeholder="Singer name"
                   :name="`singer-name-${name.Id}`"
@@ -199,6 +200,36 @@ async function OnSubmit() {
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+
+          <!-- Personal Information -->
+          <div class="w-full flex flex-col justify-between gap-2 rounded-xl bg-latte-surface0 p-5 shadow xl:flex-row dark:bg-mocha-surface0 dark:shadow-none">
+            <div class="flex items-center gap-2">
+              <SelectInputField
+                label="Nationality"
+                :value="LanguageOptions.find((x) => x.value === EditSingerInfo.Nationality)?.value ?? ''"
+                placeholder="Select the nationality"
+                name="singer-nationality"
+                :options="LanguageOptions"
+                @update:model-value="(v: string) => EditSingerInfo.Nationality = v"
+              />
+              <TextInputField
+                :value="EditSingerInfo.Height.toString()"
+                class="w-28"
+                label="Height"
+                placeholder="150"
+                name="singer-height"
+                @update:model-value="(v: string) => EditSingerInfo.Height = Number(v)"
+              />
+              <SelectInputField
+                :value="BloodTypeOptions.find((x) => x.value === EditSingerInfo.BloodType)?.value ?? ''"
+                label="Blood Type"
+                placeholder="Select a blood type"
+                name="singer-bloodtype"
+                :options="BloodTypeOptions"
+                @update:model-value="(v: string) => EditSingerInfo.BloodType = v"
+              />
             </div>
             <!-- Birthday -->
             <div class="flex gap-2">
@@ -354,23 +385,28 @@ async function OnSubmit() {
 
           <!-- Profile Picture -->
           <div class="w-full flex flex-col justify-between gap-2 rounded-xl bg-latte-surface0 p-5 shadow xl:flex-row dark:bg-mocha-surface0 dark:shadow-none">
-            <div class="w-full flex flex-col gap-2">
-              <FileInputField
-                class="w-1/2"
-                label="Profile Picture"
-                name="singer-profile-picture-file"
-                placeholder="Select a new profile picture"
-                @update:model-value="(v: Array<File>) => {
-                  EditSingerInfo.ProfilePictureFile = v[0]
-                }"
-              />
-              <div v-if="CurrentSinger.ProfilePicture !== null" class="w-min flex items-center gap-1 whitespace-nowrap rounded-full bg-latte-surface2 px-2 py-0.5 text-latte-green dark:bg-mocha-surface2 dark:text-mocha-green">
-                <div class="i-fluent:checkmark-12-filled text-lg" />
-                <div>{{ `${CurrentSinger.GetName()} already have a profile picture` }}</div>
+            <div class="w-full flex flex-col items-start gap-2 lg:flex-row lg:gap-6">
+              <div class="w-1/2 flex flex-col gap-2">
+                <FileInputField
+                  class="w-full"
+                  label="Profile Picture"
+                  name="singer-profile-picture-file"
+                  placeholder="Select a new profile picture"
+                  @update:model-value="(v: Array<File>) => {
+                    EditSingerInfo.ProfilePictureFile = v[0]
+                  }"
+                />
+                <div v-if="CurrentSinger.ProfilePicture !== null" class="w-min flex items-center gap-1 whitespace-nowrap rounded-full bg-latte-surface2 px-2 py-0.5 text-latte-green dark:bg-mocha-surface2 dark:text-mocha-green">
+                  <div class="i-fluent:checkmark-12-filled text-lg" />
+                  <div>{{ `${CurrentSinger.GetName()} already have a profile picture` }}</div>
+                </div>
+                <div v-else class="w-min flex items-center gap-1 whitespace-nowrap rounded-full bg-latte-surface2 px-2 py-0.5 text-latte-red dark:bg-mocha-surface2 dark:text-mocha-red">
+                  <div class="i-fluent:error-circle-12-filled text-lg" />
+                  <div>{{ `${CurrentSinger.GetName()} must have a profile picture. If you see this, then we have a bug.` }}</div>
+                </div>
               </div>
-              <div v-else class="w-min flex items-center gap-1 whitespace-nowrap rounded-full bg-latte-surface2 px-2 py-0.5 text-latte-red dark:bg-mocha-surface2 dark:text-mocha-red">
-                <div class="i-fluent:error-circle-12-filled text-lg" />
-                <div>{{ `${CurrentSinger.GetName()} must have a profile picture. If you see this, then we have a bug.` }}</div>
+              <div v-if="CurrentSinger.ProfilePicture !== null" class="flex flex-col items-start justify-items-start gap-2">
+                <img :src="`https://localhost:7215${CurrentSinger.ProfilePicture}`" class="h-36 w-36 rounded-xl object-cover">
               </div>
             </div>
           </div>

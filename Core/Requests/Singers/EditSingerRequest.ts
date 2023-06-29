@@ -5,9 +5,12 @@ import type { ILocalizedString } from '~/Core/Models/LocalizedString'
 export interface IEditSingerRequest {
   Names: ILocalizedString[]
   Nicknames: ILocalizedString[]
-  Birthday: Date | null
   Descriptions: ILocalizedString[]
   Activities: ILocalizedString[]
+  Birthday: Date | null
+  BloodType: string | null
+  Height: number
+  Nationality: string | null
 
   // Note(Mikyan): null means no change, otherwise this is a new profile picture.
   ProfilePictureFile: ILocalizedFile | null
@@ -16,17 +19,23 @@ export interface IEditSingerRequest {
 export class EditSingerRequest implements IEditSingerRequest {
   Names: ILocalizedString[] = []
   Nicknames: ILocalizedString[] = []
-  Birthday: Date | null = null
   Descriptions: ILocalizedString[] = []
   Activities: ILocalizedString[] = []
+  Birthday: Date | null = null
+  BloodType: string | null = null
+  Height = 0
+  Nationality: string | null = null
   ProfilePictureFile: ILocalizedFile | null = null
 
   constructor(request: IEditSingerRequest) {
     this.Names = request.Names
     this.Nicknames = request.Nicknames
-    this.Birthday = request.Birthday
     this.Descriptions = request.Descriptions
     this.Activities = request.Activities
+    this.Birthday = request.Birthday
+    this.BloodType = request.BloodType
+    this.Height = request.Height
+    this.Nationality = request.Nationality
     this.ProfilePictureFile = request.ProfilePictureFile
   }
 
@@ -34,9 +43,12 @@ export class EditSingerRequest implements IEditSingerRequest {
     return new EditSingerRequest({
       Names: info.Names,
       Nicknames: info.Nicknames,
-      Birthday: new Date(info.BirthdayYear, info.BirthdayMonth, info.BirthdayDay),
       Descriptions: info.Descriptions,
       Activities: info.Activities,
+      Birthday: new Date(info.BirthdayYear, info.BirthdayMonth, info.BirthdayDay),
+      BloodType: info.BloodType,
+      Height: info.Height,
+      Nationality: info.Nationality,
       ProfilePictureFile: info.ProfilePictureFile !== null
         ? {
             File: await ToBase64(info.ProfilePictureFile),

@@ -5,6 +5,9 @@ export interface ICreateSingerInfo {
   Nicknames: ILocalizedString[]
   Descriptions: ILocalizedString[]
   Activities: ILocalizedString[]
+  BloodType: string | null
+  Height: number
+  Nationality: string | null
   BirthdayYear: number
   BirthdayMonth: number
   BirthdayDay: number
