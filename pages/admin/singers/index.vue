@@ -87,10 +87,25 @@ Singers.value = await SingersService.GetSingersForAdminAsync(0, 15)
               <td class="px-6 py-4">
                 {{ singer.Songs?.length ?? 0 }}
               </td>
-              <td class="px-6 py-4 text-right">
-                <NuxtLink :to="`/admin/singers/edit/${singer.Id}`" class="font-medium text-latte-lavender dark:text-mocha-lavender hover:underline">
-                  Edit
+              <td class="w-full inline-flex items-center justify-end gap-2 px-6 py-4">
+                <NuxtLink :to="`/singers/${singer.Id}`" class="font-medium text-latte-green dark:text-mocha-green" title="Details">
+                  <div class="i-carbon:view" />
                 </NuxtLink>
+                <NuxtLink :to="`/admin/singers/edit/${singer.Id}`" class="font-medium text-latte-lavender dark:text-mocha-lavender" title="Edit">
+                  <div class="i-carbon:pen" />
+                </NuxtLink>
+                <ActionConfirm
+                  :title="`Delete '${singer.GetName()}'`"
+                  message="Are you sure you want to delete this singer?"
+                  type="danger"
+                  :on-confirm="async () => await SingersService.DeleteAsync(singer.Id)"
+                >
+                  <template #button="slotProps">
+                    <div class="font-medium text-latte-red hover:cursor-pointer dark:text-mocha-red" title="Delete" @click.prevent="slotProps.reveal">
+                      <div class="i-carbon:delete" />
+                    </div>
+                  </template>
+                </ActionConfirm>
               </td>
             </tr>
           </tbody>

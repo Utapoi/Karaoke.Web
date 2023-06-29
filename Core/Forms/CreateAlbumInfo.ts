@@ -1,7 +1,7 @@
-import type { LocalizedStringInterface } from '../Models/LocalizedString'
+import type { ILocalizedString } from '../Models/LocalizedString'
 
 export interface CreateAlbumInfo {
-  Titles: LocalizedStringInterface[]
+  Titles: ILocalizedString[]
   ReleaseDateYear: number
   ReleaseDateMonth: number
   ReleaseDateDay: number

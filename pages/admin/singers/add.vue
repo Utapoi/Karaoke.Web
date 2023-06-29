@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { nanoid } from 'nanoid'
 import { useSingersService } from '~/Composables/Services/SingersService'
-import type { LocalizedStringInterface } from '~/Core/Models/LocalizedString'
+import type { ILocalizedString } from '~/Core/Models/LocalizedString'
 import { CreateSingerRequest } from '~/Core/Requests/Singers/CreateSingerRequest'
-import type { CreateSingerInfo } from '~/Core/Forms/CreateSingerInfo'
+import type { ICreateSingerInfo } from '~/Core/Forms/CreateSingerInfo'
 import LanguageOptions from '~/Core/Forms/Options/LanguageOptions'
 
 definePageMeta({
@@ -16,13 +16,23 @@ definePageMeta({
 
 const SingersService = useSingersService()
 
-const Info = ref<CreateSingerInfo>({
+const Info = ref<ICreateSingerInfo>({
   Names: [{
     Id: nanoid(),
     Text: '',
     Language: 'Japanese',
   }],
   Nicknames: [{
+    Id: nanoid(),
+    Text: '',
+    Language: 'Japanese',
+  }],
+  Descriptions: [{
+    Id: nanoid(),
+    Text: '',
+    Language: 'Japanese',
+  }],
+  Activities: [{
     Id: nanoid(),
     Text: '',
     Language: 'Japanese',
@@ -36,22 +46,22 @@ const Info = ref<CreateSingerInfo>({
 /**
  * Function called when the user adds a new name
  */
-function OnAddName() {
+function OnAddName(): void {
   Info.value.Names.push(
     {
       Id: nanoid(),
       Text: '',
       Language: '',
-    } as LocalizedStringInterface)
+    } as ILocalizedString)
 }
 
 /**
  * Function called when the user removes a name
  * @param id The id of the name to remove
  */
-function OnRemoveName(id: string) {
+function OnRemoveName(id: string): void {
   const n = Info.value.Names
-  const idx = n.findIndex((x: LocalizedStringInterface) => x.Id === id)
+  const idx = n.findIndex((x: ILocalizedString) => x.Id === id)
 
   n.splice(idx, 1)
 
@@ -61,25 +71,75 @@ function OnRemoveName(id: string) {
 /**
  * Function called when the user adds a new nickname
  */
-function OnAddNickname() {
+function OnAddNickname(): void {
   Info.value.Nicknames.push(
     {
       Text: '',
       Language: '',
-    } as LocalizedStringInterface)
+    } as ILocalizedString)
 }
 
 /**
  * Function called when the user removes a nickname
  * @param id The id of the nickname to remove
  */
-function OnRemoveNickname(id: string) {
+function OnRemoveNickname(id: string): void {
   const n = Info.value.Nicknames
-  const idx = n.findIndex((x: LocalizedStringInterface) => x.Id === id)
+  const idx = n.findIndex((x: ILocalizedString) => x.Id === id)
 
   n.splice(idx, 1)
 
   Info.value.Nicknames = n
+}
+
+/**
+ * Function called when the user adds a new description
+ */
+function OnAddDescription(): void {
+  Info.value.Descriptions.push(
+    {
+      Id: nanoid(),
+      Text: '',
+      Language: '',
+    } as ILocalizedString)
+}
+
+/**
+ * Function called when the user removes a description
+ * @param id The id of the description to remove
+ */
+function OnRemoveDescription(id: string): void {
+  const n = Info.value.Descriptions
+  const idx = n.findIndex((x: ILocalizedString) => x.Id === id)
+
+  n.splice(idx, 1)
+
+  Info.value.Descriptions = n
+}
+
+/**
+ * Function called when the user adds a new activity
+ */
+function OnAddActivity(): void {
+  Info.value.Activities.push(
+    {
+      Id: nanoid(),
+      Text: '',
+      Language: '',
+    } as ILocalizedString)
+}
+
+/**
+ * Function called when the user removes a activity
+ * @param id The id of the activity to remove
+ */
+function OnRemoveActivity(id: string): void {
+  const n = Info.value.Activities
+  const idx = n.findIndex((x: ILocalizedString) => x.Id === id)
+
+  n.splice(idx, 1)
+
+  Info.value.Activities = n
 }
 
 /**
@@ -134,9 +194,11 @@ watchDeep(Info, () => {
           class="w-full flex flex-col items-start justify-start gap-2"
           @submit.prevent="OnSubmit"
         >
+          <!-- Names and Birthday -->
           <div class="w-full flex flex-col justify-between gap-2 rounded-xl bg-latte-surface0 p-5 shadow xl:flex-row dark:bg-mocha-surface0 dark:shadow-none">
+            <!-- Names -->
             <div class="flex flex-col gap-2">
-              <div v-for="(name, idx) in Info.Names" :key="name.Id" v-motion-pop class="flex items-center justify-start gap-6">
+              <div v-for="(name, idx) in Info.Names" :key="name.Id" v-motion-pop class="flex items-center justify-start gap-2">
                 <TextInputField
                   v-model="name.Text"
                   label="Name"
@@ -169,6 +231,7 @@ watchDeep(Info, () => {
                 </div>
               </div>
             </div>
+            <!-- Birthday -->
             <div class="flex gap-2">
               <TextInputField
                 class="w-28"
@@ -182,7 +245,7 @@ watchDeep(Info, () => {
                 label="Month"
                 placeholder="01"
                 name="singer-birthday-year"
-                @update:model-value="(v: string) => Info.BirthdayMonth = Number(v)"
+                @update:model-value="(v: string) => Info.BirthdayMonth = Number(v) - 1"
               />
               <TextInputField
                 class="w-28"
@@ -194,11 +257,13 @@ watchDeep(Info, () => {
             </div>
           </div>
 
+          <!-- Nicknames -->
           <div class="w-full flex flex-col justify-between gap-2 rounded-xl bg-latte-surface0 p-5 shadow xl:flex-row dark:bg-mocha-surface0 dark:shadow-none">
-            <div class="flex flex-col gap-2">
-              <div v-for="(nickname, idx) in Info.Nicknames" :key="nickname.Id" v-motion-pop class="flex items-center justify-start gap-6">
+            <div class="w-full flex flex-col gap-2">
+              <div v-for="(nickname, idx) in Info.Nicknames" :key="nickname.Id" v-motion-pop class="w-full flex items-center justify-start gap-2">
                 <TextInputField
                   v-model="nickname.Text"
+                  class="w-1/2"
                   label="Nickname"
                   placeholder="Singer nickname"
                   :name="`singer-nickname-${nickname.Id}`"
@@ -231,6 +296,85 @@ watchDeep(Info, () => {
             </div>
           </div>
 
+          <!-- Activities -->
+          <div class="w-full flex flex-col justify-between gap-2 rounded-xl bg-latte-surface0 p-5 shadow xl:flex-row dark:bg-mocha-surface0 dark:shadow-none">
+            <div class="w-full flex flex-col gap-2">
+              <div v-for="(activity, idx) in Info.Activities" :key="activity.Id" v-motion-pop class="w-full flex items-center justify-start gap-2">
+                <TextInputField
+                  v-model="activity.Text"
+                  class="w-1/2"
+                  label="Activity"
+                  placeholder="Singer, Voice Actress, etc..."
+                  :name="`singer-activity-${activity.Id}`"
+                  :show-label="idx === 0"
+                />
+
+                <SelectInputField
+                  v-model="activity.Language"
+                  label="Language"
+                  placeholder="Select language"
+                  :name="`singer-activity-language-${idx}`"
+                  :show-label="idx === 0"
+                  :options="LanguageOptions"
+                />
+
+                <div
+                  class="h-full flex items-center justify-center gap-3" :class="{
+                    'mt-7': idx === 0,
+                    'mt-1': idx > 0,
+                  }"
+                >
+                  <div v-if="idx > 0" class="text-lg text-latte-red hover:cursor-pointer dark:text-mocha-red" @click="OnRemoveActivity(activity.Id)">
+                    <div class="i-fluent:delete-16-filled" />
+                  </div>
+                  <div class="text-lg text-latte-green hover:cursor-pointer dark:text-mocha-green" @click="OnAddActivity()">
+                    <div class="i-fluent:add-16-filled" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Descriptions -->
+          <div class="w-full flex flex-col justify-between gap-2 rounded-xl bg-latte-surface0 p-5 shadow xl:flex-row dark:bg-mocha-surface0 dark:shadow-none">
+            <div class="w-full flex flex-col gap-2">
+              <div v-for="(description, idx) in Info.Descriptions" :key="description.Id" v-motion-pop class="w-full flex items-center justify-start gap-2">
+                <TextAreaInputField
+                  v-model="description.Text"
+                  class="w-1/2"
+                  label="Description"
+                  placeholder="About the singer"
+                  :name="`singer-description-${description.Id}`"
+                  :show-label="idx === 0"
+                />
+
+                <SelectInputField
+                  v-model="description.Language"
+                  label="Language"
+                  placeholder="Select language"
+                  :name="`singer-description-language-${idx}`"
+                  :show-label="idx === 0"
+                  :options="LanguageOptions"
+                />
+
+                <div
+                  class="h-full flex items-center justify-center gap-3" :class="{
+                    'mt-7': idx === 0,
+                    'mt-1': idx > 0,
+                  }"
+                >
+                  <div v-if="idx > 0" class="text-lg text-latte-red hover:cursor-pointer dark:text-mocha-red" @click="OnRemoveDescription(description.Id)">
+                    <div class="i-fluent:delete-16-filled" />
+                  </div>
+                  <div class="text-lg text-latte-green hover:cursor-pointer dark:text-mocha-green" @click="OnAddDescription()">
+                    <div class="i-fluent:add-16-filled" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Profile Picture -->
           <div class="w-full flex flex-col justify-between gap-2 rounded-xl bg-latte-surface0 p-5 shadow xl:flex-row dark:bg-mocha-surface0 dark:shadow-none">
             <FileInputField
               class="w-1/2"

@@ -7,7 +7,7 @@ import type { CreateSongInfo } from '~/Core/Forms/CreateSongInfo'
 import { CreateSongRequest } from '~/Core/Requests/Songs/CreateSongRequest'
 import type { TagInputFieldOptions } from '~/components/Forms/TagInputField.vue'
 import LanguageOptions from '~/Core/Forms/Options/LanguageOptions'
-import type { LocalizedStringInterface } from '~/Core/Models/LocalizedString'
+import type { ILocalizedString } from '~/Core/Models/LocalizedString'
 
 definePageMeta({
   layout: 'admin',
@@ -72,7 +72,7 @@ function OnAddTitle() {
       Id: nanoid(),
       Text: '',
       Language: '',
-    } as LocalizedStringInterface)
+    } as ILocalizedString)
 }
 
 /**
@@ -81,7 +81,7 @@ function OnAddTitle() {
  */
 function OnRemoveTitle(id: string) {
   const n = Info.value.Titles
-  const idx = n.findIndex((x: LocalizedStringInterface) => x.Id === id)
+  const idx = n.findIndex((x: ILocalizedString) => x.Id === id)
 
   n.splice(idx, 1)
 

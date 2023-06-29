@@ -7,13 +7,14 @@ import type { SelectInputFieldOptions } from '~/Core/Forms/Options/SelectInputFi
 export interface SelectInputFieldProps {
   name: string
   label: string
+  value?: string
   showLabel?: boolean
   placeholder?: string
   options: Array<SelectInputFieldOptions>
 }
 
 // Properties
-withDefaults(defineProps<SelectInputFieldProps>(), {
+const props = withDefaults(defineProps<SelectInputFieldProps>(), {
   showLabel: true,
   placeholder: 'Select an option',
 })
@@ -31,7 +32,7 @@ const SelectRef = ref<HTMLElement | null>(null)
 /**
  * The selected option from the select
  */
-const Selected = ref<string>('')
+const Selected = ref<string>(props.value ?? '')
 
 /**
  * The state of the select
@@ -84,7 +85,7 @@ function OnInputChanged(e: SelectInputFieldOptions) {
       <div
         class="absolute top-2 w-full rounded-xl bg-latte-surface1 shadow dark:bg-mocha-surface1" :style="{
           left: `${SelectRef.getBoundingClientRect().left}px`,
-          top: `${SelectRef.getBoundingClientRect().bottom + useWindowScroll().y.value ?? 0 + 20}px`,
+          top: `${SelectRef.getBoundingClientRect().bottom + useWindowScroll().y.value ?? 0 + 50}px`,
           width: `${SelectRef.getBoundingClientRect().width}px`,
         }"
         @mouseleave="IsOpen = false"

@@ -1,8 +1,10 @@
-import type { LocalizedStringInterface } from '../Models/LocalizedString'
+import type { ILocalizedString } from '../Models/LocalizedString'
 
-export interface CreateSingerInfo {
-  Names: LocalizedStringInterface[]
-  Nicknames: LocalizedStringInterface[]
+export interface ICreateSingerInfo {
+  Names: ILocalizedString[]
+  Nicknames: ILocalizedString[]
+  Descriptions: ILocalizedString[]
+  Activities: ILocalizedString[]
   BirthdayYear: number
   BirthdayMonth: number
   BirthdayDay: number

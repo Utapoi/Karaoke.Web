@@ -1,19 +1,19 @@
 import type { CreateAlbumInfo } from '~/Core/Forms/CreateAlbumInfo'
-import type { LocalizedFileInterface } from '~/Core/Models/LocalizedFile'
-import type { LocalizedStringInterface } from '~/Core/Models/LocalizedString'
+import type { ILocalizedFile } from '~/Core/Models/LocalizedFile'
+import type { ILocalizedString } from '~/Core/Models/LocalizedString'
 
 export interface CreateAlbumRequestInterface {
-  Titles: LocalizedStringInterface[]
+  Titles: ILocalizedString[]
   ReleaseDate: Date | null
   Singers: string[]
-  CoverFile: LocalizedFileInterface | null
+  CoverFile: ILocalizedFile | null
 }
 
 export class CreateAlbumRequest implements CreateAlbumRequestInterface {
-  Titles: LocalizedStringInterface[]
+  Titles: ILocalizedString[]
   ReleaseDate: Date | null
   Singers: string[]
-  CoverFile: LocalizedFileInterface | null
+  CoverFile: ILocalizedFile | null
 
   constructor(request: CreateAlbumRequestInterface) {
     this.Titles = request.Titles

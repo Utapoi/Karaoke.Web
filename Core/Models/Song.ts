@@ -1,16 +1,16 @@
 import { Album } from './Album'
 import type { AlbumInterface } from './Album'
 import { LocalizedString } from './LocalizedString'
-import type { LocalizedStringInterface } from './LocalizedString'
+import type { ILocalizedString } from './LocalizedString'
 import { Singer } from './Singer'
-import type { SingerInterface } from './Singer'
+import type { ISinger } from './Singer'
 import { Tag } from './Tag'
 import type { TagInterface } from './Tag'
 
 export interface SongInterface {
   Id: string
-  Titles: LocalizedStringInterface[]
-  Singers: SingerInterface[]
+  Titles: ILocalizedString[]
+  Singers: ISinger[]
   Albums: AlbumInterface[]
   Duration: string
   ReleaseDate: Date
@@ -32,8 +32,8 @@ export class Song {
 
   constructor(song: SongInterface) {
     this.Id = song.Id
-    this.Titles = song.Titles.map((title: LocalizedStringInterface) => LocalizedString.FromResponse(title))
-    this.Singers = song.Singers.map((singer: SingerInterface) => Singer.FromResponse(singer))
+    this.Titles = song.Titles.map((title: ILocalizedString) => LocalizedString.FromResponse(title))
+    this.Singers = song.Singers.map((singer: ISinger) => Singer.FromResponse(singer))
     this.Albums = song.Albums.map((album: AlbumInterface) => Album.FromResponse(album))
     this.Duration = song.Duration
     this.ReleaseDate = song.ReleaseDate

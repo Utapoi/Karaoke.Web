@@ -1,11 +1,11 @@
-export interface LocalizedFileInterface {
+export interface ILocalizedFile {
   File: string | ArrayBuffer | null
   Language: string
   FileType: string
   FileName: string
 }
 
-export const EmptyLocalizedFileInterface: LocalizedFileInterface = {
+export const EmptyILocalizedFile: ILocalizedFile = {
   File: null,
   Language: '',
   FileType: '',

@@ -1,4 +1,4 @@
-export interface LocalizedStringInterface {
+export interface ILocalizedString {
   Id: string
   Text: string
   Language: string
@@ -9,13 +9,13 @@ export class LocalizedString {
   Text: string
   Language: string
 
-  constructor(localizedString: LocalizedStringInterface) {
+  constructor(localizedString: ILocalizedString) {
     this.Id = localizedString.Id
     this.Text = localizedString.Text
     this.Language = localizedString.Language
   }
 
-  public static FromResponse(info: LocalizedStringInterface): LocalizedString {
+  public static FromResponse(info: ILocalizedString): LocalizedString {
     return new LocalizedString(info)
   }
 }

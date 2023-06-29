@@ -1,6 +1,7 @@
-import type { SingerInterface } from '~/Core/Models/Singer'
+import type { ISinger } from '~/Core/Models/Singer'
 import { Singer } from '~/Core/Models/Singer'
 import type { CreateSingerRequest } from '~/Core/Requests/Singers/CreateSingerRequest'
+import type { EditSingerRequest } from '~/Core/Requests/Singers/EditSingerRequest'
 import type { PaginatedResponse } from '~/Core/Responses/PaginatedResponse'
 import type { GetSingersResponse } from '~/Core/Responses/Singers/GetSingersResponse'
 
@@ -17,7 +18,32 @@ export function useSingersService() {
    * @returns The created singer.
    */
   async function CreateAsync(request: CreateSingerRequest): Promise<Singer | undefined> {
-    const response = await Client.Post<SingerInterface>('/Admin/Singers', {}, {
+    const response = await Client.Post<ISinger>('/Admin/Singers', {}, {
+      ...request,
+    })
+
+    if (response === undefined)
+      return undefined
+
+    return Singer.FromResponse(response)
+  }
+
+  /**
+   * Delete a singer.
+   * @param id The id of the singer.
+   */
+  async function DeleteAsync(id: string): Promise<void> {
+    await Client.Delete(`/Admin/Singers/${id}`)
+  }
+
+  /**
+   * Edit a singer.
+   * @param id The id of the singer.
+   * @param request The request to edit a singer.
+   * @returns The edited singer.
+   */
+  async function EditAsync(id: string, request: EditSingerRequest): Promise<Singer | undefined> {
+    const response = await Client.Patch<ISinger>(`/Admin/Singers/${id}`, {}, {
       ...request,
     })
 
@@ -33,7 +59,7 @@ export function useSingersService() {
    * @returns The singer.
    */
   async function GetAsync(id: string): Promise<Singer | undefined> {
-    const response = await Client.Get<SingerInterface>(`/Singers/${id}`)
+    const response = await Client.Get<ISinger>(`/Singers/${id}`)
 
     if (response === undefined)
       return undefined
@@ -62,7 +88,7 @@ export function useSingersService() {
    * @returns A list of singers.
    */
   async function GetSingersForAdminAsync(skip = 0, take = 10): Promise<Singer[]> {
-    const response = await Client.Get<PaginatedResponse<SingerInterface>>(`/Admin/Singers?skip=${skip}&take=${take}`)
+    const response = await Client.Get<PaginatedResponse<ISinger>>(`/Admin/Singers?skip=${skip}&take=${take}`)
 
     if (response === undefined)
       return []
@@ -77,7 +103,7 @@ export function useSingersService() {
    */
   async function SearchAsync(query: string): Promise<Singer[]> {
     try {
-      const response = await Client.Post<SingerInterface[]>(`/Singers/Search?input=${query}`)
+      const response = await Client.Post<ISinger[]>(`/Singers/Search?input=${query}`)
 
       if (response === undefined)
         return []
@@ -91,6 +117,8 @@ export function useSingersService() {
 
   return {
     CreateAsync,
+    DeleteAsync,
+    EditAsync,
     GetAsync,
     GetSingersAsync,
     GetSingersForAdminAsync,

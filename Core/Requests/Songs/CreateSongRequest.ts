@@ -1,34 +1,34 @@
 import type { CreateFileInfo } from '~/Core/Forms/CreateFileInfo'
 import type { CreateSongInfo } from '~/Core/Forms/CreateSongInfo'
-import { EmptyLocalizedFileInterface, type LocalizedFileInterface } from '~/Core/Models/LocalizedFile'
-import type { LocalizedStringInterface } from '~/Core/Models/LocalizedString'
+import { EmptyILocalizedFile, type ILocalizedFile } from '~/Core/Models/LocalizedFile'
+import type { ILocalizedString } from '~/Core/Models/LocalizedString'
 
 export interface CreateSongRequestInterface {
-  Titles: LocalizedStringInterface[]
+  Titles: ILocalizedString[]
   ReleaseDate: Date
   Singers: string[]
   Albums: string[]
   Tags: string[]
-  ThumbnailFile: LocalizedFileInterface
-  PreviewFile: LocalizedFileInterface
-  VoiceFile: LocalizedFileInterface
-  InstrumentalFile: LocalizedFileInterface
-  LyricsFiles: LocalizedFileInterface[]
-  KaraokeFiles: LocalizedFileInterface[]
+  ThumbnailFile: ILocalizedFile
+  PreviewFile: ILocalizedFile
+  VoiceFile: ILocalizedFile
+  InstrumentalFile: ILocalizedFile
+  LyricsFiles: ILocalizedFile[]
+  KaraokeFiles: ILocalizedFile[]
 }
 
 export class CreateSongRequest implements CreateSongRequestInterface {
-  Titles: LocalizedStringInterface[]
+  Titles: ILocalizedString[]
   ReleaseDate: Date
   Singers: string[]
   Albums: string[]
   Tags: string[]
-  ThumbnailFile: LocalizedFileInterface
-  PreviewFile: LocalizedFileInterface
-  VoiceFile: LocalizedFileInterface
-  InstrumentalFile: LocalizedFileInterface
-  LyricsFiles: LocalizedFileInterface[]
-  KaraokeFiles: LocalizedFileInterface[]
+  ThumbnailFile: ILocalizedFile
+  PreviewFile: ILocalizedFile
+  VoiceFile: ILocalizedFile
+  InstrumentalFile: ILocalizedFile
+  LyricsFiles: ILocalizedFile[]
+  KaraokeFiles: ILocalizedFile[]
 
   constructor(request: CreateSongRequestInterface) {
     this.Titles = request.Titles
@@ -51,10 +51,10 @@ export class CreateSongRequest implements CreateSongRequestInterface {
       Singers: [],
       Albums: [],
       Tags: [],
-      ThumbnailFile: EmptyLocalizedFileInterface,
-      PreviewFile: EmptyLocalizedFileInterface,
-      VoiceFile: EmptyLocalizedFileInterface,
-      InstrumentalFile: EmptyLocalizedFileInterface,
+      ThumbnailFile: EmptyILocalizedFile,
+      PreviewFile: EmptyILocalizedFile,
+      VoiceFile: EmptyILocalizedFile,
+      InstrumentalFile: EmptyILocalizedFile,
       LyricsFiles: [],
       KaraokeFiles: [],
     })
@@ -109,7 +109,7 @@ export class CreateSongRequest implements CreateSongRequestInterface {
         Language: f.Language,
         FileName: f.File!.name,
       }
-    }))).map((e: any) => e.value as LocalizedFileInterface)
+    }))).map((e: any) => e.value as ILocalizedFile)
 
     // Note(Mikyan): This will never be null at this point.
     request.KaraokeFiles = (await Promise.allSettled(form.KaraokeFiles.map(async (f: CreateFileInfo) => {
@@ -119,7 +119,7 @@ export class CreateSongRequest implements CreateSongRequestInterface {
         Language: f.Language,
         FileName: f.File!.name,
       }
-    }))).map((e: any) => e.value as LocalizedFileInterface)
+    }))).map((e: any) => e.value as ILocalizedFile)
 
     return request
   }

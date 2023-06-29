@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { nanoid } from 'nanoid'
-import type { LocalizedStringInterface } from '~/Core/Models/LocalizedString'
+import type { ILocalizedString } from '~/Core/Models/LocalizedString'
 import type { CreateAlbumInfo } from '~/Core/Forms/CreateAlbumInfo'
 import { CreateAlbumRequest } from '~/Core/Requests/Albums/CreateAlbumRequest'
 import { useAlbumsService } from '~/Composables/Services/AlbumsService'
@@ -40,7 +40,7 @@ function OnAddTitle() {
       Id: nanoid(),
       Text: '',
       Language: '',
-    } as LocalizedStringInterface)
+    } as ILocalizedString)
 }
 
 /**
@@ -49,7 +49,7 @@ function OnAddTitle() {
  */
 function OnRemoveTitle(id: string) {
   const n = Info.value.Titles
-  const idx = n.findIndex((x: LocalizedStringInterface) => x.Id === id)
+  const idx = n.findIndex((x: ILocalizedString) => x.Id === id)
 
   n.splice(idx, 1)
 

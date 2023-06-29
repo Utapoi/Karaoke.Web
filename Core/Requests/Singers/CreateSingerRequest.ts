@@ -1,21 +1,21 @@
-import type { LocalizedFileInterface } from '~/Core/Models/LocalizedFile'
-import type { LocalizedStringInterface } from '~/Core/Models/LocalizedString'
-import type { CreateSingerInfo } from '~/Core/Forms/CreateSingerInfo'
+import type { ILocalizedFile } from '~/Core/Models/LocalizedFile'
+import type { ILocalizedString } from '~/Core/Models/LocalizedString'
+import type { ICreateSingerInfo } from '~/Core/Forms/CreateSingerInfo'
 
-export interface CreateSingerRequestInterface {
-  Names: LocalizedStringInterface[]
-  Nicknames: LocalizedStringInterface[]
+export interface ICreateSingerRequest {
+  Names: ILocalizedString[]
+  Nicknames: ILocalizedString[]
   Birthday: Date | null
-  ProfilePictureFile: LocalizedFileInterface | null
+  ProfilePictureFile: ILocalizedFile | null
 }
 
-export class CreateSingerRequest implements CreateSingerRequestInterface {
-  Names: LocalizedStringInterface[]
-  Nicknames: LocalizedStringInterface[]
+export class CreateSingerRequest implements ICreateSingerRequest {
+  Names: ILocalizedString[]
+  Nicknames: ILocalizedString[]
   Birthday: Date | null
-  ProfilePictureFile: LocalizedFileInterface | null
+  ProfilePictureFile: ILocalizedFile | null
 
-  constructor(request: CreateSingerRequestInterface) {
+  constructor(request: ICreateSingerRequest) {
     this.Names = request.Names
     this.Nicknames = request.Nicknames
     this.Birthday = request.Birthday
@@ -31,7 +31,7 @@ export class CreateSingerRequest implements CreateSingerRequestInterface {
     })
   }
 
-  public static async FromInfoAsync(form: CreateSingerInfo): Promise<CreateSingerRequestInterface> {
+  public static async FromInfoAsync(form: ICreateSingerInfo): Promise<ICreateSingerRequest> {
     return {
       Names: form.Names,
       Nicknames: form.Nicknames,

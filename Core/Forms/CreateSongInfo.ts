@@ -1,8 +1,8 @@
-import type { LocalizedStringInterface } from '../Models/LocalizedString'
+import type { ILocalizedString } from '../Models/LocalizedString'
 import type { CreateFileInfo } from './CreateFileInfo'
 
 export interface CreateSongInfo {
-  Titles: LocalizedStringInterface[]
+  Titles: ILocalizedString[]
   ReleaseDate: Date | null
   Singers: string[]
   Albums: string[]

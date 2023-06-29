@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import { useTitle } from '@vueuse/core'
 import { useSingersService } from '~/Composables/Services/SingersService'
 import type { Singer } from '~/Core/Models/Singer'
 
+const PageTitle = useTitle()
 const Route = useRoute()
 const Router = useRouter()
 
@@ -19,12 +21,10 @@ if (Response === undefined)
   await Router.push('/404')
 
 CurrentSinger.value = Response
+PageTitle.value = `${CurrentSinger.value!.GetName()} | Utapoi`
 
+// TODO: Use the variable from env.
 const BackgroundCover = computed<string>(() => `url('https://localhost:7215${CurrentSinger.value?.GetRandomAlbumCover()}')`)
-
-useHead({
-  title: `${CurrentSinger.value!.GetName()} | Utapoi`,
-})
 </script>
 
 <template>
@@ -151,7 +151,7 @@ useHead({
           <h2 class="text-xl text-latte-text dark:text-mocha-text">
             About {{ CurrentSinger.GetName() }}
           </h2>
-          <p class="prose dark:prose-invert prose-latte-subtext1 dark:prose-mocha-subtext1 mt-6 whitespace-normal text-sm">
+          <p class="mt-6 whitespace-normal text-sm prose prose-latte-subtext1 dark:prose-mocha-subtext1 dark:prose-invert">
             {{ CurrentSinger.GetDescription() }}
           </p>
         </div>

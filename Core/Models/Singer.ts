@@ -1,13 +1,13 @@
 import { Album } from './Album'
 import type { AlbumInterface } from './Album'
-import type { LocalizedStringInterface } from './LocalizedString'
+import type { ILocalizedString } from './LocalizedString'
 import { LocalizedString } from './LocalizedString'
 import { Song } from './Song'
 import type { SongInterface } from './Song'
 
-export interface SingerInterface {
+export interface ISinger {
   Id: string
-  Names: LocalizedStringInterface[]
+  Names: ILocalizedString[]
   Nicknames: LocalizedString[]
   Descriptions: LocalizedString[]
   Activities: LocalizedString[]
@@ -34,12 +34,12 @@ export class Singer {
   AlbumsCount = 0
   SongsCount = 0
 
-  constructor(singer: SingerInterface) {
+  constructor(singer: ISinger) {
     this.Id = singer.Id
-    this.Names = singer.Names?.map((name: LocalizedStringInterface) => LocalizedString.FromResponse(name))
-    this.Nicknames = singer.Nicknames?.map((nickname: LocalizedStringInterface) => LocalizedString.FromResponse(nickname))
-    this.Descriptions = singer.Descriptions?.map((description: LocalizedStringInterface) => LocalizedString.FromResponse(description))
-    this.Activities = singer.Activities?.map((activity: LocalizedStringInterface) => LocalizedString.FromResponse(activity))
+    this.Names = singer.Names?.map((name: ILocalizedString) => LocalizedString.FromResponse(name))
+    this.Nicknames = singer.Nicknames?.map((nickname: ILocalizedString) => LocalizedString.FromResponse(nickname))
+    this.Descriptions = singer.Descriptions?.map((description: ILocalizedString) => LocalizedString.FromResponse(description))
+    this.Activities = singer.Activities?.map((activity: ILocalizedString) => LocalizedString.FromResponse(activity))
     this.Birthday = singer.Birthday
     this.PopularSong = singer.PopularSong ? Song.FromResponse(singer.PopularSong) : null
     this.ProfilePicture = singer.ProfilePicture
@@ -145,7 +145,7 @@ export class Singer {
    * @param info The response of the API.
    * @returns A new instance of the Singer class.
    */
-  public static FromResponse(info: SingerInterface | null): Singer {
+  public static FromResponse(info: ISinger | null): Singer {
     if (info === null)
       return Singer.Empty()
 
