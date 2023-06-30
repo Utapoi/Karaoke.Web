@@ -152,6 +152,9 @@ export class Singer {
    * @returns A random album cover from the singer.
    */
   public GetRandomAlbumCover(): string {
+    if (this.Albums.length === 0)
+      return ''
+
     const album = this.Albums[Math.floor(Math.random() * this.Albums.length)]
 
     return album.Cover

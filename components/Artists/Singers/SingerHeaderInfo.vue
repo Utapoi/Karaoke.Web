@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Singer } from '~/Core/Models/Singer'
+import { GetUrl } from '~/Utils/ImageUtils'
 
 defineProps<{
   singer: Singer
@@ -27,7 +28,7 @@ function GetNationalityFlag(nationality: string) {
       <div class="max-w-5xl flex flex-col items-start justify-start gap-4 lg:flex-row">
         <!-- Artist Image -->
         <div class="h-46 min-w-46 rounded-xl">
-          <img class="h-full w-full rounded-xl object-cover object-top" src="https://www.jame-world.com/media/image/2021-10/11622.jpg">
+          <img class="h-full w-full rounded-xl object-cover object-top" :src="GetUrl(singer.ProfilePicture)">
         </div>
         <div class="mt-2 h-full flex flex-col items-start">
           <!-- Names / Nicknames -->
@@ -41,12 +42,12 @@ function GetNationalityFlag(nationality: string) {
             </div>
 
             <p class="text-latte-text dark:text-mocha-text">
-              <span class="text-xs text-latte-subtext1 dark:text-mocha-subtext1">or</span> {{ `${singer.GetNativeName()}, ${singer.Nicknames.map(x => x.Text).join(', ')}` }}
+              <span class="text-xs text-latte-subtext1 dark:text-mocha-subtext1">or</span> {{ `${singer.Nicknames.map(x => x.Text).join(', ')}` }}
             </p>
           </div>
           <div class="mt-6 w-full flex flex-wrap items-center gap-2 text-sm text-latte-text dark:text-mocha-text">
             <p v-if="singer.Nationality !== null && singer.Nationality !== ''" class="inline-flex items-center gap-1 rounded-full bg-latte-surface2 px-3 py-1 shadow dark:bg-mocha-surface2">
-              <span class="text-lg text-latte-lavender dark:text-mocha-lavender" :class="GetNationalityFlag(singer.Nationality)" />
+              <span class="text-latte-lavender dark:text-mocha-lavender" :class="GetNationalityFlag(singer.Nationality)" />
               <span>{{ singer.Nationality }}</span>
             </p>
             <p v-if="singer.Birthday !== null" class="inline-flex items-center gap-1 rounded-full bg-latte-surface2 px-3 py-1 shadow dark:bg-mocha-surface2">

@@ -58,7 +58,7 @@ defineProps<{
     </div>
 
     <div v-if="singer.Descriptions.length > 0" class="my-2 w-full rounded-xl bg-latte-surface0 p-5 shadow dark:bg-mocha-surface0">
-      <h2 class="text-xl text-latte-text dark:text-mocha-text">
+      <h2 class="text-2xl text-latte-text dark:text-mocha-text">
         About {{ singer.GetName() }}
       </h2>
       <div class="mt-6 whitespace-pre-line text-justify prose prose-latte-subtext1 dark:prose-mocha-subtext1 dark:prose-invert">

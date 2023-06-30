@@ -32,37 +32,37 @@ const AuthStore = useAuthStore()
       </div>
     </section>
   </header>
-  <main class="w-full">
-    <div class="h-full w-full flex">
+  <main class="min-h-full w-full">
+    <div class="min-h-full w-full flex">
       <div class="min-h-[calc(100vh-4rem)] pt-4 lg:min-w-64">
-        <div class="dark:text-mocha-text text-latte-text w-full flex flex-col flex-wrap gap-0.5 pl-3 hover:cursor-pointer">
+        <div class="w-full flex flex-col flex-wrap gap-0.5 pl-3 text-latte-text hover:cursor-pointer dark:text-mocha-text">
           <NuxtLink to="/admin">
-            <div class="hover:dark:bg-mocha-overlay1/25 hover:bg-latte-overlay1/25 w-full inline-flex items-center gap-4 rounded-lg p-2" :class="{ 'dark:bg-mocha-overlay1/25 bg-latte-overlay1/25': Route.path === '/admin' }">
+            <div class="w-full inline-flex items-center gap-4 rounded-lg p-2 hover:bg-latte-overlay1/25 hover:dark:bg-mocha-overlay1/25" :class="{ 'dark:bg-mocha-overlay1/25 bg-latte-overlay1/25': Route.path === '/admin' }">
               <span class="i-fluent:home-16-filled text-lg" />
               <span class="hidden lg:block">Dashboard</span>
             </div>
           </NuxtLink>
           <NuxtLink to="/admin/singers">
-            <div class="hover:dark:bg-mocha-overlay1/25 hover:bg-latte-overlay1/25 w-full inline-flex items-center gap-4 rounded-lg p-2" :class="{ 'dark:bg-mocha-overlay1/25 bg-latte-overlay1/25': Route.path.includes('/admin/singers') }">
+            <div class="w-full inline-flex items-center gap-4 rounded-lg p-2 hover:bg-latte-overlay1/25 hover:dark:bg-mocha-overlay1/25" :class="{ 'dark:bg-mocha-overlay1/25 bg-latte-overlay1/25': Route.path.includes('/admin/singers') }">
               <span class="i-game-icons:microphone text-lg" />
               <span class="hidden lg:block">Singers</span>
             </div>
           </NuxtLink>
           <NuxtLink to="/admin/albums">
-            <div class="hover:dark:bg-mocha-overlay1/25 hover:bg-latte-overlay1/25 w-full inline-flex items-center gap-4 rounded-lg p-2" :class="{ 'dark:bg-mocha-overlay1/25 bg-latte-overlay1/25': Route.path.includes('/admin/albums') }">
+            <div class="w-full inline-flex items-center gap-4 rounded-lg p-2 hover:bg-latte-overlay1/25 hover:dark:bg-mocha-overlay1/25" :class="{ 'dark:bg-mocha-overlay1/25 bg-latte-overlay1/25': Route.path.includes('/admin/albums') }">
               <span class="i-fluent:collections-20-filled text-lg" />
               <span class="hidden lg:block">Albums</span>
             </div>
           </NuxtLink>
           <NuxtLink to="/admin/songs">
-            <div class="hover:dark:bg-mocha-overlay1/25 hover:bg-latte-overlay1/25 w-full inline-flex items-center gap-4 rounded-lg p-2" :class="{ 'dark:bg-mocha-overlay1/25 bg-latte-overlay1/25': Route.path.includes('/admin/songs') }">
+            <div class="w-full inline-flex items-center gap-4 rounded-lg p-2 hover:bg-latte-overlay1/25 hover:dark:bg-mocha-overlay1/25" :class="{ 'dark:bg-mocha-overlay1/25 bg-latte-overlay1/25': Route.path.includes('/admin/songs') }">
               <span class="i-game-icons:musical-notes text-lg" />
               <span class="hidden lg:block">Songs</span>
             </div>
           </NuxtLink>
-          <span class="dark:border-mocha-surface2 border-latte-surface2 my-4 w-full border-t" />
+          <span class="my-4 w-full border-t border-latte-surface2 dark:border-mocha-surface2" />
           <NuxtLink to="/">
-            <div class="hover:dark:bg-mocha-overlay1/25 hover:bg-latte-overlay1/25 w-full inline-flex items-center gap-4 rounded-lg p-2">
+            <div class="w-full inline-flex items-center gap-4 rounded-lg p-2 hover:bg-latte-overlay1/25 hover:dark:bg-mocha-overlay1/25">
               <span class="i-fluent:arrow-left-24-filled text-lg" />
               <span class="hidden lg:block">Back</span>
             </div>
@@ -72,4 +72,5 @@ const AuthStore = useAuthStore()
       <slot />
     </div>
   </main>
+  <Footer />
 </template>

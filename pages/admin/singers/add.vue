@@ -261,7 +261,7 @@ async function OnSubmit() {
                 label="Day"
                 placeholder="01"
                 name="singer-birthday-day"
-                @update:model-value="(v: string) => Info.BirthdayDay = Number(v) + 1"
+                @update:model-value="(v: string) => Info.BirthdayDay = Number(v)"
               />
             </div>
           </div>

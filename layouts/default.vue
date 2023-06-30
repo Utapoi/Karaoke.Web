@@ -63,9 +63,10 @@ onMounted(async () => {
       </div>
     </section>
   </header>
-  <main class="w-full">
-    <div class="h-full w-full">
+  <main class="min-h-full w-full">
+    <div class="min-h-full w-full">
       <slot />
     </div>
   </main>
+  <Footer />
 </template>
