@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { Album } from '~/Core/Models/Album'
+import type { Song } from '~/Core/Models/Song'
 import type { Singer } from '~/Core/Models/Singer'
 
 defineProps<{
-  album: Album
+  song: Song
   singers: Singer[]
 }>()
 
@@ -23,13 +23,13 @@ function OnMouseLeave() {
 
 <template>
   <div class="relative" @mouseenter="OnMouseEnter" @mouseleave="OnMouseLeave">
-    <NuxtLink :to="`/albums/${album.Id}`">
+    <NuxtLink :to="`/songs/${song.Id}`">
       <img
         class="aspect-1/1 object-cover" :class="{
           'rounded-xl': !IsHovering,
           'rounded-l-xl': IsHovering,
         }"
-        :src="`${Config.public.API_URL}${album.Cover}`"
+        :src="`${Config.public.API_URL}${song.GetCover()}`"
       >
     </NuxtLink>
     <div
@@ -40,10 +40,15 @@ function OnMouseLeave() {
     >
       <div>
         <p class="font-semibold text-latte-text dark:text-mocha-text">
-          {{ album.GetTitle() }}
+          {{ song.GetTitle() }}
         </p>
         <p v-for="singer in singers" :key="singer.Id" class="text-sm text-latte-subtext1 dark:text-mocha-subtext1">
-          {{ singer.GetName() }} · <span v-if="album.ReleaseDate">{{ new Date(album.ReleaseDate).toLocaleDateString() }}</span>
+          {{ singer.GetName() }} · <span>{{ new Date(song.ReleaseDate).toLocaleDateString() }}</span>
+        </p>
+      </div>
+      <div class="flex items-center gap-2 overflow-hidden text-ellipsis whitespace-nowrap text-sm">
+        <p>
+          from <span class="font-semibold text-latte-lavender dark:text-mocha-lavender">{{ song.GetAlbum().GetTitle() }}</span>
         </p>
       </div>
     </div>

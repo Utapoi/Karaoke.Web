@@ -227,7 +227,7 @@ async function OnSubmit(): Promise<void> {
               placeholder="Add a tag"
               :searchable="true"
               :create-option="true"
-              @update:model-value="(v: Array<string>) => Info.Albums = v"
+              @update:model-value="(v: Array<string>) => Info.Tags = v"
             />
           </div>
 

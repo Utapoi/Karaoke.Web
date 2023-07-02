@@ -41,6 +41,11 @@ defineProps<{
           Latest Songs
         </h2>
       </div>
+      <div class="grid grid-cols-2 w-full items-center gap-5 text-latte-text lg:grid-cols-7 md:grid-cols-5 sm:grid-cols-4 dark:text-mocha-text">
+        <div v-for="song in singer.Songs.slice(0, 7)" :key="song.Id">
+          <SongCard :song="song" :singers="[singer]" />
+        </div>
+      </div>
     </div>
 
     <!-- Latest Albums -->

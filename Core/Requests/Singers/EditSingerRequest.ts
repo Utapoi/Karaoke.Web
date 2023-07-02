@@ -12,8 +12,9 @@ export interface IEditSingerRequest {
   Height: number
   Nationality: string | null
 
-  // Note(Mikyan): null means no change, otherwise this is a new profile picture.
+  // Note(Mikyan): null means no change, otherwise this is a new file.
   ProfilePictureFile: ILocalizedFile | null
+  CoverFile: ILocalizedFile | null
 }
 
 export class EditSingerRequest implements IEditSingerRequest {
@@ -26,6 +27,7 @@ export class EditSingerRequest implements IEditSingerRequest {
   Height = 0
   Nationality: string | null = null
   ProfilePictureFile: ILocalizedFile | null = null
+  CoverFile: ILocalizedFile | null = null
 
   constructor(request: IEditSingerRequest) {
     this.Names = request.Names
@@ -37,6 +39,7 @@ export class EditSingerRequest implements IEditSingerRequest {
     this.Height = request.Height
     this.Nationality = request.Nationality
     this.ProfilePictureFile = request.ProfilePictureFile
+    this.CoverFile = request.CoverFile
   }
 
   public static async FromInfoAsync(info: IEditSingerInfo): Promise<IEditSingerRequest> {
@@ -55,6 +58,14 @@ export class EditSingerRequest implements IEditSingerRequest {
             FileType: info.ProfilePictureFile!.type ?? 'image/png',
             Language: '', // We don't need language for profile picture
             FileName: info.ProfilePictureFile!.name,
+          }
+        : null,
+      CoverFile: info.CoverFile !== null
+        ? {
+            File: await ToBase64(info.CoverFile),
+            FileType: info.CoverFile!.type ?? 'image/png',
+            Language: '', // We don't need language for cover
+            FileName: info.CoverFile!.name,
           }
         : null,
     })

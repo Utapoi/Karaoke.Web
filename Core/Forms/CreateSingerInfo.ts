@@ -12,4 +12,5 @@ export interface ICreateSingerInfo {
   BirthdayMonth: number
   BirthdayDay: number
   ProfilePictureFile: File | null
+  CoverFile: File | null
 }

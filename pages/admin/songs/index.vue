@@ -22,7 +22,7 @@ Songs.value = await SongsService.GetSongsAsync(0, 15)
     <div class="w-full px-12 pt-8">
       <div class="w-full rounded-xl bg-latte-crust p-3 shadow dark:bg-mocha-crust dark:shadow-none">
         <div class="flex items-center gap-2">
-          <span class="text-sm text-latte-text dark:text-mocha-text">0 songs</span>
+          <span class="text-sm text-latte-text dark:text-mocha-text">{{ Songs.length }} songs</span>
           <div class="mx-2 h-9 w-0.25 bg-latte-surface2 dark:bg-mocha-surface2" />
 
           <div class="border border-latte-overlay0 rounded-full dark:border-mocha-overlay0">
@@ -90,12 +90,27 @@ Songs.value = await SongsService.GetSongsAsync(0, 15)
                 {{ song.GetSinger().GetName('English') }}
               </td>
               <td class="px-6 py-4">
-                {{ song.Duration }}
+                {{ song.Duration ?? '00:00' }}
               </td>
-              <td class="px-6 py-4 text-right">
-                <NuxtLink :to="`/admin/songs/edit/${song.Id}`" class="font-medium text-latte-lavender dark:text-mocha-lavender hover:underline">
-                  Edit
+              <td class="w-full inline-flex items-center justify-end gap-2 px-6 py-4">
+                <NuxtLink :to="`/songs/${song.Id}`" class="font-medium text-latte-green dark:text-mocha-green" title="Details">
+                  <div class="i-carbon:view" />
                 </NuxtLink>
+                <NuxtLink :to="`/admin/songs/${song.Id}/edit`" class="font-medium text-latte-lavender dark:text-mocha-lavender" title="Edit">
+                  <div class="i-carbon:pen" />
+                </NuxtLink>
+                <ActionConfirm
+                  :title="`Delete '${song.GetTitle()}'`"
+                  message="Are you sure you want to delete this song?"
+                  type="danger"
+                  :on-confirm="async () => await SongsService.DeleteAsync(song.Id)"
+                >
+                  <template #button="slotProps">
+                    <div class="font-medium text-latte-red hover:cursor-pointer dark:text-mocha-red" title="Delete" @click.prevent="slotProps.reveal">
+                      <div class="i-carbon:delete" />
+                    </div>
+                  </template>
+                </ActionConfirm>
               </td>
             </tr>
           </tbody>

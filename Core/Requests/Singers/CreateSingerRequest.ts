@@ -12,6 +12,7 @@ export interface ICreateSingerRequest {
   Height: number
   Nationality: string | null
   ProfilePictureFile: ILocalizedFile | null
+  CoverFile: ILocalizedFile | null
 }
 
 export class CreateSingerRequest implements ICreateSingerRequest {
@@ -24,6 +25,7 @@ export class CreateSingerRequest implements ICreateSingerRequest {
   Height: number
   Nationality: string | null
   ProfilePictureFile: ILocalizedFile | null
+  CoverFile: ILocalizedFile | null
 
   constructor(request: ICreateSingerRequest) {
     this.Names = request.Names
@@ -35,6 +37,7 @@ export class CreateSingerRequest implements ICreateSingerRequest {
     this.Height = request.Height
     this.Nationality = request.Nationality
     this.ProfilePictureFile = request.ProfilePictureFile
+    this.CoverFile = request.CoverFile
   }
 
   public static Empty(): CreateSingerRequest {
@@ -48,6 +51,7 @@ export class CreateSingerRequest implements ICreateSingerRequest {
       Height: 0,
       Nationality: null,
       ProfilePictureFile: null,
+      CoverFile: null,
     })
   }
 
@@ -66,6 +70,12 @@ export class CreateSingerRequest implements ICreateSingerRequest {
         FileType: info.ProfilePictureFile!.type ?? 'image/png',
         Language: '', // We don't need language for profile picture
         FileName: info.ProfilePictureFile!.name,
+      },
+      CoverFile: {
+        File: await ToBase64(info.CoverFile!),
+        FileType: info.CoverFile!.type ?? 'image/png',
+        Language: '', // We don't need language for cover
+        FileName: info.CoverFile!.name,
       },
     }
   }

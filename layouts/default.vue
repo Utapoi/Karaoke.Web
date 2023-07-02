@@ -30,17 +30,17 @@ onMounted(async () => {
         <div class="h-full w-full flex items-center justify-center gap-4">
           <NuxtLink to="/">
             <div class="w-full inline-flex items-center gap-4 rounded-lg p-2 hover:text-latte-red hover:dark:text-mocha-red" :class="{ 'text-latte-red dark:text-mocha-red': Route.path === '/', 'text-latte-subtext1 dark:text-mocha-subtext1': Route.path !== '/' }">
-              <span class="hidden xl:block">Home</span>
+              <span class="hidden md:block">Home</span>
             </div>
           </NuxtLink>
           <NuxtLink to="/songs">
             <div class="w-full inline-flex items-center gap-4 rounded-lg p-2 hover:text-latte-red hover:dark:text-mocha-red" :class="{ 'text-latte-red dark:text-mocha-red': Route.path.includes('/songs'), 'text-latte-subtext1 dark:text-mocha-subtext1': !Route.path.includes('/songs') }">
-              <span class="hidden xl:block">Songs</span>
+              <span class="hidden md:block">Songs</span>
             </div>
           </NuxtLink>
           <NuxtLink to="/singers">
             <div class="w-full inline-flex items-center gap-4 rounded-lg p-2 hover:text-latte-red hover:dark:text-mocha-red" :class="{ 'text-latte-red dark:text-mocha-red': Route.path.includes('/singers'), 'text-latte-subtext1 dark:text-mocha-subtext1': !Route.path.includes('/singers') }">
-              <span class="hidden xl:block">Artists</span>
+              <span class="hidden md:block">Artists</span>
             </div>
           </NuxtLink>
         </div>

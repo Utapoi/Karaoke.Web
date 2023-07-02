@@ -12,6 +12,7 @@ export interface AlbumInterface {
   Titles: ILocalizedString[]
   Singers: ISinger[]
   Cover: string
+  ReleaseDate: Date | null
   Songs: SongInterface[]
   Tags: TagInterface[]
 }
@@ -21,6 +22,7 @@ export class Album {
   Titles: LocalizedString[] = []
   Singers: Singer[] = []
   Cover: string
+  ReleaseDate: Date | null
   Songs: Song[] = []
   Tags: Tag[] = []
 
@@ -29,6 +31,7 @@ export class Album {
     this.Titles = album.Titles?.map((title: ILocalizedString) => LocalizedString.FromResponse(title))
     this.Singers = album.Singers?.map((singer: ISinger) => Singer.FromResponse(singer))
     this.Cover = album.Cover
+    this.ReleaseDate = album.ReleaseDate
     this.Songs = album.Songs?.map((song: SongInterface) => Song.FromResponse(song))
     this.Tags = album.Tags?.map((tag: TagInterface) => Tag.FromResponse(tag)) ?? []
   }
@@ -48,6 +51,7 @@ export class Album {
       Titles: [],
       Singers: [],
       Cover: '',
+      ReleaseDate: null,
       Songs: [],
       Tags: [],
     })

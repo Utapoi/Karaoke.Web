@@ -16,6 +16,7 @@ export interface IEditSingerInfo {
 
   // Note(Mikyan): null means no change, otherwise this is a new profile picture.
   ProfilePictureFile: File | null
+  CoverFile: File | null
 }
 
 export function EmptyIEditSingerInfo(): IEditSingerInfo {
@@ -31,6 +32,7 @@ export function EmptyIEditSingerInfo(): IEditSingerInfo {
     Height: 0,
     Nationality: null,
     ProfilePictureFile: null,
+    CoverFile: null,
   }
 }
 
@@ -73,5 +75,6 @@ export function IEditSingerInfoFromSinger(singer: ISinger): IEditSingerInfo {
     Height: singer.Height ?? 0,
     Nationality: singer.Nationality ?? null,
     ProfilePictureFile: null,
+    CoverFile: null,
   }
 }

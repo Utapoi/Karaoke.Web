@@ -60,49 +60,88 @@ export class CreateSongRequest implements CreateSongRequestInterface {
     })
   }
 
-  public static async FromInfoAsync(form: CreateSongInfo): Promise<CreateSongRequestInterface> {
+  public static async FromInfoAsync(info: CreateSongInfo): Promise<CreateSongRequestInterface> {
     const request = CreateSongRequest.Empty()
 
-    request.Titles = form.Titles
-    request.ReleaseDate = form.ReleaseDate ?? new Date()
-    request.Singers = form.Singers // [string] of Ids
-    request.Albums = form.Albums
-    request.Tags = form.Tags
+    request.Titles = info.Titles
+    request.ReleaseDate = info.ReleaseDate ?? new Date()
+    request.Singers = info.Singers // [string] of Ids
+    request.Albums = info.Albums
+    request.Tags = info.Tags
 
-    // Note(Mikyan): This will never be null at this point.
-    request.ThumbnailFile = {
-      File: await ToBase64(form.ThumbnailFile.File as File),
-      FileType: form.ThumbnailFile.File!.type ?? 'image/png',
-      Language: '', // We don't need language for thumbnail
-      FileName: form.ThumbnailFile.File!.name,
+    if (info.ThumbnailFile.File !== null) {
+      request.ThumbnailFile = {
+        File: await ToBase64(info.ThumbnailFile.File as File),
+        FileType: info.ThumbnailFile.File!.type ?? 'image/png',
+        Language: '', // We don't need language for thumbnail
+        FileName: info.ThumbnailFile.File!.name,
+      }
+    }
+    else {
+      request.ThumbnailFile = {
+        File: '',
+        FileType: 'image/png',
+        Language: '',
+        FileName: '',
+      }
+    }
+
+    if (info.PreviewFile.File !== null) {
+      // Note(Mikyan): This will never be null at this point.
+      request.PreviewFile = {
+        File: await ToBase64(info.PreviewFile.File as File),
+        FileType: info.PreviewFile.File!.type ?? 'audio/ogg',
+        Language: '', // We don't need language for preview
+        FileName: info.PreviewFile.File!.name,
+      }
+    }
+    else {
+      request.PreviewFile = {
+        File: '',
+        FileType: 'audio/ogg',
+        Language: '',
+        FileName: '',
+      }
+    }
+
+    if (info.VoiceFile.File !== null) {
+      // Note(Mikyan): This will never be null at this point.
+      request.VoiceFile = {
+        File: await ToBase64(info.VoiceFile.File as File),
+        FileType: info.VoiceFile.File!.type ?? 'audio/ogg',
+        Language: '', // We don't need language for voice
+        FileName: info.VoiceFile.File!.name,
+      }
+    }
+    else {
+      request.VoiceFile = {
+        File: '',
+        FileType: 'audio/ogg',
+        Language: '',
+        FileName: '',
+      }
+    }
+
+    if (info.InstrumentalFile.File !== null) {
+      // Note(Mikyan): This will never be null at this point.
+      request.InstrumentalFile = {
+        File: await ToBase64(info.InstrumentalFile.File as File),
+        FileType: info.InstrumentalFile.File!.type ?? 'audio/ogg',
+        Language: '',
+        FileName: info.InstrumentalFile.File!.name,
+      }
+    }
+    else {
+      request.InstrumentalFile = {
+        File: '',
+        FileType: 'audio/ogg',
+        Language: '',
+        FileName: '',
+      }
     }
 
     // Note(Mikyan): This will never be null at this point.
-    request.PreviewFile = {
-      File: await ToBase64(form.PreviewFile.File as File),
-      FileType: form.PreviewFile.File!.type ?? 'audio/ogg',
-      Language: '', // We don't need language for preview
-      FileName: form.PreviewFile.File!.name,
-    }
-
-    // Note(Mikyan): This will never be null at this point.
-    request.VoiceFile = {
-      File: await ToBase64(form.VoiceFile.File as File),
-      FileType: form.VoiceFile.File!.type ?? 'audio/ogg',
-      Language: '', // We don't need language for voice
-      FileName: form.VoiceFile.File!.name,
-    }
-
-    // Note(Mikyan): This will never be null at this point.
-    request.InstrumentalFile = {
-      File: await ToBase64(form.InstrumentalFile.File as File),
-      FileType: form.InstrumentalFile.File!.type ?? 'audio/ogg',
-      Language: '',
-      FileName: form.InstrumentalFile.File!.name,
-    }
-
-    // Note(Mikyan): This will never be null at this point.
-    request.LyricsFiles = (await Promise.allSettled(form.LyricsFiles.map(async (f: CreateFileInfo) => {
+    request.LyricsFiles = (await Promise.allSettled(info.LyricsFiles.map(async (f: CreateFileInfo) => {
       return {
         File: await ToBase64(f.File as File),
         FileType: f.File!.type ?? 'text/plain',
@@ -112,7 +151,7 @@ export class CreateSongRequest implements CreateSongRequestInterface {
     }))).map((e: any) => e.value as ILocalizedFile)
 
     // Note(Mikyan): This will never be null at this point.
-    request.KaraokeFiles = (await Promise.allSettled(form.KaraokeFiles.map(async (f: CreateFileInfo) => {
+    request.KaraokeFiles = (await Promise.allSettled(info.KaraokeFiles.map(async (f: CreateFileInfo) => {
       return {
         File: await ToBase64(f.File as File),
         FileType: f.File!.type ?? 'subtitles/ass',

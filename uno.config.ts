@@ -40,7 +40,7 @@ export default defineConfig({
       provider: 'google',
       fonts: {
         sans: 'Quicksand',
-        serif: 'DM Serif Display',
+        serif: 'Lato',
         mono: 'DM Mono',
       },
     }),

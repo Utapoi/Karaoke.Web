@@ -26,6 +26,24 @@ export function useSongsService() {
     return Song.FromResponse(response)
   }
 
+  async function DeleteAsync(id: string): Promise<void> {
+    await Client.Delete(`/Admin/Songs/${id}`)
+  }
+
+  /**
+   * Get a song by id.
+   * @param id The id of the song.
+   * @returns The song.
+   */
+  async function GetAsync(id: string): Promise<Song | undefined> {
+    const response = await Client.Get<SongInterface>(`/Songs/${id}`)
+
+    if (response === undefined)
+      return undefined
+
+    return Song.FromResponse(response)
+  }
+
   /**
    * Get a list of songs.
    * @param skip The number of songs to skip.
@@ -33,7 +51,7 @@ export function useSongsService() {
    * @returns The list of songs.
    */
   async function GetSongsAsync(skip = 0, take = 10): Promise<Song[]> {
-    const response = await Client.Get<GetSongsResponse>(`/Songs?skip=${skip}&take=${take}`)
+    const response = await Client.Get<GetSongsResponse>(`/Admin/Songs?skip=${skip}&take=${take}`)
 
     if (response === undefined)
       return []
@@ -57,6 +75,8 @@ export function useSongsService() {
 
   return {
     CreateAsync,
+    DeleteAsync,
+    GetAsync,
     GetSongsAsync,
     SearchAsync,
   }

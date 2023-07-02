@@ -17,6 +17,7 @@ export interface ISinger {
   Nationality: string | null
   PopularSong: SongInterface | null
   ProfilePicture: string
+  Cover: string
   Albums: AlbumInterface[]
   Songs: SongInterface[]
   AlbumsCount: number
@@ -35,13 +36,14 @@ export class Singer {
   Nationality: string | null = null
   PopularSong: Song | null = null
   ProfilePicture: string
+  Cover: string
   Albums: Album[] = []
   Songs: Song[] = []
   AlbumsCount = 0
   SongsCount = 0
 
   constructor(singer: ISinger) {
-    this.Id = singer.Id
+    this.Id = singer.Id.toLowerCase()
     this.Names = singer.Names?.map((name: ILocalizedString) => LocalizedString.FromResponse(name))
     this.Nicknames = singer.Nicknames?.map((nickname: ILocalizedString) => LocalizedString.FromResponse(nickname))
     this.Descriptions = singer.Descriptions?.map((description: ILocalizedString) => LocalizedString.FromResponse(description))
@@ -52,6 +54,7 @@ export class Singer {
     this.Nationality = singer.Nationality
     this.PopularSong = singer.PopularSong ? Song.FromResponse(singer.PopularSong) : null
     this.ProfilePicture = singer.ProfilePicture
+    this.Cover = singer.Cover
     this.Albums = singer.Albums?.map((album: AlbumInterface) => Album.FromResponse(album))
     this.Songs = singer.Songs?.map((song: SongInterface) => Song.FromResponse(song))
     this.AlbumsCount = singer.AlbumsCount
@@ -74,6 +77,7 @@ export class Singer {
       Height: 0,
       Nationality: null,
       ProfilePicture: '',
+      Cover: '',
       PopularSong: null,
       Albums: [],
       Songs: [],

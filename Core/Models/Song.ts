@@ -17,6 +17,7 @@ export interface SongInterface {
   Tags: TagInterface[]
   PreviewUrl: string
   OriginalUrl: string
+  Cover: string
 }
 
 export class Song {
@@ -29,17 +30,19 @@ export class Song {
   Tags: Tag[]
   PreviewUrl: string
   OriginalUrl: string
+  Cover: string
 
   constructor(song: SongInterface) {
-    this.Id = song.Id
-    this.Titles = song.Titles.map((title: ILocalizedString) => LocalizedString.FromResponse(title))
-    this.Singers = song.Singers.map((singer: ISinger) => Singer.FromResponse(singer))
-    this.Albums = song.Albums.map((album: AlbumInterface) => Album.FromResponse(album))
+    this.Id = song.Id.toLowerCase()
+    this.Titles = song.Titles?.map((title: ILocalizedString) => LocalizedString.FromResponse(title))
+    this.Singers = song.Singers?.map((singer: ISinger) => Singer.FromResponse(singer))
+    this.Albums = song.Albums?.map((album: AlbumInterface) => Album.FromResponse(album))
     this.Duration = song.Duration
     this.ReleaseDate = song.ReleaseDate
-    this.Tags = song.Tags.map((tag: TagInterface) => Tag.FromResponse(tag))
+    this.Tags = song.Tags?.map((tag: TagInterface) => Tag.FromResponse(tag))
     this.PreviewUrl = song.PreviewUrl
     this.OriginalUrl = song.OriginalUrl
+    this.Cover = song.Cover
   }
 
   public GetAlbum(): Album {
@@ -51,11 +54,11 @@ export class Song {
   }
 
   public GetCover(): string {
-    return this.GetAlbum().Cover
+    return (this.Cover !== '' && this.Cover !== null) ? this.Cover : this.GetAlbum().Cover
   }
 
   public GetTitle(language = 'English'): string {
-    const title = this.Titles.find((title: LocalizedString) => title.Language === language)
+    const title = this.Titles?.find((title: LocalizedString) => title.Language === language)
 
     if (title)
       return title.Text

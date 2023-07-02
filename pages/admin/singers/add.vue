@@ -45,6 +45,7 @@ const Info = ref<ICreateSingerInfo>({
   BloodType: '',
   Nationality: '',
   ProfilePictureFile: null,
+  CoverFile: null,
 })
 
 /**
@@ -383,7 +384,7 @@ async function OnSubmit() {
             </div>
           </div>
 
-          <!-- Profile Picture -->
+          <!-- Profile Picture / Cover -->
           <div class="w-full flex flex-col justify-between gap-2 rounded-xl bg-latte-surface0 p-5 shadow xl:flex-row dark:bg-mocha-surface0 dark:shadow-none">
             <FileInputField
               class="w-1/2"
@@ -391,6 +392,14 @@ async function OnSubmit() {
               name="singer-profile-picture-file"
               @update:model-value="(v: Array<File>) => {
                 Info.ProfilePictureFile = v[0]
+              }"
+            />
+            <FileInputField
+              class="w-1/2"
+              label="Cover"
+              name="singer-cover-file"
+              @update:model-value="(v: Array<File>) => {
+                Info.CoverFile = v[0]
               }"
             />
           </div>

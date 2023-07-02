@@ -27,12 +27,12 @@ useHead({
 })
 
 // TODO: Use the variable from env.
-const BackgroundCover = computed<string>(() => `url('https://localhost:7215${CurrentSinger.value?.GetRandomAlbumCover()}')`)
+const BackgroundCover = computed<string>(() => `url('https://localhost:7215${CurrentSinger.value!.Cover}')`)
 </script>
 
 <template>
   <div v-if="CurrentSinger">
-    <div class="bg-image h-56 w-full 2xl:h-96 4xl:h-126">
+    <div class="bg-image h-56 w-full 2xl:h-126 4xl:h-156 md:h-96">
       <div class="h-full w-full bg-black/30" />
     </div>
     <div class="mx-auto h-full max-w-7xl w-full px-4 pt-8 container lg:px-12">
@@ -99,7 +99,7 @@ const BackgroundCover = computed<string>(() => `url('https://localhost:7215${Cur
 <style scoped>
 .bg-image {
   background-image: v-bind(BackgroundCover);
-  background-position: center;
+  background-position: top;
   background-repeat: no-repeat;
   background-size: cover;
 }

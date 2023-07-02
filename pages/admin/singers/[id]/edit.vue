@@ -16,6 +16,7 @@ definePageMeta({
   // },
 })
 
+const Config = useRuntimeConfig()
 const Route = useRoute()
 const Router = useRouter()
 
@@ -406,7 +407,35 @@ async function OnSubmit() {
                 </div>
               </div>
               <div v-if="CurrentSinger.ProfilePicture !== null" class="flex flex-col items-start justify-items-start gap-2">
-                <img :src="`https://localhost:7215${CurrentSinger.ProfilePicture}`" class="h-36 w-36 rounded-xl object-cover">
+                <img :src="`${Config.public.API_URL}${CurrentSinger.ProfilePicture}`" class="h-36 w-36 rounded-xl object-cover">
+              </div>
+            </div>
+          </div>
+
+          <!-- Cover -->
+          <div class="w-full flex flex-col justify-between gap-2 rounded-xl bg-latte-surface0 p-5 shadow xl:flex-row dark:bg-mocha-surface0 dark:shadow-none">
+            <div class="w-full flex flex-col items-start gap-2 lg:flex-row lg:gap-6">
+              <div class="w-1/2 flex flex-col gap-2">
+                <FileInputField
+                  class="w-full"
+                  label="Cover"
+                  name="singer-cover"
+                  placeholder="Select a new cover image"
+                  @update:model-value="(v: Array<File>) => {
+                    EditSingerInfo.CoverFile = v[0]
+                  }"
+                />
+                <div v-if="CurrentSinger.Cover !== null && CurrentSinger.Cover !== ''" class="w-min flex items-center gap-1 whitespace-nowrap rounded-full bg-latte-surface2 px-2 py-0.5 text-latte-green dark:bg-mocha-surface2 dark:text-mocha-green">
+                  <div class="i-fluent:checkmark-12-filled text-lg" />
+                  <div>{{ `${CurrentSinger.GetName()} already have a cover image.` }}</div>
+                </div>
+                <div v-else class="w-min flex items-center gap-1 whitespace-nowrap rounded-full bg-latte-surface2 px-2 py-0.5 text-latte-red dark:bg-mocha-surface2 dark:text-mocha-red">
+                  <div class="i-fluent:error-circle-12-filled text-lg" />
+                  <div>{{ `${CurrentSinger.GetName()} must have a cover. If you see this, then we have a bug.` }}</div>
+                </div>
+              </div>
+              <div v-if="CurrentSinger.Cover !== null && CurrentSinger.Cover !== ''" class="flex flex-col items-start justify-items-start gap-2">
+                <img :src="`${Config.public.API_URL}${CurrentSinger.Cover}`" class="h-36 w-36 rounded-xl object-cover">
               </div>
             </div>
           </div>
