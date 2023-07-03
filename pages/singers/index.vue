@@ -10,7 +10,9 @@ interface ISearchFilters {
 
 const SingersService = useSingersService()
 
-const Singers = ref<Singer[]>(await SingersService.GetSingersAsync())
+const Singers = ref<Singer[]>([])
+
+Singers.value = await SingersService.GetSingersAsync()
 
 const IsSearching = ref<boolean>(false)
 const SearchFilters = ref<ISearchFilters>({
@@ -47,7 +49,7 @@ async function OnSearchQueryChanged() {
 </script>
 
 <template>
-  <div class="mx-auto max-w-9xl px-4 py-4 md:px-8 md:py-8">
+  <div v-if="Singers.length > 0" class="mx-auto max-w-9xl px-4 py-4 md:px-8 md:py-8">
     <h1 class="text-3xl font-bold text-latte-text dark:text-mocha-text">
       Singers
     </h1>

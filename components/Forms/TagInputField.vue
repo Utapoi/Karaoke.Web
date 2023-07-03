@@ -21,6 +21,7 @@ export interface TagInputFieldProps {
   search?: (query: string) => Promise<Array<TagInputFieldOptions>>
   searchable?: boolean
   showLabel?: boolean
+  values?: Array<TagInputFieldOptions>
 }
 
 // Properties
@@ -58,7 +59,7 @@ const Options = ref<Array<TagInputFieldOptions>>(props.options)
 /**
  * The selected option from the select
  */
-const Selected = ref<Array<TagInputFieldOptions>>(Array<TagInputFieldOptions>())
+const Selected = ref<Array<TagInputFieldOptions>>(props.values ?? Array<TagInputFieldOptions>())
 
 /**
  * The state of the select
@@ -146,7 +147,7 @@ async function OnSearchChanged(e: Event) {
                 autocomplete="false"
                 :placeholder="placeholder"
                 @input="OnSearchChanged"
-                @keypress.enter="OnEnterPressed"
+                @keypress.enter.prevent="OnEnterPressed"
               >
             </div>
           </div>

@@ -36,7 +36,7 @@ function OnMouseLeave() {
       v-if="IsHovering"
       ref="CardRef"
       v-motion-slide-left
-      class="absolute bottom-0 top-0 z-1 w-56 flex flex-col transform-gpu justify-between rounded-r-xl bg-latte-surface2 px-5 py-3 shadow -right-160% dark:bg-mocha-surface2"
+      class="absolute bottom-0 top-0 z-1 w-56 flex flex-col transform-gpu justify-between rounded-r-xl bg-latte-surface2 px-5 py-3 shadow -right-56 dark:bg-mocha-surface2"
     >
       <div>
         <p class="font-semibold text-latte-text dark:text-mocha-text">

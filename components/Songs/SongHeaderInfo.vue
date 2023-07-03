@@ -5,21 +5,6 @@ import { GetUrl } from '~/Utils/ImageUtils'
 defineProps<{
   song: Song
 }>()
-
-function GetNationalityFlag(nationality: string) {
-  switch (nationality) {
-    case 'Japanese':
-      return 'i-circle-flags:jp'
-    case 'Chinese':
-      return 'i-circle-flags:cn'
-    case 'English':
-      return 'i-circle-flags:gb'
-    case 'French':
-      return 'i-circle-flags:fr'
-    default:
-      return 'i-circle-flags:jp'
-  }
-}
 </script>
 
 <template>
@@ -38,7 +23,7 @@ function GetNationalityFlag(nationality: string) {
                 {{ song.GetTitle() }}
               </h1>
               <!-- TODO: v-if="CurrentUser === Roles.Admin" or something like this. -->
-              <NuxtLink :to="`/admin/singers/${song.Id}/edit`" class="i-carbon:pen cursor-pointer text-sm text-latte-lavender dark:text-mocha-lavender" />
+              <NuxtLink :to="`/admin/songs/${song.Id}/edit`" class="i-carbon:pen cursor-pointer text-sm text-latte-lavender dark:text-mocha-lavender" />
             </div>
 
             <p class="text-latte-text dark:text-mocha-text">

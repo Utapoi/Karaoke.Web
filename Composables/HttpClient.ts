@@ -5,9 +5,6 @@ export function useHttpClient() {
 
   const ApiFetcher = createFetch({
     baseUrl: RuntimeConfig.public.API_URL,
-    fetchOptions: {
-      cache: 'no-cache',
-    },
   })
 
   async function Delete(url: string, options?: RequestInit): Promise<void> {

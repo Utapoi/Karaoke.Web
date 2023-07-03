@@ -1,5 +1,7 @@
 import type { ISinger } from '~/Core/Models/Singer'
 import { Singer } from '~/Core/Models/Singer'
+import type { ISong } from '~/Core/Models/Song'
+import { Song } from '~/Core/Models/Song'
 import type { CreateSingerRequest } from '~/Core/Requests/Singers/CreateSingerRequest'
 import type { EditSingerRequest } from '~/Core/Requests/Singers/EditSingerRequest'
 import type { PaginatedResponse } from '~/Core/Responses/PaginatedResponse'
@@ -66,6 +68,21 @@ export function useSingersService() {
 
     return Singer.FromResponse(response)
   }
+
+  /**
+   * Get a paginated list of songs for a singer.
+   * @param id The id of the singer.
+   * @returns A list of songs.
+   */
+  async function GetSongsAsync(id: string, skip = 0, take = 15): Promise<Song[] | undefined> {
+    const response = await Client.Get<PaginatedResponse<ISong>>(`/Singers/${id}/Songs?skip=${skip}&take=${take}`)
+
+    if (response === undefined)
+      return undefined
+
+    return response.Items.map(song => Song.FromResponse(song))
+  }
+
   /**
    * Get a paginated list of singers.
    * @param skip The number of items to skip.
@@ -120,6 +137,7 @@ export function useSingersService() {
     DeleteAsync,
     EditAsync,
     GetAsync,
+    GetSongsAsync,
     GetSingersAsync,
     GetSingersForAdminAsync,
     SearchAsync,

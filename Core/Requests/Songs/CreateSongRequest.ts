@@ -1,5 +1,5 @@
 import type { CreateFileInfo } from '~/Core/Forms/CreateFileInfo'
-import type { CreateSongInfo } from '~/Core/Forms/CreateSongInfo'
+import type { CreateSongInfo } from '~/Core/Forms/Songs/CreateSongInfo'
 import { EmptyILocalizedFile, type ILocalizedFile } from '~/Core/Models/LocalizedFile'
 import type { ILocalizedString } from '~/Core/Models/LocalizedString'
 

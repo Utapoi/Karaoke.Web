@@ -1,4 +1,4 @@
-import type { SongInterface } from '~/Core/Models/Song'
+import type { ISong } from '~/Core/Models/Song'
 import { Song } from '~/Core/Models/Song'
 import type { CreateSongRequest } from '~/Core/Requests/Songs/CreateSongRequest'
 import type { GetSongsResponse } from '~/Core/Responses/Songs/GetSongsResponse'
@@ -36,7 +36,7 @@ export function useSongsService() {
    * @returns The song.
    */
   async function GetAsync(id: string): Promise<Song | undefined> {
-    const response = await Client.Get<SongInterface>(`/Songs/${id}`)
+    const response = await Client.Get<ISong>(`/Songs/${id}`)
 
     if (response === undefined)
       return undefined
@@ -65,7 +65,7 @@ export function useSongsService() {
    * @returns The list of songs.
    */
   async function SearchAsync(query: string): Promise<Song[]> {
-    const response = await Client.Get<SongInterface[]>(`/Songs/Search?query=${query}`)
+    const response = await Client.Get<ISong[]>(`/Songs/Search?query=${query}`)
 
     if (response === undefined)
       return []

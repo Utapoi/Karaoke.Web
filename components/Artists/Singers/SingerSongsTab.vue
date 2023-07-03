@@ -1,11 +1,15 @@
 <script setup lang="ts">
+import { useSingersService } from '~/Composables/Services/SingersService'
 import type { Singer } from '~/Core/Models/Singer'
+import type { Song } from '~/Core/Models/Song'
 
-defineProps<{
+const props = defineProps<{
   singer: Singer
 }>()
 
-// TODO: Get Songs Paginated with filters.
+const SingersService = useSingersService()
+
+const Songs = ref<Song[] | undefined>(await SingersService.GetSongsAsync(props.singer.Id))
 </script>
 
 <template>
@@ -21,8 +25,10 @@ defineProps<{
         </div>
       </div>
     </div>
-    <div class="grid grid-cols-2 w-full items-center gap-5 text-latte-text lg:grid-cols-7 md:grid-cols-5 sm:grid-cols-4 dark:text-mocha-text">
-      <div v-for="song in singer.Songs" :key="song.Id" />
+    <div v-if="Songs" class="grid grid-cols-2 w-full items-center gap-5 text-latte-text lg:grid-cols-7 md:grid-cols-5 sm:grid-cols-4 dark:text-mocha-text">
+      <div v-for="song in Songs" :key="song.Id">
+        <SongCard :song="song" :singers="[singer]" />
+      </div>
     </div>
   </div>
 </template>

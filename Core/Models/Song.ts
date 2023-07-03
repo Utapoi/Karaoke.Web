@@ -7,7 +7,7 @@ import type { ISinger } from './Singer'
 import { Tag } from './Tag'
 import type { TagInterface } from './Tag'
 
-export interface SongInterface {
+export interface ISong {
   Id: string
   Titles: ILocalizedString[]
   Singers: ISinger[]
@@ -18,6 +18,7 @@ export interface SongInterface {
   PreviewUrl: string
   OriginalUrl: string
   Cover: string
+  Lyrics: LocalizedString[]
 }
 
 export class Song {
@@ -31,8 +32,9 @@ export class Song {
   PreviewUrl: string
   OriginalUrl: string
   Cover: string
+  Lyrics: LocalizedString[]
 
-  constructor(song: SongInterface) {
+  constructor(song: ISong) {
     this.Id = song.Id.toLowerCase()
     this.Titles = song.Titles?.map((title: ILocalizedString) => LocalizedString.FromResponse(title))
     this.Singers = song.Singers?.map((singer: ISinger) => Singer.FromResponse(singer))
@@ -43,6 +45,7 @@ export class Song {
     this.PreviewUrl = song.PreviewUrl
     this.OriginalUrl = song.OriginalUrl
     this.Cover = song.Cover
+    this.Lyrics = song.Lyrics?.map((lyric: ILocalizedString) => LocalizedString.FromResponse(lyric))
   }
 
   public GetAlbum(): Album {
@@ -55,6 +58,15 @@ export class Song {
 
   public GetCover(): string {
     return (this.Cover !== '' && this.Cover !== null) ? this.Cover : this.GetAlbum().Cover
+  }
+
+  public GetLyrics(language = 'English'): string {
+    const lyrics = this.Lyrics?.find((lyric: LocalizedString) => lyric.Language === language)
+
+    if (lyrics)
+      return lyrics.Text
+
+    return this.Lyrics[0]?.Text ?? ''
   }
 
   public GetTitle(language = 'English'): string {
@@ -70,7 +82,7 @@ export class Song {
     return this.Singers[0] ?? Singer.Empty()
   }
 
-  public static FromResponse(info: SongInterface): Song {
+  public static FromResponse(info: ISong): Song {
     return new Song(info)
   }
 }

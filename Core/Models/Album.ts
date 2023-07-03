@@ -3,7 +3,7 @@ import type { ILocalizedString } from './LocalizedString'
 import { Singer } from './Singer'
 import type { ISinger } from './Singer'
 import { Song } from './Song'
-import type { SongInterface } from './Song'
+import type { ISong } from './Song'
 import { Tag } from './Tag'
 import type { TagInterface } from './Tag'
 
@@ -13,7 +13,7 @@ export interface AlbumInterface {
   Singers: ISinger[]
   Cover: string
   ReleaseDate: Date | null
-  Songs: SongInterface[]
+  Songs: ISong[]
   Tags: TagInterface[]
 }
 
@@ -32,7 +32,7 @@ export class Album {
     this.Singers = album.Singers?.map((singer: ISinger) => Singer.FromResponse(singer))
     this.Cover = album.Cover
     this.ReleaseDate = album.ReleaseDate
-    this.Songs = album.Songs?.map((song: SongInterface) => Song.FromResponse(song))
+    this.Songs = album.Songs?.map((song: ISong) => Song.FromResponse(song))
     this.Tags = album.Tags?.map((tag: TagInterface) => Tag.FromResponse(tag)) ?? []
   }
 

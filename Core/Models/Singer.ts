@@ -3,7 +3,7 @@ import type { AlbumInterface } from './Album'
 import type { ILocalizedString } from './LocalizedString'
 import { LocalizedString } from './LocalizedString'
 import { Song } from './Song'
-import type { SongInterface } from './Song'
+import type { ISong } from './Song'
 
 export interface ISinger {
   Id: string
@@ -15,11 +15,11 @@ export interface ISinger {
   BloodType: string | null
   Height: number
   Nationality: string | null
-  PopularSong: SongInterface | null
+  PopularSong: ISong | null
   ProfilePicture: string
   Cover: string
   Albums: AlbumInterface[]
-  Songs: SongInterface[]
+  Songs: ISong[]
   AlbumsCount: number
   SongsCount: number
 }
@@ -56,7 +56,7 @@ export class Singer {
     this.ProfilePicture = singer.ProfilePicture
     this.Cover = singer.Cover
     this.Albums = singer.Albums?.map((album: AlbumInterface) => Album.FromResponse(album))
-    this.Songs = singer.Songs?.map((song: SongInterface) => Song.FromResponse(song))
+    this.Songs = singer.Songs?.map((song: ISong) => Song.FromResponse(song))
     this.AlbumsCount = singer.AlbumsCount
     this.SongsCount = singer.SongsCount
   }
