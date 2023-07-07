@@ -43,7 +43,7 @@ export class Singer {
   SongsCount = 0
 
   constructor(singer: ISinger) {
-    this.Id = singer.Id.toLowerCase()
+    this.Id = singer.Id?.toLowerCase()
     this.Names = singer.Names?.map((name: ILocalizedString) => LocalizedString.FromResponse(name))
     this.Nicknames = singer.Nicknames?.map((nickname: ILocalizedString) => LocalizedString.FromResponse(nickname))
     this.Descriptions = singer.Descriptions?.map((description: ILocalizedString) => LocalizedString.FromResponse(description))
@@ -100,6 +100,10 @@ export class Singer {
     return this.Names[0]?.Text ?? ''
   }
 
+  /**
+   * Gets the native name of the singer.
+   * @returns The native name if found; an empty string otherwise.
+   */
   public GetNativeName(): string {
     const name = this.Names.find((name: LocalizedString) => name.Language === this.Nationality)
 

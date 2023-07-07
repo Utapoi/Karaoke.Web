@@ -24,7 +24,7 @@ const SongsService = useSongsService()
 const SongId = ref<string>(Route.params.id.toString())
 
 // TODO: GetSongForEditAsync
-const CurrentSong = ref<Song | undefined>(await SongsService.GetAsync(SongId.value))
+const CurrentSong = ref<Song | undefined>(await SongsService.GetForEditAsync(SongId.value))
 
 if (CurrentSong.value === undefined)
   await Router.push('/admin/songs')
@@ -182,7 +182,7 @@ useHead({
             </div>
           </div>
 
-          <!-- Voice / Instru -->
+          <!-- Voice / Instrumental -->
           <div class="w-full flex flex-col justify-between gap-2 rounded-xl bg-latte-surface0 p-5 shadow xl:flex-row dark:bg-mocha-surface0 dark:shadow-none">
             <div class="w-full flex gap-2">
               <FileInputField
@@ -216,6 +216,7 @@ useHead({
 
                 <SelectInputField
                   v-model="lyrics.Language"
+                  :value="lyrics.Language"
                   label="Language"
                   placeholder="Select language"
                   :name="`song-lyrics-language-${idx}`"

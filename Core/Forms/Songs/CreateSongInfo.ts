@@ -11,6 +11,6 @@ export interface CreateSongInfo {
   PreviewFile: CreateFileInfo
   VoiceFile: CreateFileInfo
   InstrumentalFile: CreateFileInfo
-  LyricsFiles: CreateFileInfo[]
+  Lyrics: ILocalizedString[]
   KaraokeFiles: CreateFileInfo[]
 }

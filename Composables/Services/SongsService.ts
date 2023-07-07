@@ -45,6 +45,20 @@ export function useSongsService() {
   }
 
   /**
+   * Get a song by id for editing.
+   * @param id The id of the song.
+   * @returns The song.
+   */
+  async function GetForEditAsync(id: string): Promise<Song | undefined> {
+    const response = await Client.Get<ISong>(`/Admin/Songs/${id}`)
+
+    if (response === undefined)
+      return undefined
+
+    return Song.FromResponse(response)
+  }
+
+  /**
    * Get a list of songs.
    * @param skip The number of songs to skip.
    * @param take The number of songs to take.
@@ -77,6 +91,7 @@ export function useSongsService() {
     CreateAsync,
     DeleteAsync,
     GetAsync,
+    GetForEditAsync,
     GetSongsAsync,
     SearchAsync,
   }

@@ -46,6 +46,9 @@ devDependencies:
   '@iconify-json/material-symbols':
     specifier: ^1.1.45
     version: 1.1.45
+  '@iconify-json/mdi':
+    specifier: ^1.1.52
+    version: 1.1.52
   '@iconify-json/twemoji':
     specifier: ^1.1.11
     version: 1.1.11
@@ -1773,6 +1776,12 @@ packages:
 
   /@iconify-json/material-symbols@1.1.45:
     resolution: {integrity: sha512-YEAy5pqVcmCGEtYWsbqsDsbZAopLzP5REqShRTqUPiZDxj/rKVPeu8tsNSTrkeI0trME1Vd0KNvQKwqenNQRDQ==}
+    dependencies:
+      '@iconify/types': 2.0.0
+    dev: true
+
+  /@iconify-json/mdi@1.1.52:
+    resolution: {integrity: sha512-tLzpFcmoGw1/jHcl+BshUd4bqvP4755OUluaARsuKskTp2aIPIAkRQOhzJGpry9CZ0i82z0alq4HrKrp9uvj4A==}
     dependencies:
       '@iconify/types': 2.0.0
     dev: true

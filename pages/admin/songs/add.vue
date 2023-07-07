@@ -53,9 +53,9 @@ const Info = ref<CreateSongInfo>({
     File: null,
     Language: 'Japanese',
   }],
-  LyricsFiles: [{
+  Lyrics: [{
     Id: nanoid(),
-    File: null,
+    Text: '',
     Language: 'Japanese',
   }],
   Tags: [],
@@ -265,14 +265,17 @@ async function OnSubmit(): Promise<void> {
             </div>
           </div>
 
+          <!-- Lyrics -->
           <div class="w-full flex flex-col justify-between gap-2 rounded-xl bg-latte-surface0 p-5 shadow xl:flex-row dark:bg-mocha-surface0 dark:shadow-none">
             <div class="w-full flex gap-2">
-              <div v-for="(lyrics, idx) in Info.LyricsFiles" :key="lyrics.Id" v-motion-pop class="w-full flex items-center justify-start gap-2">
-                <FileInputField
+              <div v-for="(lyrics, idx) in Info.Lyrics" :key="lyrics.Id" v-motion-pop class="w-full flex items-center justify-start gap-2">
+                <TextAreaInputField
+                  v-model="lyrics.Text"
                   class="w-1/2"
-                  label="Lyrics File"
-                  :name="`song-lyrics-${idx}`"
-                  @update:model-value="(v: Array<File>) => lyrics.File = v[0]"
+                  label="Lyrics"
+                  placeholder="Song lyrics..."
+                  :name="`song-lyrics-${lyrics.Id}`"
+                  :show-label="idx === 0"
                 />
 
                 <SelectInputField
@@ -293,7 +296,7 @@ async function OnSubmit(): Promise<void> {
                   <div v-if="idx > 0" class="text-lg text-latte-red hover:cursor-pointer dark:text-mocha-red" @click="() => OnRemoveTitle(name.Id)">
                     <div class="i-fluent:delete-16-filled" />
                   </div>
-                  <div class="text-lg text-latte-green hover:cursor-pointer dark:text-mocha-green" @click="OnAddTitle">
+                  <div v-if="idx === EditSongInfo.Lyrics.length - 1" class="text-lg text-latte-green hover:cursor-pointer dark:text-mocha-green" @click="OnAddTitle">
                     <div class="i-fluent:add-16-filled" />
                   </div>
                 </div>
@@ -301,6 +304,7 @@ async function OnSubmit(): Promise<void> {
             </div>
           </div>
 
+          <!-- Karaoke -->
           <div class="w-full flex flex-col justify-between gap-2 rounded-xl bg-latte-surface0 p-5 shadow xl:flex-row dark:bg-mocha-surface0 dark:shadow-none">
             <div class="w-full flex gap-2">
               <div v-for="(karaoke, idx) in Info.KaraokeFiles" :key="karaoke.Id" v-motion-pop class="w-full flex items-center justify-start gap-2">

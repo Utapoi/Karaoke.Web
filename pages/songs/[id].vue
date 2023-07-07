@@ -28,7 +28,7 @@ useHead({
 })
 
 // TODO: Use the variable from env.
-const BackgroundCover = computed<string>(() => `url('${Config.public.API_URL}${CurrentSong.value?.GetCover()}')`)
+const BackgroundCover = computed<string>(() => `url('${Config.public.API_URL}${CurrentSong.value?.GetSinger().Cover}')`)
 </script>
 
 <template>
@@ -40,6 +40,7 @@ const BackgroundCover = computed<string>(() => `url('${Config.public.API_URL}${C
       <div class="w-full flex flex-col">
         <!-- Song Info -->
         <SongHeaderInfo :song="CurrentSong" />
+
         <!-- Tabs Menu -->
         <div class="mx-auto w-full overflow-x-scroll overflow-y-hidden rounded-b-xl bg-latte-surface0 text-latte-text shadow backdrop-blur-md sm:overflow-x-hidden dark:bg-mocha-surface0 dark:text-mocha-text">
           <div class="w-full flex items-center justify-start gap-12 px-5 py-3">
@@ -77,6 +78,10 @@ const BackgroundCover = computed<string>(() => `url('${Config.public.API_URL}${C
 
         <!-- Tabs Content -->
         </div>
+
+        <!-- Tabs Contenr -->
+        <SongInformationTab v-if="SelectedTab === 0" :song="CurrentSong" />
+        <SongKaraokeTab v-if="SelectedTab === 1" />
       </div>
     </div>
   </div>
@@ -85,7 +90,7 @@ const BackgroundCover = computed<string>(() => `url('${Config.public.API_URL}${C
 <style scoped>
 .bg-image {
   background-image: v-bind(BackgroundCover);
-  background-position: center;
+  background-position: top center;
   background-repeat: no-repeat;
   background-size: cover;
 }

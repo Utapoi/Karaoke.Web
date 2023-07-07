@@ -63,8 +63,11 @@ export class Song {
   public GetLyrics(language = 'English'): string {
     const lyrics = this.Lyrics?.find((lyric: LocalizedString) => lyric.Language === language)
 
-    if (lyrics)
+    if (lyrics !== undefined)
       return lyrics.Text
+
+    if (this.Lyrics === undefined)
+      return ''
 
     return this.Lyrics[0]?.Text ?? ''
   }
