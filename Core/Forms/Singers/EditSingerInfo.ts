@@ -1,6 +1,6 @@
 import { nanoid } from 'nanoid'
-import type { ILocalizedString } from '../Models/LocalizedString'
-import type { ISinger } from '../Models/Singer'
+import type { ILocalizedString } from '@/Core/Models/LocalizedString'
+import type { ISinger } from '@/Core/Models/Singer'
 
 export interface IEditSingerInfo {
   Names: ILocalizedString[]

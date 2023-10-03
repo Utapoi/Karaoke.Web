@@ -1,4 +1,4 @@
-import type { SelectInputFieldOptions } from '~/Core/Forms/Options/SelectInputFieldOptions'
+import type { SelectInputFieldOptions } from '@/Core/Forms/Options/SelectInputFieldOptions'
 
 const LanguageOptions: Array<SelectInputFieldOptions> = [
   { text: 'English', value: 'English' },

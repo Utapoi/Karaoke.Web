@@ -1,4 +1,4 @@
-import type { ILocalizedString } from '../Models/LocalizedString'
+import type { ILocalizedString } from '@/Core/Models/LocalizedString'
 
 export interface ICreateSingerInfo {
   Names: ILocalizedString[]

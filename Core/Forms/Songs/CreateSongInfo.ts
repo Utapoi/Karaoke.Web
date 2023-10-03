@@ -1,5 +1,5 @@
-import type { ILocalizedString } from '../../Models/LocalizedString'
-import type { CreateFileInfo } from '../CreateFileInfo'
+import type { ILocalizedString } from '@/Core/Models/LocalizedString'
+import type { CreateFileInfo } from '@/Core/Forms/CreateFileInfo'
 
 export interface CreateSongInfo {
   Titles: ILocalizedString[]

@@ -1,6 +1,6 @@
-import type { IEditSingerInfo } from '~/Core/Forms/EditSingerInfo'
-import type { ILocalizedFile } from '~/Core/Models/LocalizedFile'
-import type { ILocalizedString } from '~/Core/Models/LocalizedString'
+import type { IEditSingerInfo } from '@/Core/Forms/Singers/EditSingerInfo'
+import type { ILocalizedFile } from '@/Core/Models/LocalizedFile'
+import type { ILocalizedString } from '@/Core/Models/LocalizedString'
 
 export interface IEditSingerRequest {
   Names: ILocalizedString[]

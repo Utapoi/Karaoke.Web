@@ -1,4 +1,4 @@
-import type { SelectInputFieldOptions } from './SelectInputFieldOptions'
+import type { SelectInputFieldOptions } from '@/Core/Forms/Options/SelectInputFieldOptions'
 
 const BloodTypeOptions: Array<SelectInputFieldOptions> = [
   { text: 'A', value: 'A' },

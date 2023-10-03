@@ -1,6 +1,6 @@
-import type { CreateAlbumInfo } from '~/Core/Forms/CreateAlbumInfo'
-import type { ILocalizedFile } from '~/Core/Models/LocalizedFile'
-import type { ILocalizedString } from '~/Core/Models/LocalizedString'
+import type { CreateAlbumInfo } from '@/Core/Forms/Albums/CreateAlbumInfo'
+import type { ILocalizedFile } from '@/Core/Models/LocalizedFile'
+import type { ILocalizedString } from '@/Core/Models/LocalizedString'
 
 export interface CreateAlbumRequestInterface {
   Titles: ILocalizedString[]
