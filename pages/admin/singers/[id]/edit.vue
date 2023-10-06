@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { nanoid } from 'nanoid'
 import { useSingersService } from '~/Composables/Services/SingersService'
-import { type IEditSingerInfo, IEditSingerInfoFromSinger } from '~/Core/Forms/EditSingerInfo'
+import { type IEditSingerInfo, IEditSingerInfoFromSinger } from '~/Core/Forms/Singers/EditSingerInfo'
 import type { ILocalizedString } from '~/Core/Models/LocalizedString'
 import type { Singer } from '~/Core/Models/Singer'
 import { EditSingerRequest } from '~/Core/Requests/Singers/EditSingerRequest'

@@ -1,14 +1,18 @@
 <script setup lang="ts">
+import type { ValidationArgs } from '@vuelidate/core'
+import useVuelidate from '@vuelidate/core'
+
 /**
  * The props for the text input field
  */
 export interface TextInputFieldProps {
   name: string
   label: string
-  value?: string
+  value?: string | null
   placeholder: string
   showLabel?: boolean
   type?: string
+  rules?: ValidationArgs<{ value: string }>
 }
 
 // Properties
@@ -23,19 +27,27 @@ const events = defineEmits<{
   'update:modelValue': [value: string]
 }>()
 
-/**
- * The text in the input
- */
-const Text = ref<string>(props.value ?? '')
+const rules = {
+  value: {},
+}
+
+const state = reactive({
+  value: '',
+})
+
+if (props.value !== undefined && props.value !== null)
+  state.value = props.value!
+
+if (props.rules !== undefined && props.rules !== null)
+  rules.value = props.rules
+
+const v = useVuelidate<{ value: string }>(rules, state)
 
 /**
  * Function called when the input changes
  */
-function OnInputChanged(e: Event) {
-  const target = e.target as HTMLInputElement
-  const value = target.value
-
-  events('update:modelValue', value)
+function OnInputChanged() {
+  events('update:modelValue', v.value.value.$model)
 }
 </script>
 
@@ -43,12 +55,22 @@ function OnInputChanged(e: Event) {
   <div class="my-1 inline-flex flex-col">
     <label v-if="showLabel" :for="name" class="mb-2 text-sm font-semibold text-latte-text dark:text-mocha-text"> {{ label }}</label>
     <input
-      v-model="Text"
-      class="w-full transform-gpu appearance-none rounded-full bg-latte-crust px-4 py-2 text-latte-text ring-1.5 ring-latte-overlay0 transition-all duration-150 dark:bg-mocha-crust dark:text-mocha-text placeholder:text-latte-subtext0 focus:outline-none dark:ring-mocha-overlay0 focus:ring-latte-lavender placeholder:dark:text-mocha-subtext0 focus:dark:ring-mocha-lavender"
+      v-model="v.value.$model"
+      class="w-full transform-gpu appearance-none rounded-full bg-latte-crust px-4 py-2 text-latte-text ring-1.5 transition-all duration-150 dark:bg-mocha-crust dark:text-mocha-text placeholder:text-latte-subtext0 focus:outline-none focus:ring-latte-lavender placeholder:dark:text-mocha-subtext0 focus:dark:ring-mocha-lavender"
+      :class="{
+        'ring-latte-overlay0 dark:ring-mocha-overlay0': !v.$invalid,
+        'ring-latte-red dark:ring-mocha-red': v.$invalid,
+      }"
       :type="type"
       :name="name"
       :placeholder="placeholder"
       @input="OnInputChanged"
     >
+    <span
+      v-if="v.$invalid && v.$silentErrors"
+      class="ml-2 mt-1 text-xs text-red-400"
+    >
+      {{ v.$silentErrors.at(0)?.$message }}.
+    </span>
   </div>
 </template>

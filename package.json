@@ -38,6 +38,8 @@
   },
   "dependencies": {
     "@types/howler": "^2.2.7",
+    "@vuelidate/core": "^2.0.3",
+    "@vuelidate/validators": "^2.0.4",
     "@vueuse/motion": "^2.0.0",
     "howler": "^2.2.3",
     "libass-wasm": "^4.1.0",

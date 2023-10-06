@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { nanoid } from 'nanoid'
+import { required } from '@vuelidate/validators'
 import { useSingersService } from '~/Composables/Services/SingersService'
 import type { ILocalizedString } from '~/Core/Models/LocalizedString'
 import { CreateSingerRequest } from '~/Core/Requests/Singers/CreateSingerRequest'
-import type { ICreateSingerInfo } from '~/Core/Forms/CreateSingerInfo'
+import type { ICreateSingerInfo } from '~/Core/Forms/Singers/CreateSingerInfo'
 import LanguageOptions from '~/Core/Forms/Options/LanguageOptions'
 import BloodTypeOptions from '~/Core/Forms/Options/BloodTypeOptions'
 
@@ -180,7 +181,7 @@ async function OnSubmit() {
           <!-- Names -->
           <div class="w-full flex rounded-xl bg-latte-surface0 p-5 shadow dark:bg-mocha-surface0 dark:shadow-none">
             <div class="w-full flex flex-col gap-2">
-              <div v-for="(name, idx) in Info.Names" :key="name.Id" v-motion-pop class="w-full flex items-center justify-start gap-2">
+              <div v-for="(name, idx) in Info.Names" :key="name.Id" v-motion-pop class="w-full flex items-start justify-start gap-2">
                 <TextInputField
                   v-model="name.Text"
                   class="w-1/2"
@@ -188,6 +189,7 @@ async function OnSubmit() {
                   placeholder="Singer name"
                   :name="`singer-name-${name.Id}`"
                   :show-label="idx === 0"
+                  :rules="{ required }"
                 />
 
                 <SelectInputField
@@ -200,10 +202,7 @@ async function OnSubmit() {
                 />
 
                 <div
-                  class="h-full flex items-center justify-center gap-3" :class="{
-                    'mt-7': idx === 0,
-                    'mt-1': idx > 0,
-                  }"
+                  class="mt-1 h-full flex items-center justify-center gap-3"
                 >
                   <div v-if="idx > 0" class="text-lg text-latte-red hover:cursor-pointer dark:text-mocha-red" @click="() => OnRemoveName(name.Id)">
                     <div class="i-fluent:delete-16-filled" />
@@ -227,11 +226,11 @@ async function OnSubmit() {
                 @update:model-value="(v: string) => Info.Nationality = v"
               />
               <TextInputField
+                v-model="Info.Height"
                 class="w-28"
                 label="Height"
                 placeholder="150"
                 name="singer-height"
-                @update:model-value="(v: string) => Info.Height = Number(v)"
               />
               <SelectInputField
                 label="Blood Type"
