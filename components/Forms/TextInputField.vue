@@ -16,7 +16,7 @@ export interface TextInputFieldProps {
 }
 
 // Properties
-const props = withDefaults(defineProps<TextInputFieldProps>(), {
+const Props = withDefaults(defineProps<TextInputFieldProps>(), {
   placeholder: 'Enter text here',
   showLabel: true,
   type: 'text',
@@ -27,21 +27,21 @@ const events = defineEmits<{
   'update:modelValue': [value: string]
 }>()
 
-const rules = {
+const Rules = {
   value: {},
 }
 
-const state = reactive({
+const State = reactive({
   value: '',
 })
 
-if (props.value !== undefined && props.value !== null)
-  state.value = props.value!
+if (Props.value !== undefined && Props.value !== null)
+  State.value = Props.value!
 
-if (props.rules !== undefined && props.rules !== null)
-  rules.value = props.rules
+if (Props.rules !== undefined && Props.rules !== null)
+  Rules.value = Props.rules
 
-const v = useVuelidate<{ value: string }>(rules, state)
+const v = useVuelidate<{ value: string }>(Rules, State)
 
 /**
  * Function called when the input changes
