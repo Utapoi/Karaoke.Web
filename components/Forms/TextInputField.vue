@@ -53,7 +53,7 @@ function OnInputChanged() {
 
 <template>
   <div class="my-1 inline-flex flex-col">
-    <label v-if="showLabel" :for="name" class="mb-2 text-sm font-semibold text-latte-text dark:text-mocha-text"> {{ label }}</label>
+    <label v-if="showLabel" :for="name" class="mb-2 text-sm font-semibold text-latte-text dark:text-mocha-text">{{ label }}</label>
     <input
       v-model="v.value.$model"
       class="w-full transform-gpu appearance-none rounded-full bg-latte-crust px-4 py-2 text-latte-text ring-1.5 transition-all duration-150 dark:bg-mocha-crust dark:text-mocha-text placeholder:text-latte-subtext0 focus:outline-none focus:ring-latte-lavender placeholder:dark:text-mocha-subtext0 focus:dark:ring-mocha-lavender"

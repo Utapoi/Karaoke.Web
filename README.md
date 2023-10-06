@@ -92,7 +92,7 @@ Utapoi's Karaoke brings the excitement of Japanese music karaoke straight to you
 1. Start the local development server:
 
    ```shell
-   npm run dev
+   pnpm run dev
    ```
 
 2. Open your browser and visit [http://localhost:3000](http://localhost:3000) to access the Karaoke.Web application.
