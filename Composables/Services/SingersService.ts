@@ -1,3 +1,4 @@
+import { ApiError } from '~/Core/Models/Error'
 import type { ISinger } from '~/Core/Models/Singer'
 import { Singer } from '~/Core/Models/Singer'
 import type { ISong } from '~/Core/Models/Song'
@@ -19,13 +20,16 @@ export function useSingersService() {
    * @param request The request to create a singer.
    * @returns The created singer.
    */
-  async function CreateAsync(request: CreateSingerRequest): Promise<Singer | undefined> {
+  async function CreateAsync(request: CreateSingerRequest): Promise<Singer | ApiError | undefined> {
     const response = await Client.Post<ISinger>('/Admin/Singers', {}, {
       ...request,
     })
 
     if (response === undefined)
       return undefined
+
+    if (response instanceof ApiError)
+      return response
 
     return Singer.FromResponse(response)
   }
@@ -122,10 +126,10 @@ export function useSingersService() {
     try {
       const response = await Client.Post<ISinger[]>(`/Singers/Search?input=${query}`)
 
-      if (response === undefined)
+      if (response === undefined || response instanceof ApiError)
         return []
 
-      return response.map(singer => Singer.FromResponse(singer))
+      return response.map((singer: ISinger) => Singer.FromResponse(singer))
     }
     catch (error: any) {
       return []

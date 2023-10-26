@@ -12,7 +12,11 @@ export interface TextInputFieldProps {
   placeholder: string
   showLabel?: boolean
   type?: string
-  rules?: ValidationArgs<{ value: string }>
+  rules?: ValidationArgs<IValidationType>
+}
+
+interface IValidationType {
+  value: string
 }
 
 // Properties
@@ -23,7 +27,7 @@ const Props = withDefaults(defineProps<TextInputFieldProps>(), {
 })
 
 // Events
-const events = defineEmits<{
+const Events = defineEmits<{
   'update:modelValue': [value: string]
 }>()
 
@@ -31,7 +35,7 @@ const Rules = {
   value: {},
 }
 
-const State = reactive({
+const State = reactive<IValidationType>({
   value: '',
 })
 
@@ -41,13 +45,13 @@ if (Props.value !== undefined && Props.value !== null)
 if (Props.rules !== undefined && Props.rules !== null)
   Rules.value = Props.rules
 
-const v = useVuelidate<{ value: string }>(Rules, State)
+const v = useVuelidate<IValidationType>(Rules, State)
 
 /**
  * Function called when the input changes
  */
 function OnInputChanged() {
-  events('update:modelValue', v.value.value.$model)
+  Events('update:modelValue', v.value.value.$model)
 }
 </script>
 

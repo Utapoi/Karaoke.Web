@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import useVuelidate from '@vuelidate/core'
+import type { ValidationArgs } from '@vuelidate/core'
 import type { SelectInputFieldOptions } from '~/Core/Forms/Options/SelectInputFieldOptions'
 
 /**
@@ -11,28 +13,53 @@ export interface SelectInputFieldProps {
   showLabel?: boolean
   placeholder?: string
   options: Array<SelectInputFieldOptions>
+  rules?: ValidationArgs<IValidationType>
+}
+
+interface IValidationType {
+  value: string
 }
 
 // Properties
-const props = withDefaults(defineProps<SelectInputFieldProps>(), {
+const Props = withDefaults(defineProps<SelectInputFieldProps>(), {
   showLabel: true,
   placeholder: 'Select an option',
 })
 
 // Events
-const events = defineEmits<{
+const Events = defineEmits<{
   'update:modelValue': [value: string]
 }>()
+
+/**
+ * The validation rules for the select input field
+ */
+const Rules = {
+  value: {},
+}
+
+/**
+ * The state of the select input field
+ */
+const State = reactive({
+  value: '',
+})
+
+if (Props.value !== undefined && Props.value !== null)
+  State.value = Props.value
+
+if (Props.rules !== undefined && Props.rules !== null)
+  Rules.value = Props.rules
+
+/**
+  * Vuelidate validation
+  */
+const v = useVuelidate<IValidationType>(Rules, State)
 
 /**
  * The HTML element of the select
  */
 const SelectRef = ref<HTMLElement | null>(null)
-
-/**
- * The selected option from the select
- */
-const Selected = ref<string>(props.value ?? '')
 
 /**
  * The state of the select
@@ -45,8 +72,8 @@ const IsOpen = ref<boolean>(false)
 function OnInputChanged(e: SelectInputFieldOptions) {
   const value = e.value
 
-  Selected.value = value
-  events('update:modelValue', value)
+  v.value.value.$model = value
+  Events('update:modelValue', v.value.value.$model)
 
   IsOpen.value = false
 }
@@ -62,6 +89,7 @@ function OnInputChanged(e: SelectInputFieldOptions) {
       :class="{
         'ring-latte-lavender dark:ring-mocha-lavender': IsOpen,
         'ring-latte-overlay0 dark:ring-mocha-overlay0': !IsOpen,
+        'ring-latte-red dark:ring-mocha-red': v.$invalid,
       }"
       @click="IsOpen = !IsOpen"
     >
@@ -69,11 +97,11 @@ function OnInputChanged(e: SelectInputFieldOptions) {
         <div
           class="w-32 overflow-hidden text-ellipsis whitespace-nowrap"
           :class="{
-            'text-latte-subtext0 dark:text-mocha-subtext0': Selected === '',
-            'text-latte-text dark:text-mocha-text': Selected !== '',
+            'text-latte-subtext0 dark:text-mocha-subtext0': v.value.$model === '',
+            'text-latte-text dark:text-mocha-text': v.value.$model !== '',
           }"
         >
-          {{ Selected !== '' ? Selected : placeholder }}
+          {{ v.value.$model !== '' ? v.value.$model : placeholder }}
         </div>
         <div class="mt-1 text-xs text-latte-text dark:text-mocha-text">
           <div v-if="IsOpen" class="i-fluent:chevron-up-16-filled" />
@@ -81,6 +109,12 @@ function OnInputChanged(e: SelectInputFieldOptions) {
         </div>
       </div>
     </div>
+    <span
+      v-if="v.$invalid && v.$silentErrors"
+      class="ml-2 mt-1 text-xs text-red-400"
+    >
+      {{ v.$silentErrors.at(0)?.$message }}.
+    </span>
     <Teleport v-if="IsOpen && SelectRef" to="body" class="relative">
       <div
         class="absolute top-2 w-full rounded-xl bg-latte-surface1 shadow dark:bg-mocha-surface1" :style="{

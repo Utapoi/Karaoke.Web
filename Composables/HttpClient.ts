@@ -1,10 +1,19 @@
 import { createFetch } from '@vueuse/core'
+import { ApiError } from '~/Core/Models/Error'
 
 export function useHttpClient() {
   const RuntimeConfig = useRuntimeConfig()
 
   const ApiFetcher = createFetch({
     baseUrl: RuntimeConfig.public.API_URL,
+    options: {
+      updateDataOnError: false,
+      onFetchError(ctx) {
+        ctx.error = ctx.data
+
+        return ctx
+      },
+    },
   })
 
   async function Delete(url: string, options?: RequestInit): Promise<void> {
@@ -28,17 +37,20 @@ export function useHttpClient() {
     return undefined
   }
 
-  async function Post<T>(url: string, options?: RequestInit, body: any = undefined): Promise<T | undefined> {
+  async function Post<T>(url: string, options?: RequestInit, body: any = undefined): Promise<T | ApiError | undefined> {
     if (options === undefined)
       options = {}
 
     if (body === undefined)
       body = {}
 
-    const { data: r } = await ApiFetcher(url, options).post(body).json()
+    const { data, error } = await ApiFetcher(url, options).post(body).json()
 
-    if (r.value !== null)
-      return r.value as T
+    if (error.value != null)
+      return ApiError.FromJson(error.value)
+
+    if (data.value !== null)
+      return data.value as T
 
     return undefined
   }

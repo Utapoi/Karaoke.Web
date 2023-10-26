@@ -30,15 +30,15 @@ definePageMeta({
                     </p>
                   </div>
                   <div v-motion-slide-top>
-                    <div class="ml-1 mt-8 text-sm font-semibold text-accent">
+                    <div class="text-accent ml-1 mt-8 text-sm font-semibold">
                       Select one
                     </div>
                     <div class="mt-2 flex justify-start gap-2">
-                      <div class="inline-flex items-center justify-center border border-gray-700 rounded-full px-3 py-1.5 hover:text-main text-secondary transition-color duration-125 hover:cursor-pointer hover:bg-gray-700/45">
+                      <div class="hover:text-main text-secondary inline-flex items-center justify-center border border-gray-700 rounded-full px-3 py-1.5 transition-color duration-125 hover:cursor-pointer hover:bg-gray-700/45">
                         <span class="i-circle-flags:jp" />
                         <span class="text-md ml-2">Japanese</span>
                       </div>
-                      <div class="inline-flex items-center justify-center border border-gray-700 rounded-full px-3 py-1.5 hover:text-main text-secondary transition-color duration-200 hover:cursor-pointer hover:bg-gray-700/45">
+                      <div class="hover:text-main text-secondary inline-flex items-center justify-center border border-gray-700 rounded-full px-3 py-1.5 transition-color duration-200 hover:cursor-pointer hover:bg-gray-700/45">
                         <span class="i-circle-flags:earth" />
                         <span class="text-md ml-2">Romaji</span>
                       </div>
@@ -47,16 +47,16 @@ definePageMeta({
                 </div>
               </div>
               <div v-motion-slide-top class="flex items-start gap-2">
-                <div class="w-30 inline-flex items-center justify-center border border-gray-600 rounded-full px-2 py-2 hover:text-main text-secondary transition-all duration-125 hover:cursor-pointer hover:bg-gray-600 hover:bg-opacity-15">
+                <div class="hover:text-main text-secondary w-30 inline-flex items-center justify-center border border-gray-600 rounded-full px-2 py-2 transition-all duration-125 hover:cursor-pointer hover:bg-gray-600 hover:bg-opacity-15">
                   <span class="text-xl">Back</span>
                 </div>
-                <div class="w-30 inline-flex items-center justify-center border border-accent rounded-full hover:bg-accent px-2 py-2 hover:text-main text-accent transition-all duration-125 hover:cursor-pointer hover:bg-opacity-15">
+                <div class="border-accent hover:bg-accent hover:text-main text-accent w-30 inline-flex items-center justify-center border rounded-full px-2 py-2 transition-all duration-125 hover:cursor-pointer hover:bg-opacity-15">
                   <span class="text-xl">Sing</span>
                 </div>
               </div>
             </div>
             <div v-motion-slide-left>
-              <p class="text-md mb-4 text-secondary">
+              <p class="text-md text-secondary mb-4">
                 Up next
                 in <span class="text-main">Symphogear Collection</span>
               </p>

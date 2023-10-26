@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { nanoid } from 'nanoid'
 import { required } from '@vuelidate/validators'
+import useVuelidate from '@vuelidate/core'
 import { useSingersService } from '~/Composables/Services/SingersService'
 import type { ILocalizedString } from '~/Core/Models/LocalizedString'
 import { CreateSingerRequest } from '~/Core/Requests/Singers/CreateSingerRequest'
 import type { ICreateSingerInfo } from '~/Core/Forms/Singers/CreateSingerInfo'
 import LanguageOptions from '~/Core/Forms/Options/LanguageOptions'
 import BloodTypeOptions from '~/Core/Forms/Options/BloodTypeOptions'
+import { ApiError } from '~/Core/Models/Error'
 
 definePageMeta({
   layout: 'admin',
@@ -48,6 +50,13 @@ const Info = ref<ICreateSingerInfo>({
   ProfilePictureFile: null,
   CoverFile: null,
 })
+
+const CreateSingerError = ref<ApiError | undefined>(undefined)
+
+const v = useVuelidate()
+
+const IsSubmitting = ref<boolean>(false)
+const IsDisabled = computed(() => IsSubmitting.value || !v.value.$anyDirty || v.value.$invalid)
 
 /**
  * Function called when the user adds a new name
@@ -152,9 +161,20 @@ function OnRemoveActivity(id: string): void {
  * Function called when the user submits the form
  */
 async function OnSubmit() {
+  if (IsDisabled)
+    return
+
+  CreateSingerError.value = undefined
+  IsSubmitting.value = true
+
   const request = await CreateSingerRequest.FromInfoAsync(Info.value)
 
-  await SingersService.CreateAsync(request)
+  const response = await SingersService.CreateAsync(request)
+
+  if (response instanceof ApiError)
+    CreateSingerError.value = response
+
+  IsSubmitting.value = false
 }
 </script>
 
@@ -170,6 +190,18 @@ async function OnSubmit() {
       </div>
       <div class="mb-4 mt-2 text-sm text-latte-subtext1 dark:text-mocha-subtext1">
         Add a new singer to the catalog of Utapoi Karaoke.
+      </div>
+    </div>
+    <div
+      v-if="CreateSingerError"
+      class="p-5 text-latte-red dark:text-mocha-red"
+    >
+      <div
+        v-for="(error, idx) in CreateSingerError.GetErrors()"
+        :key="idx"
+        class="w-full flex border border-latte-surface0 rounded-xl p-3 shadow dark:border-mocha-surface0 dark:shadow-none"
+      >
+        <p>{{ error }}</p>
       </div>
     </div>
     <div>
@@ -199,6 +231,7 @@ async function OnSubmit() {
                   :name="`singer-name-language-${idx}`"
                   :show-label="idx === 0"
                   :options="LanguageOptions"
+                  :rules="{ required }"
                 />
 
                 <div
@@ -217,12 +250,13 @@ async function OnSubmit() {
 
           <!-- Personal Information -->
           <div class="w-full flex flex-col justify-between gap-2 rounded-xl bg-latte-surface0 p-5 shadow xl:flex-row dark:bg-mocha-surface0 dark:shadow-none">
-            <div class="flex items-center gap-2">
+            <div class="flex items-start gap-2">
               <SelectInputField
                 label="Nationality"
                 placeholder="Select the nationality"
                 name="singer-nationality"
                 :options="LanguageOptions"
+                :rules="{ required }"
                 @update:model-value="(v: string) => Info.Nationality = v"
               />
               <TextInputField
@@ -316,6 +350,7 @@ async function OnSubmit() {
                   placeholder="Singer, Voice Actress, etc..."
                   :name="`singer-activity-${activity.Id}`"
                   :show-label="idx === 0"
+                  :rules="{ required }"
                 />
 
                 <SelectInputField
@@ -325,6 +360,7 @@ async function OnSubmit() {
                   :name="`singer-activity-language-${idx}`"
                   :show-label="idx === 0"
                   :options="LanguageOptions"
+                  :rules="{ required }"
                 />
 
                 <div
@@ -389,6 +425,7 @@ async function OnSubmit() {
               class="w-1/2"
               label="Profile Picture"
               name="singer-profile-picture-file"
+              :rules="{ required }"
               @update:model-value="(v: Array<File>) => {
                 Info.ProfilePictureFile = v[0]
               }"
@@ -397,6 +434,7 @@ async function OnSubmit() {
               class="w-1/2"
               label="Cover"
               name="singer-cover-file"
+              :rules="{ required }"
               @update:model-value="(v: Array<File>) => {
                 Info.CoverFile = v[0]
               }"
@@ -404,8 +442,17 @@ async function OnSubmit() {
           </div>
 
           <div class="mt-4 w-full inline-flex justify-end">
-            <button type="submit" class="rounded-full bg-latte-green px-4 py-2 font-semibold uppercase text-latte-base hover:cursor-pointer dark:bg-mocha-green dark:text-mocha-base">
-              Submit
+            <button
+              type="submit"
+              class="flex items-center gap-2 rounded-full px-4 py-2 font-semibold uppercase text-latte-base dark:text-mocha-base"
+              :disabled="IsDisabled"
+              :class="{
+                'bg-latte-green/25 dark:bg-mocha-green/25 cursor-not-allowed': IsDisabled,
+                'bg-latte-green dark:bg-mocha-green cursor-pointer': !IsDisabled,
+              }"
+            >
+              <div v-if="IsSubmitting" class="spin i-fluent:spinner-ios-16-filled" />
+              <span>Submit</span>
             </button>
           </div>
         </form>
@@ -413,3 +460,20 @@ async function OnSubmit() {
     </div>
   </div>
 </template>
+
+<style scoped lang="css">
+.spin {
+  animation-name: spin;
+  animation-duration: 2000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+@keyframes spin {
+  from {
+    transform:rotate(0deg);
+  }
+  to {
+    transform:rotate(360deg);
+  }
+}
+</style>
