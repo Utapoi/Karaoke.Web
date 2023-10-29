@@ -1,12 +1,31 @@
 import { pwa } from './config/pwa'
 
 export default defineNuxtConfig({
+  ssr: false,
   modules: [
     '@vueuse/nuxt',
+    '@vueuse/motion/nuxt',
     '@unocss/nuxt',
     '@pinia/nuxt',
+    '@pinia-plugin-persistedstate/nuxt',
     '@nuxtjs/color-mode',
     '@vite-pwa/nuxt',
+  ],
+
+  colorMode: {
+    preference: 'system', // default value of $colorMode.preference
+    fallback: 'dark',
+    classSuffix: '',
+  },
+
+  components: [
+    '~/components',
+    { path: '~/components/Forms' },
+    { path: '~/components/Common' },
+    { path: '~/components/Albums' },
+    { path: '~/components/Artists' },
+    { path: '~/components/Artists/Singers' },
+    { path: '~/components/Songs' },
   ],
 
   experimental: {
@@ -21,11 +40,10 @@ export default defineNuxtConfig({
     '@unocss/reset/tailwind.css',
   ],
 
-  colorMode: {
-    classSuffix: '',
-  },
-
   nitro: {
+    experimental: {
+      wasm: true,
+    },
     esbuild: {
       options: {
         target: 'esnext',
@@ -34,7 +52,12 @@ export default defineNuxtConfig({
     prerender: {
       crawlLinks: false,
       routes: ['/'],
-      ignore: ['/hi'],
+    },
+    storage: {
+      fs: {
+        driver: 'fs',
+        base: './data',
+      },
     },
   },
 
@@ -57,6 +80,12 @@ export default defineNuxtConfig({
   pwa,
 
   devtools: {
-    enabled: true,
+    enabled: false,
+  },
+  runtimeConfig: {
+    public: {
+      DOMAIN: 'localhost',
+      API_URL: 'https://localhost:7215', // 'http://localhost:5215',
+    },
   },
 })
