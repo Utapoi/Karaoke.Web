@@ -2,6 +2,7 @@
 import useVuelidate from '@vuelidate/core'
 import type { ValidationArgs } from '@vuelidate/core'
 import type { SelectInputFieldOptions } from '~/Core/Forms/Options/SelectInputFieldOptions'
+import { IsNullOrUndefined } from '~/Utils/TypeUtils'
 
 /**
  * The props for the select input field
@@ -45,11 +46,15 @@ const State = reactive({
   value: '',
 })
 
-if (Props.value !== undefined && Props.value !== null)
+if (!IsNullOrUndefined(Props.value)) {
+  // @ts-expect-error TypeScript is dumb and doesn't understand that this is a valid value since we check for it above
   State.value = Props.value
+}
 
-if (Props.rules !== undefined && Props.rules !== null)
+if (!IsNullOrUndefined(Props.rules)) {
+  // @ts-expect-error TypeScript is dumb and doesn't understand that this is a valid value since we check for it above
   Rules.value = Props.rules
+}
 
 /**
   * Vuelidate validation
@@ -109,12 +114,14 @@ function OnInputChanged(e: SelectInputFieldOptions) {
         </div>
       </div>
     </div>
-    <span
-      v-if="v.$invalid && v.$silentErrors"
-      class="ml-2 mt-1 text-xs text-red-400"
-    >
-      {{ v.$silentErrors.at(0)?.$message }}.
-    </span>
+    <div class="h-4">
+      <span
+        v-if="v.$invalid && v.$silentErrors"
+        class="ml-2 mt-1 text-xs text-red-400"
+      >
+        {{ v.$silentErrors.at(0)?.$message }}.
+      </span>
+    </div>
     <Teleport v-if="IsOpen && SelectRef" to="body" class="relative">
       <div
         class="absolute top-2 w-full rounded-xl bg-latte-surface1 shadow dark:bg-mocha-surface1" :style="{

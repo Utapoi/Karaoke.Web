@@ -70,11 +70,13 @@ function OnInputChanged() {
       :placeholder="placeholder"
       @input="OnInputChanged"
     >
-    <span
-      v-if="v.$invalid && v.$silentErrors"
-      class="ml-2 mt-1 text-xs text-red-400"
-    >
-      {{ v.$silentErrors.at(0)?.$message }}.
-    </span>
+    <div class="h-4">
+      <span
+        v-if="v.$invalid && v.$silentErrors"
+        class="ml-2 mt-1 text-xs text-red-400"
+      >
+        {{ v.$silentErrors.at(0)?.$message }}.
+      </span>
+    </div>
   </div>
 </template>

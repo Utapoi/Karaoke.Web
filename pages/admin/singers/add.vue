@@ -51,6 +51,10 @@ const Info = ref<ICreateSingerInfo>({
   CoverFile: null,
 })
 
+/**
+ * The error that occurred when creating the singer.
+ * Can be undefined if no error occurred.
+ */
 const CreateSingerError = ref<ApiError | undefined>(undefined)
 
 const v = useVuelidate()
@@ -78,6 +82,9 @@ function OnRemoveName(id: string): void {
   const n = Info.value.Names
   const idx = n.findIndex((x: ILocalizedString) => x.Id === id)
 
+  if (idx === -1)
+    return
+
   n.splice(idx, 1)
 
   Info.value.Names = n
@@ -101,6 +108,9 @@ function OnAddNickname(): void {
 function OnRemoveNickname(id: string): void {
   const n = Info.value.Nicknames
   const idx = n.findIndex((x: ILocalizedString) => x.Id === id)
+
+  if (idx === -1)
+    return
 
   n.splice(idx, 1)
 
@@ -127,6 +137,9 @@ function OnRemoveDescription(id: string): void {
   const n = Info.value.Descriptions
   const idx = n.findIndex((x: ILocalizedString) => x.Id === id)
 
+  if (idx === -1)
+    return
+
   n.splice(idx, 1)
 
   Info.value.Descriptions = n
@@ -145,12 +158,15 @@ function OnAddActivity(): void {
 }
 
 /**
- * Function called when the user removes a activity
+ * Function called when the user removes an activity
  * @param id The id of the activity to remove
  */
 function OnRemoveActivity(id: string): void {
   const n = Info.value.Activities
   const idx = n.findIndex((x: ILocalizedString) => x.Id === id)
+
+  if (idx === -1)
+    return
 
   n.splice(idx, 1)
 
@@ -168,7 +184,6 @@ async function OnSubmit() {
   IsSubmitting.value = true
 
   const request = await CreateSingerRequest.FromInfoAsync(Info.value)
-
   const response = await SingersService.CreateAsync(request)
 
   if (response instanceof ApiError)
@@ -213,7 +228,7 @@ async function OnSubmit() {
           <!-- Names -->
           <div class="w-full flex rounded-xl bg-latte-surface0 p-5 shadow dark:bg-mocha-surface0 dark:shadow-none">
             <div class="w-full flex flex-col gap-2">
-              <div v-for="(name, idx) in Info.Names" :key="name.Id" v-motion-pop class="w-full flex items-start justify-start gap-2">
+              <div v-for="(name, idx) in Info.Names" :key="name.Id" v-motion-pop class="w-full flex items-center justify-start gap-2">
                 <TextInputField
                   v-model="name.Text"
                   class="w-1/2"
@@ -235,12 +250,16 @@ async function OnSubmit() {
                 />
 
                 <div
-                  class="mt-1 h-full flex items-center justify-center gap-3"
+                  class="h-full flex items-center justify-center gap-3"
+                  :class="{
+                    'mt-3': idx === 0, // Note(Mikyan): Workaround for the first element
+                    'mt-1': idx > 0,
+                  }"
                 >
                   <div v-if="idx > 0" class="text-lg text-latte-red hover:cursor-pointer dark:text-mocha-red" @click="() => OnRemoveName(name.Id)">
                     <div class="i-fluent:delete-16-filled" />
                   </div>
-                  <div class="text-lg text-latte-green hover:cursor-pointer dark:text-mocha-green" @click="OnAddName">
+                  <div v-if="idx === Info.Names.length - 1" class="text-lg text-latte-green hover:cursor-pointer dark:text-mocha-green" @click="OnAddName">
                     <div class="i-fluent:add-16-filled" />
                   </div>
                 </div>
@@ -323,15 +342,16 @@ async function OnSubmit() {
                 />
 
                 <div
-                  class="h-full flex items-center justify-center gap-3" :class="{
-                    'mt-7': idx === 0,
+                  class="h-full flex items-center justify-center gap-3"
+                  :class="{
+                    'mt-3': idx === 0, // Note(Mikyan): Workaround for the first element
                     'mt-1': idx > 0,
                   }"
                 >
                   <div v-if="idx > 0" class="text-lg text-latte-red hover:cursor-pointer dark:text-mocha-red" @click="OnRemoveNickname(nickname.Id)">
                     <div class="i-fluent:delete-16-filled" />
                   </div>
-                  <div class="text-lg text-latte-green hover:cursor-pointer dark:text-mocha-green" @click="OnAddNickname()">
+                  <div v-if="idx === Info.Nicknames.length - 1" class="text-lg text-latte-green hover:cursor-pointer dark:text-mocha-green" @click="OnAddNickname()">
                     <div class="i-fluent:add-16-filled" />
                   </div>
                 </div>
@@ -342,7 +362,12 @@ async function OnSubmit() {
           <!-- Activities -->
           <div class="w-full flex flex-col justify-between gap-2 rounded-xl bg-latte-surface0 p-5 shadow xl:flex-row dark:bg-mocha-surface0 dark:shadow-none">
             <div class="w-full flex flex-col gap-2">
-              <div v-for="(activity, idx) in Info.Activities" :key="activity.Id" v-motion-pop class="w-full flex items-center justify-start gap-2">
+              <div
+                v-for="(activity, idx) in Info.Activities"
+                :key="activity.Id"
+                v-motion-pop
+                class="w-full flex items-center justify-start gap-2"
+              >
                 <TextInputField
                   v-model="activity.Text"
                   class="w-1/2"
@@ -364,15 +389,24 @@ async function OnSubmit() {
                 />
 
                 <div
-                  class="h-full flex items-center justify-center gap-3" :class="{
-                    'mt-7': idx === 0,
+                  class="h-full flex items-center justify-center gap-3"
+                  :class="{
+                    'mt-3': idx === 0, // Note(Mikyan): Workaround for the first element
                     'mt-1': idx > 0,
                   }"
                 >
-                  <div v-if="idx > 0" class="text-lg text-latte-red hover:cursor-pointer dark:text-mocha-red" @click="OnRemoveActivity(activity.Id)">
+                  <div
+                    v-if="idx > 0"
+                    class="text-lg text-latte-red hover:cursor-pointer dark:text-mocha-red"
+                    @click="OnRemoveActivity(activity.Id)"
+                  >
                     <div class="i-fluent:delete-16-filled" />
                   </div>
-                  <div class="text-lg text-latte-green hover:cursor-pointer dark:text-mocha-green" @click="OnAddActivity()">
+                  <div
+                    v-if="idx === Info.Activities.length - 1"
+                    class="text-lg text-latte-green hover:cursor-pointer dark:text-mocha-green"
+                    @click="OnAddActivity()"
+                  >
                     <div class="i-fluent:add-16-filled" />
                   </div>
                 </div>
@@ -383,7 +417,7 @@ async function OnSubmit() {
           <!-- Descriptions -->
           <div class="w-full flex flex-col justify-between gap-2 rounded-xl bg-latte-surface0 p-5 shadow xl:flex-row dark:bg-mocha-surface0 dark:shadow-none">
             <div class="w-full flex flex-col gap-2">
-              <div v-for="(description, idx) in Info.Descriptions" :key="description.Id" v-motion-pop class="w-full flex items-center justify-start gap-2">
+              <div v-for="(description, idx) in Info.Descriptions" :key="description.Id" v-motion-pop class="w-full flex items-start justify-start gap-2">
                 <TextAreaInputField
                   v-model="description.Text"
                   class="w-1/2"
@@ -403,15 +437,24 @@ async function OnSubmit() {
                 />
 
                 <div
-                  class="h-full flex items-center justify-center gap-3" :class="{
-                    'mt-7': idx === 0,
+                  class="h-full flex items-center justify-center gap-3"
+                  :class="{
+                    'mt-10.5': idx === 0, // Should fix this one day.
                     'mt-1': idx > 0,
                   }"
                 >
-                  <div v-if="idx > 0" class="text-lg text-latte-red hover:cursor-pointer dark:text-mocha-red" @click="OnRemoveDescription(description.Id)">
+                  <div
+                    v-if="idx > 0"
+                    class="text-lg text-latte-red hover:cursor-pointer dark:text-mocha-red"
+                    @click="OnRemoveDescription(description.Id)"
+                  >
                     <div class="i-fluent:delete-16-filled" />
                   </div>
-                  <div class="text-lg text-latte-green hover:cursor-pointer dark:text-mocha-green" @click="OnAddDescription()">
+                  <div
+                    v-if="idx === Info.Descriptions.length - 1"
+                    class="text-lg text-latte-green hover:cursor-pointer dark:text-mocha-green"
+                    @click="OnAddDescription()"
+                  >
                     <div class="i-fluent:add-16-filled" />
                   </div>
                 </div>

@@ -65,18 +65,26 @@ export class CreateSingerRequest implements ICreateSingerRequest {
       BloodType: info.BloodType,
       Height: info.Height,
       Nationality: info.Nationality,
-      ProfilePictureFile: {
-        File: await ToBase64(info.ProfilePictureFile!),
-        FileType: info.ProfilePictureFile!.type ?? 'image/png',
-        Language: '', // We don't need language for profile picture
-        FileName: info.ProfilePictureFile!.name,
-      },
-      CoverFile: {
-        File: await ToBase64(info.CoverFile!),
-        FileType: info.CoverFile!.type ?? 'image/png',
-        Language: '', // We don't need language for cover
-        FileName: info.CoverFile!.name,
-      },
+      // Note(Mikyan): We only check if the file is null or undefined to avoid errors.
+      // The back-end will check the file's validity.
+      ProfilePictureFile: !IsNullOrUndefined(info.ProfilePictureFile)
+        ? {
+            File: await ToBase64(info.ProfilePictureFile as File),
+            FileType: info.ProfilePictureFile!.type ?? 'image/png',
+            Language: '', // We don't need language for profile picture
+            FileName: info.ProfilePictureFile!.name,
+          }
+        : null,
+      // Note(Mikyan): We only check if the file is null or undefined to avoid errors.
+      // The back-end will check the file's validity.
+      CoverFile: !IsNullOrUndefined(info.CoverFile)
+        ? {
+            File: await ToBase64(info.CoverFile as File),
+            FileType: info.CoverFile!.type ?? 'image/png',
+            Language: '', // We don't need language for cover
+            FileName: info.CoverFile!.name,
+          }
+        : null,
     }
   }
 }
